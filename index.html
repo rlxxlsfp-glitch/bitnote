@@ -1,0 +1,1985 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#4A7BC8">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" href="favicon-32.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="bitnote">
+<script src="https://cdn.jsdelivr.net/npm/firebase@10.12.2/firebase-app-compat.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/firebase@10.12.2/firebase-auth-compat.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/firebase@10.12.2/firebase-firestore-compat.js"></script>
+<title>bitnote · 정보 기말 대비</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700&family=Outfit:wght@600;700;800&display=swap">
+<style>
+:root{--bg:#FFFFFF;--soft:#F5F4FB;--soft2:#E8EFFA;--line:#E8E6F2;--ink:#1B1C24;--sub:#6E7080;--pri:#4A7BC8;--pri2:#7FA4DE;--deep:#345C9C;--hl:#FFE38A;--hlink:#1B1C24;--good:#1F9D68;--bad:#E5484D;--badsoft:#FDECEC;--warn:#F4EEE5;--warnbar:#C58A2A;color-scheme:light;font-size:15px}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#111117;--soft:#1B1A24;--soft2:#1E2A3D;--line:#2C2A3B;--ink:#ECEBF4;--sub:#9C9AB0;--pri:#86AEEA;--pri2:#A9C4EE;--deep:#2A4878;--hl:rgba(255,214,90,.32);--hlink:#ECEBF4;--good:#4CC995;--bad:#FF7B7F;--badsoft:#3A1E22;--warn:#2B2519;--warnbar:#E0A949;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#111117;--soft:#1B1A24;--soft2:#1E2A3D;--line:#2C2A3B;--ink:#ECEBF4;--sub:#9C9AB0;--pri:#86AEEA;--pri2:#A9C4EE;--deep:#2A4878;--hl:rgba(255,214,90,.32);--hlink:#ECEBF4;--good:#4CC995;--bad:#FF7B7F;--badsoft:#3A1E22;--warn:#2B2519;--warnbar:#E0A949;color-scheme:dark}
+:root[data-fs="l"]{font-size:16.5px} :root[data-fs="xl"]{font-size:18px}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+html,body{margin:0;background:var(--bg);color:var(--ink)}
+body{font-family:"Pretendard","Apple SD Gothic Neo","Noto Sans KR","Malgun Gothic",system-ui,sans-serif;font-size:1rem;line-height:1.6;letter-spacing:-.01em}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--bg);z-index:30}
+button{font:inherit;color:inherit;cursor:pointer;background:none;border:0;padding:0}
+button:focus-visible{outline:2px solid var(--pri);outline-offset:2px}
+button:disabled{cursor:default}
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--bg);border-bottom:1px solid var(--line)}
+.bar{max-width:760px;margin:0 auto;padding:12px 18px;display:flex;align-items:center;justify-content:space-between}
+.logo{font-weight:800;font-size:1.45rem;color:var(--pri);letter-spacing:-.03em}
+.pill{display:flex;align-items:center;gap:6px;background:var(--soft2);color:var(--pri);font-weight:800;border-radius:999px;padding:7px 14px;font-size:.95rem}
+main{max-width:760px;margin:0 auto;padding:22px 18px 120px}
+.tabbar{position:fixed;left:0;right:0;bottom:0;z-index:20;background:var(--bg);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0px)}
+.tabbar .in{max-width:760px;margin:0 auto;display:flex}
+.tabbar button{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;padding:9px 0 8px;color:var(--sub);font-size:.75rem}
+.tabbar button.on{color:var(--pri);font-weight:700}
+.tabbar svg{width:24px;height:24px}
+body.playing .tabbar,body.playing .top{display:none}
+h1.t{font-size:1.75rem;font-weight:800;letter-spacing:-.035em;margin:0}
+.st{color:var(--sub);margin:4px 0 22px}
+.crumb{color:var(--sub);font-size:.95rem;margin-bottom:12px;display:inline-block}
+.hero{background:var(--deep);color:#fff;border-radius:22px;padding:22px;margin-bottom:14px}
+.hero small{opacity:.75;font-size:.85rem}
+.hero .big{font-size:2.6rem;font-weight:800;letter-spacing:-.04em;line-height:1.15}
+.hero p{margin:2px 0 14px;opacity:.75}
+.hero button{background:rgba(255,255,255,.16);color:#fff;font-weight:700;border-radius:999px;padding:9px 16px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
+.tile{background:var(--soft);border-radius:18px;padding:16px;text-align:left;width:100%}
+.tile b{display:block;font-size:1.08rem;margin-bottom:2px}
+.tile span{color:var(--sub);font-size:.9rem}
+.tile.on{background:var(--soft2)}
+.tile.on b{color:var(--pri)}
+.sec{font-weight:800;margin:26px 0 10px;font-size:1rem}
+.seg{display:flex;background:var(--soft);border-radius:16px;padding:5px;gap:4px;margin-bottom:14px}
+.seg button{flex:1;padding:10px 0;border-radius:12px;font-weight:700;color:var(--sub)}
+.seg button.on{background:var(--bg);color:var(--ink);box-shadow:0 1px 4px rgba(30,45,70,.08)}
+.seg.p button.on{background:var(--soft2);color:var(--pri);box-shadow:none}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.chip{background:var(--soft);border-radius:999px;padding:7px 15px;font-weight:600;color:var(--sub);font-size:.93rem}
+.chip.on{background:var(--soft2);color:var(--pri)}
+.chip:disabled{opacity:.35}
+.card{background:var(--soft);border-radius:18px;padding:18px;margin-bottom:10px}
+.card.w{background:var(--bg);border:1px solid var(--line)}
+.prow{display:block;width:100%;text-align:left;background:var(--soft);border-radius:18px;padding:16px 18px;margin-bottom:10px}
+.prow b{font-size:1.08rem}
+.prow .m{color:var(--sub);font-size:.88rem;margin-top:2px}
+.prow .g{font-size:.92rem;margin-top:6px}
+.gbtn{display:block;width:100%;text-align:center;color:#fff;font-weight:800;border-radius:999px;padding:14px;background:linear-gradient(90deg,#3F6DB5,#7FA4DE);box-shadow:0 8px 22px rgba(63,109,181,.28)}
+.gbtn:disabled{opacity:.45;box-shadow:none}
+.obtn{display:block;width:100%;text-align:center;font-weight:700;border-radius:999px;padding:13px;border:1px solid var(--line);background:var(--bg)}
+.ttl{display:flex;align-items:center;gap:10px}
+.ttl svg{width:26px;height:26px;color:var(--pri);flex:none}
+/* note */
+.sumh{display:flex;align-items:center;gap:8px;font-weight:800;font-size:1.1rem;margin:6px 0 10px}
+.sumh::before{content:"";width:4px;height:20px;border-radius:2px;background:var(--pri)}
+ul.sum{margin:0 0 8px;padding-left:20px}
+ul.sum li{margin:5px 0}
+.nh{display:flex;align-items:center;gap:12px;margin:34px 0 12px}
+.nh i{font-style:normal;background:var(--pri);color:#fff;font-weight:800;font-size:.85rem;min-width:28px;height:28px;border-radius:8px;display:grid;place-items:center}
+.nh h2{font-size:1.2rem;margin:0;font-weight:800;letter-spacing:-.03em}
+mark{background:var(--hl);color:var(--hlink);border-radius:3px;padding:0 2px}
+.tip{background:var(--soft2);border-left:4px solid var(--pri);border-radius:0 14px 14px 0;padding:13px 16px;margin:12px 0}
+.warn{background:var(--warn);border-left:4px solid var(--warnbar);border-radius:0 14px 14px 0;padding:13px 16px;margin:12px 0}
+.tw{overflow-x:auto;margin:12px 0;border:1px solid var(--line);border-radius:6px}
+table{border-collapse:collapse;width:100%;min-width:460px;font-size:.93rem}
+th{background:var(--soft);text-align:left;font-weight:700;color:var(--sub);padding:11px 14px;border-bottom:1px solid var(--line)}
+td{padding:11px 14px;border-bottom:1px solid var(--line);border-right:1px solid var(--line);vertical-align:top}
+td:last-child{border-right:0} tr:last-child td{border-bottom:0}
+.en{font-family:Georgia,"Times New Roman","Noto Serif KR",serif;font-size:1.08em;line-height:1.75;letter-spacing:0}
+.x{color:var(--bad);text-decoration:line-through}
+.okc{color:var(--good);font-weight:700}
+.sent{display:block;width:100%;text-align:left;padding:10px 0;border-bottom:1px dashed var(--line)}
+.sent .n{display:inline-grid;place-items:center;min-width:22px;height:22px;border-radius:6px;background:var(--soft2);color:var(--pri);font:700 .75rem system-ui;margin-right:8px;vertical-align:2px}
+.sent .ko{display:none;color:var(--pri);margin-top:5px;font-size:.95rem;font-family:"Pretendard","Apple SD Gothic Neo","Noto Sans KR",sans-serif;line-height:1.6}
+.sent.open .ko,.showko .sent .ko{display:block}
+.flow{display:flex;flex-direction:column}
+.node{background:var(--soft);border-radius:14px;padding:12px 15px}
+.node small{display:block;font-weight:800;color:var(--pri);font-size:.82rem}
+.node.k{background:var(--soft2);outline:1.5px solid var(--pri)}
+.arr{height:22px;display:flex;justify-content:center}
+.arr::before{content:"";width:2px;background:var(--pri);opacity:.5}
+.chk{display:block;width:100%;text-align:left;border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin-bottom:8px}
+.chk .q{display:flex;justify-content:space-between;gap:10px;font-weight:700}
+.chk .q em{font-style:normal;color:var(--pri);margin-right:6px}
+.chk .q small{color:var(--sub);font-weight:500;white-space:nowrap}
+.chk .a{display:none;margin-top:8px;color:var(--sub);font-size:.94rem}
+.chk.open .a{display:block}
+/* setup */
+.lab{font-weight:700;color:var(--sub);margin:20px 0 8px;font-size:.95rem}
+.cb{display:inline-flex;align-items:center;gap:8px;margin:0 14px 10px 0;font-weight:600}
+.cb i{width:22px;height:22px;border-radius:6px;border:2px solid var(--line);display:grid;place-items:center}
+.cb.on i{background:var(--pri);border-color:var(--pri)}
+.cb.on i::after{content:"";width:9px;height:5px;border:2px solid #fff;border-top:0;border-right:0;transform:rotate(-45deg) translateY(-1px)}
+.est{display:flex;justify-content:space-between;background:var(--soft);border-radius:14px;padding:14px 16px;margin:20px 0 14px;color:var(--sub)}
+.est b{color:var(--pri)}
+/* player */
+.ptop{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--bg);border-bottom:1px solid var(--line)}
+.ptop .in{max-width:760px;margin:0 auto;padding:10px 18px 12px}
+.ptop .r{display:flex;align-items:center;gap:12px}
+.ib{width:42px;height:42px;border-radius:50%;border:1px solid var(--line);display:grid;place-items:center;flex:none}
+.ptop b{display:block;font-size:1.15rem}
+.ptop small{color:var(--sub)}
+.pbar{height:6px;background:var(--soft2);border-radius:3px;margin-top:10px;overflow:hidden}
+.pbar i{display:block;height:100%;background:linear-gradient(90deg,#3F6DB5,#7FA4DE);transition:width .3s}
+.qhead{display:flex;align-items:center;gap:8px;margin:6px 0 10px}
+.qhead .no{color:var(--pri);font-weight:800;font-size:1.25rem}
+.qhead .tg{background:var(--soft);color:var(--sub);font-size:.82rem;padding:3px 10px;border-radius:6px}
+.qhead .fr{margin-left:auto;color:var(--sub);font-size:.82rem}
+.qt{font-weight:700;font-size:1.06rem;margin-bottom:14px}
+.given{border:1.5px solid var(--ink);border-radius:4px;padding:11px 13px;margin-bottom:14px}
+.body{margin-bottom:16px}
+.mk{text-decoration:underline;text-decoration-thickness:1.5px;text-underline-offset:3px}
+.mk b{font-family:system-ui,sans-serif;font-size:.82em;color:var(--pri);margin-right:2px}
+.blank{display:inline-block;min-width:96px;border-bottom:2px solid var(--ink);text-decoration:none}
+.box{text-decoration:none;font-weight:700}
+.opts{display:flex;flex-direction:column;gap:8px}
+.opt{display:flex;align-items:flex-start;gap:12px;text-align:left;width:100%;border:1.5px solid var(--line);border-radius:16px;padding:13px 15px}
+.opt .rd{width:22px;height:22px;border-radius:50%;border:2px solid var(--line);flex:none;margin-top:2px;display:grid;place-items:center}
+.opt .c{color:var(--pri);font-weight:700;flex:none}
+.opt.sel{border-color:var(--pri);background:var(--soft2)}
+.opt.sel .rd{border-color:var(--pri)} .opt.sel .rd::after{content:"";width:10px;height:10px;border-radius:50%;background:var(--pri)}
+.opt.ok{border-color:var(--good);background:color-mix(in srgb,var(--good) 10%,var(--bg))}
+.opt.no{border-color:var(--bad);background:var(--badsoft)}
+.opt.cut{opacity:.4} .opt.cut .tx{text-decoration:line-through}
+.hintb{display:inline-flex;align-items:center;gap:6px;border:1.5px solid var(--soft2);background:var(--soft2);color:var(--pri);font-weight:700;border-radius:999px;padding:9px 16px;margin-top:14px}
+.hbox{background:var(--soft2);border-radius:16px;padding:14px 16px;margin-top:12px}
+.hbox b{color:var(--pri);display:block;font-size:.92rem}
+.exp{margin-top:16px;border-radius:16px;padding:16px;background:var(--soft)}
+.exp .res{font-weight:800;font-size:1.1rem;margin-bottom:6px}
+.exp .res.ok{color:var(--good)} .exp .res.no{color:var(--bad)}
+.exp ul{padding-left:18px;margin:6px 0}
+.exp .okw{color:var(--good);font-weight:700}
+.exp .sub{font-weight:700;margin-top:10px}
+.kol{color:var(--sub);font-size:.93rem;margin:6px 0 0}
+details{margin-top:10px} summary{color:var(--pri);font-weight:700;cursor:pointer}
+.pfoot{position:fixed;left:0;right:0;bottom:0;background:var(--bg);border-top:1px solid var(--line);z-index:20;padding-bottom:env(safe-area-inset-bottom,0px)}
+.pfoot .in{max-width:760px;margin:0 auto;display:flex;align-items:center;gap:10px;padding:10px 18px}
+.pfoot .obtn{flex:1;padding:12px}
+.pfoot .gbtn{flex:1.3;padding:12px}
+.pfoot span{color:var(--sub);font-size:.92rem;white-space:nowrap}
+.score{font-size:3.4rem;font-weight:800;color:var(--pri);letter-spacing:-.04em;text-align:center}
+.empty{text-align:center;color:var(--sub);padding:50px 10px}
+.empty b{color:var(--ink);display:block;font-size:1.1rem;margin-bottom:4px}
+.tf{list-style:none;padding:0;margin:0} .tf li{padding:3px 0}
+.row{display:flex;gap:10px;align-items:center}
+.sw{width:50px;height:30px;border-radius:999px;background:var(--line);position:relative;flex:none}
+.sw::after{content:"";position:absolute;top:4px;left:4px;width:22px;height:22px;border-radius:50%;background:#fff;transition:left .2s}
+.sw.on{background:var(--pri)} .sw.on::after{left:24px}
+
+h1.t{font-size:1.6rem}
+.logo{position:relative}
+.logo .spk{font-size:.7em;margin-left:2px;display:inline-block;vertical-align:top;animation:tw 2.4s ease-in-out infinite}
+.spk2{display:inline-block;animation:tw 2.4s ease-in-out infinite .6s}
+@keyframes tw{0%,100%{opacity:.35;transform:scale(.7) rotate(0)}50%{opacity:1;transform:scale(1.15) rotate(25deg)}}
+.gbtn{position:relative;overflow:hidden;isolation:isolate}
+.gbtn::after{content:"";position:absolute;top:0;bottom:0;left:0;width:40%;background:linear-gradient(105deg,transparent,rgba(255,255,255,.35),transparent);transform:translateX(-120%) skewX(-18deg);animation:sheen 4s ease-in-out infinite;z-index:-1;will-change:transform}
+.gbtn:disabled::after{display:none}
+@keyframes sheen{0%,62%{transform:translateX(-120%) skewX(-18deg)}100%{transform:translateX(330%) skewX(-18deg)}}
+.hero{position:relative;overflow:hidden;background:linear-gradient(135deg,#3F6DB5 0%,#345C9C 55%,#5F8ED6 100%)}
+.hero::before{content:"";position:absolute;width:260px;height:260px;right:-80px;top:-110px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.28),transparent 65%)}
+.hero .st2{position:absolute;color:#fff;pointer-events:none;animation:tw 2.8s ease-in-out infinite}
+.hero > *{position:relative}
+.spark{position:fixed;pointer-events:none;z-index:70;font-size:18px;color:#FFC93C;text-shadow:0 0 8px rgba(255,201,60,.8);animation:burst .95s ease-out forwards}
+.spark.v{color:#86A9E3;text-shadow:0 0 8px rgba(120,160,230,.9)}
+@keyframes burst{0%{transform:translate(-50%,-50%) scale(.3);opacity:1}100%{transform:translate(calc(-50% + var(--dx)),calc(-50% + var(--dy))) scale(1.1) rotate(120deg);opacity:0}}
+.opt.ok{box-shadow:0 0 0 4px color-mix(in srgb,var(--good) 14%,transparent)}
+.scrim{position:fixed;inset:0;background:rgba(12,18,32,.38);z-index:40;opacity:0;transition:opacity .25s}
+.scrim.on{opacity:1}
+.drawer{position:fixed;top:0;right:0;bottom:0;width:min(360px,88vw);background:var(--bg);z-index:41;padding:calc(env(safe-area-inset-top,0px) + 18px) 18px 18px;overflow-y:auto;transform:translateX(100%);transition:transform .28s ease}
+.drawer.on{transform:none}
+.drawer .hd{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.drawer .hd b{font-size:1.25rem}
+.srch{display:flex;align-items:center;gap:8px;background:var(--soft);border-radius:999px;padding:11px 16px;margin-bottom:12px}
+.srch input{flex:1;border:0;background:none;font:inherit;color:var(--ink);outline:none;min-width:0}
+.prof{display:flex;align-items:center;gap:12px;background:var(--soft2);border-radius:18px;padding:14px}
+.prof .av{width:46px;height:46px;border-radius:50%;background:linear-gradient(135deg,#4A7BC8,#7FA4DE);color:#fff;display:grid;place-items:center;font-weight:800;flex:none}
+.prof small{color:var(--pri);display:block}
+.prof .pill{margin-left:auto;background:var(--bg)}
+.dsec{color:var(--sub);font-size:.85rem;margin:20px 0 6px;padding-left:4px}
+.ditem{display:flex;align-items:center;gap:12px;width:100%;padding:11px 6px;border-radius:12px;font-size:1.02rem}
+.ditem svg{width:22px;height:22px;color:var(--ink)}
+.ditem:active{background:var(--soft)}
+.days{display:flex;justify-content:space-between;margin:18px 0 26px}
+.day{display:flex;flex-direction:column;align-items:center;gap:6px;color:var(--sub);font-size:.85rem}
+.day i{width:46px;height:46px;border-radius:50%;background:var(--soft);display:grid;place-items:center;font-style:normal;color:#fff}
+.day.today i{background:var(--bg);border:2px dashed var(--pri);color:var(--pri)}
+.day.today{color:var(--ink);font-weight:700}
+.day.done i{background:linear-gradient(135deg,#4A7BC8,#7FA4DE);border:0;color:#fff;box-shadow:0 4px 12px rgba(63,109,181,.35)}
+.qrow{display:flex;align-items:center;gap:14px;padding:12px 0}
+.qrow .ic{width:46px;height:46px;border-radius:50%;background:var(--soft2);color:var(--pri);display:grid;place-items:center;flex:none}
+.qrow .ic svg{width:22px;height:22px}
+.qrow b{display:block}
+.qrow small{color:var(--sub)}
+.qrow .pt{margin-left:auto;color:var(--pri);font-weight:800}
+.qrow.ok .ic{background:linear-gradient(135deg,#4A7BC8,#7FA4DE);color:#fff}
+.qbar{height:5px;background:var(--soft2);border-radius:3px;margin-top:5px;overflow:hidden;width:min(220px,50vw)}
+.qbar i{display:block;height:100%;background:var(--pri)}
+.empty2{border:1px solid var(--line);border-radius:18px;padding:34px 18px;text-align:center}
+.empty2 .ico{color:var(--pri);margin-bottom:8px}
+.empty2 b{display:block}
+.empty2 p{color:var(--sub);font-size:.92rem;margin:4px 0 16px}
+.empty2 .row{justify-content:center;flex-wrap:wrap}
+.sm{width:auto!important;display:inline-block!important;padding:10px 20px!important}
+.toast{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 90px);transform:translate(-50%,20px);background:#23324A;color:#fff;font-weight:700;border-radius:999px;padding:12px 20px;z-index:80;opacity:0;transition:all .3s;white-space:nowrap}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+
+.splash{position:fixed;inset:0;z-index:90;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;transition:opacity .3s ease}
+.splash.out{opacity:0;pointer-events:none}
+.splash .lg{position:relative;isolation:isolate;font-size:3rem;font-weight:800;color:var(--pri);letter-spacing:-.04em}
+.splash .lg::before{content:"";position:absolute;left:50%;top:50%;width:230px;height:230px;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle,rgba(74,123,200,.30),transparent 62%);z-index:-1;animation:breathe 1.6s ease-in-out infinite}
+.splash .lb{width:150px;height:4px;background:var(--soft2);border-radius:2px;overflow:hidden}
+.splash .lb i{display:block;height:100%;width:6%;background:linear-gradient(90deg,#4A7BC8,#7FA4DE);border-radius:2px;animation:load var(--d,.5s) ease-out forwards}
+.splash small{color:var(--sub);font-size:.9rem}
+@keyframes load{to{width:100%}}
+@keyframes breathe{50%{transform:translate(-50%,-50%) scale(1.18);opacity:.65}}
+#app.enter{animation:pageIn .4s ease both}
+@keyframes pageIn{from{opacity:0;transform:translateY(10px)}}
+/* ---- 큐노트 톤 맞춤 ---- */
+:root{--chip:#F2F2F6;--chipt:#5A5C6B}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--chip:#23222E;--chipt:#B4B2C6}}
+:root[data-theme="dark"]{--chip:#23222E;--chipt:#B4B2C6}
+h1.t{font-weight:700;font-size:1.55rem}
+.sec,.prow b,.tile b{font-weight:700}
+.gbtn{font-weight:700;background:linear-gradient(90deg,#3F6DB5 0%,#5F8ED6 55%,#86A9E3 100%);box-shadow:0 10px 26px -6px rgba(63,109,181,.45);transition:box-shadow .2s,transform .12s}
+.gbtn:active{transform:scale(.985)}
+.gbtn:disabled{opacity:1;background:linear-gradient(90deg,#C3D3EC,#D6E2F3);box-shadow:none}
+.chip{background:var(--chip);color:var(--chipt);font-weight:600;transition:background .18s,color .18s}
+.chip.on{background:var(--soft2);color:var(--pri)}
+.card.w{border:1px solid var(--line);box-shadow:0 10px 30px -12px rgba(35,60,100,.12);border-radius:22px;padding:22px}
+.cb{margin:0 18px 12px 0;font-weight:500}
+.cb i{width:20px;height:20px;border-radius:5px;border:1.5px solid #D0D7E2;transition:background .15s,border-color .15s}
+.opt,.seg button,.tile,.prow{transition:background .18s,border-color .18s,color .18s,box-shadow .18s}
+.exp,.hbox{animation:fadeUp .3s ease both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(6px)}}
+#app.fade{animation:fadeIn .25s ease both}
+@keyframes fadeIn{from{opacity:0}}
+.splash{opacity:0;transition:opacity .2s ease}
+.splash.in{opacity:1}
+.splash.out{opacity:0;transition:opacity .35s ease}
+/* ===== 큐노트 그대로: 작고 단정한 글씨, 무채색 카드, 납작한 보라 ===== */
+:root{font-size:14px;--pri:#4A7BC8;--soft:#F5F5F8;--soft2:#E8EFFA;--line:#ECECF1;--ink:#17181C;--sub:#8B8D98;--chip:#F2F2F5;--chipt:#555763}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--pri:#86AEEA;--soft:#1C1C22;--soft2:#1E2A3D;--line:#2A2A33;--ink:#ECECF1;--sub:#8E909C;--chip:#22222A;--chipt:#B2B3BF}}
+:root[data-theme="dark"]{--pri:#86AEEA;--soft:#1C1C22;--soft2:#1E2A3D;--line:#2A2A33;--ink:#ECECF1;--sub:#8E909C;--chip:#22222A;--chipt:#B2B3BF}
+:root[data-fs="l"]{font-size:15.5px} :root[data-fs="xl"]{font-size:17px}
+body{font-family:"Pretendard","Pretendard Variable","Noto Sans KR","Apple SD Gothic Neo",system-ui,sans-serif;letter-spacing:-.015em;-webkit-font-smoothing:antialiased}
+.bar{padding:14px 20px}
+.logo{font-size:1.4rem;font-weight:800;letter-spacing:-.04em}
+.pill{font-size:.92rem;padding:6px 13px;font-weight:700}
+main{padding:30px 20px 120px}
+h1.t{font-size:1.45rem;font-weight:700;letter-spacing:-.03em}
+.st{font-size:.92rem;margin:3px 0 20px}
+.hero{background:var(--pri);border-radius:20px;padding:18px 22px 20px}
+.hero::before,.hero .st2{display:none}
+.hero small{font-size:.85rem;opacity:.8}
+.hero .big{font-size:2.3rem;font-weight:800;margin:4px 0 0}
+.hero p{font-size:.9rem;margin:2px 0 0;opacity:.8}
+.link{display:block;margin:16px auto 6px;color:var(--pri);font-weight:600;font-size:.92rem}
+.tile{background:var(--soft);border-radius:14px;padding:20px 12px;text-align:center}
+.tile b{font-size:1.02rem;font-weight:600;margin:0}
+.tile span{display:none}
+.tile.on{background:var(--soft)} .tile.on b{color:var(--ink)}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:12px}
+.prow{background:var(--soft);border-radius:14px;padding:14px 16px;margin-bottom:8px}
+.prow b{font-size:1rem;font-weight:600}
+.prow .m{font-size:.82rem}
+.prow .g{font-size:.88rem;color:var(--sub);margin-top:4px}
+.sec{font-size:.95rem;font-weight:700;margin:26px 0 10px}
+.nextl{display:flex;justify-content:space-between;font-size:.92rem;padding:5px 0;color:var(--sub)}
+.nextl b{color:var(--ink)}
+.card{background:var(--soft);border-radius:14px;padding:16px}
+.card.w{background:var(--bg);border:1px solid var(--line);border-radius:18px;box-shadow:0 8px 24px -14px rgba(35,60,100,.18);padding:22px}
+.lab{font-size:.9rem;font-weight:600;color:var(--ink);margin:18px 0 8px}
+.chip{font-size:.85rem;padding:6px 13px;font-weight:500}
+.chip.on{font-weight:600}
+.seg{background:var(--soft);border-radius:14px;padding:4px}
+.seg button{padding:9px 0;font-weight:600;font-size:.95rem;border-radius:10px}
+.seg.p button.on{background:var(--soft2);color:var(--pri)}
+.cb{font-size:.95rem;margin:0 16px 10px 0}
+.cb i{width:18px;height:18px;border-radius:4px}
+.cb.on i{background:var(--pri);border-color:var(--pri)}
+.est{border-radius:12px;font-size:.92rem;padding:13px 16px}
+.gbtn{border-radius:999px;padding:13px;font-size:1rem;font-weight:600;background:linear-gradient(90deg,#3F6DB5,#5F8ED6 60%,#86A9E3);box-shadow:0 10px 24px -8px rgba(63,109,181,.55)}
+.gbtn:disabled{background:linear-gradient(90deg,#C3D3EC,#D6E2F3)}
+.obtn{font-weight:600;font-size:.95rem}
+.tabbar button{font-size:.7rem;padding:8px 0 7px}
+.tabbar svg{width:22px;height:22px;stroke-width:1.6}
+.tabbar button.on{font-weight:600}
+.empty2{border-radius:16px;padding:30px 18px}
+.drawer .hd b{font-size:1.15rem}
+.ditem{font-size:.98rem;padding:10px 6px}
+.ditem svg{width:20px;height:20px}
+.qt{font-size:1rem;font-weight:600}
+.opt{border-radius:14px;padding:12px 14px;border-width:1px}
+.opt .rd{width:20px;height:20px;border-width:1.5px}
+.nh h2{font-size:1.1rem;font-weight:700}
+.nh i{min-width:24px;height:24px;border-radius:6px;font-size:.78rem}
+.splash .lg{font-size:2.6rem}
+.en{font-family:"Pretendard","Noto Sans KR",system-ui,sans-serif;font-size:1em;line-height:1.75;letter-spacing:-.005em}
+@media (max-width:480px){h1.t{font-size:1.35rem}.grid2{grid-template-columns:1fr 1fr}}
+/* 덜 촌스럽게: 보라는 '지금 선택된 것'에만 */
+.logo{font-size:1.38rem;font-weight:800;letter-spacing:-.045em}
+.opt .c{color:var(--sub);font-weight:400;font-size:.95em}
+.opt.sel .c{color:var(--pri)}
+.prow .g{display:none}
+.sumh::before{width:3px;height:16px}
+.nh i{background:var(--pri)}
+.hero{box-shadow:none}
+.qhead .no{font-size:1.1rem;font-weight:700}
+.qhead .tg{font-size:.78rem;border-radius:5px;padding:2px 8px}
+.qhead .fr{font-size:.78rem}
+.tip{border-left-width:3px;font-size:.95rem}
+.warn{border-left-width:3px;font-size:.95rem}
+.sent .n{background:none;color:var(--sub);font-weight:500;min-width:18px}
+.chk .q em{font-weight:700}
+/* ---- 글씨·로고·여백 다듬기 ---- */
+body{font-weight:400;color:var(--ink)}
+.logo{font-family:"Outfit","Pretendard",sans-serif;font-weight:700;font-size:1.6rem;letter-spacing:-.035em;line-height:1}
+.splash .lg{font-family:"Outfit","Pretendard",sans-serif;font-weight:700;letter-spacing:-.035em}
+h1.t{font-weight:700;font-size:1.5rem;letter-spacing:-.035em;line-height:1.35}
+.st{color:var(--sub);font-size:.93rem;margin:4px 0 26px}
+.sec{font-weight:600;font-size:.98rem;margin:34px 0 12px}
+b,strong{font-weight:600}
+.prow b,.tile b,.card b{font-weight:600}
+.hero{padding:20px 24px 22px;border-radius:22px}
+.hero small{font-weight:500}
+.hero .big{font-weight:700;font-size:2.4rem;letter-spacing:-.04em;line-height:1.1;margin-top:8px}
+.hero p{margin-top:4px}
+.nextl{padding:7px 0;font-size:.95rem}
+.nextl b{font-weight:600}
+.link{margin:22px auto 4px}
+.tile2{display:block;width:100%;text-align:left;background:var(--soft);border-radius:16px;padding:18px 18px 20px}
+.tile2 b{display:block;font-size:1.05rem;margin-bottom:4px}
+.tile2 span{color:var(--sub);font-size:.88rem}
+.grid2{gap:12px}
+.prow{padding:16px 18px;border-radius:16px;margin-bottom:10px}
+.prow .m{margin-top:3px}
+.gbtn,.obtn,.seg button,.chip{font-weight:600}
+/* ---- 체크박스: 큐노트처럼 체크 표시 없이 보라로만 칠해짐 + 눌러도 안 움직이게 ---- */
+.cb.on i::after{display:none}
+.cb i{border:1.5px solid #D0D7E2;background:var(--bg)}
+.cb.on i{background:var(--pri);border-color:var(--pri)}
+#cbs{display:grid;grid-template-columns:repeat(auto-fill,minmax(104px,1fr));gap:12px 8px}
+#cbs .cb{margin:0}
+.cb{font-weight:500!important}
+.chip,.chip.on{font-weight:500!important}
+.cb,.chip{transition:none}
+.cb i,.chip{transition:background-color .15s,border-color .15s,color .15s}
+#allb{min-width:72px;text-align:center}
+/* ---- 개념 노트: 카드형으로 쪼개서 읽기 쉽게 ---- */
+.jump{position:sticky;top:calc(env(safe-area-inset-top,0px) + 61px);z-index:5;background:var(--bg);display:flex;gap:6px;overflow-x:auto;padding:10px 0;margin:0 0 6px;scrollbar-width:none}
+.jump::-webkit-scrollbar{display:none}
+.jump button{flex:none;background:var(--chip);color:var(--chipt);border-radius:999px;padding:6px 13px;font-size:.85rem;font-weight:500}
+.jump button.on{background:var(--soft2);color:var(--pri)}
+.nsec{scroll-margin-top:120px;margin-top:30px}
+.nsec>h3{display:flex;align-items:center;gap:8px;font-size:1.05rem;font-weight:700;margin:0 0 12px}
+.nsec>h3 small{color:var(--sub);font-weight:500;font-size:.82rem}
+.gist2{background:var(--soft2);border-radius:18px;padding:18px 20px}
+.gist2 small{color:var(--pri);font-weight:600;font-size:.82rem}
+.gist2 p{margin:6px 0 0;font-size:1.08rem;font-weight:600;line-height:1.55;letter-spacing:-.02em}
+.tl{position:relative;padding-left:26px}
+.tl::before{content:"";position:absolute;left:7px;top:10px;bottom:10px;width:2px;background:var(--soft2)}
+.tl .st3{position:relative;padding:0 0 16px}
+.tl .st3:last-child{padding-bottom:0}
+.tl .st3::before{content:"";position:absolute;left:-24px;top:5px;width:12px;height:12px;border-radius:50%;background:var(--bg);border:2.5px solid var(--pri)}
+.tl .st3:last-child::before{background:var(--pri)}
+.tl .st3 small{display:block;color:var(--pri);font-weight:600;font-size:.8rem}
+.tl .st3 div{font-size:.97rem}
+.ana2{display:flex;gap:12px;background:var(--soft);border-radius:16px;padding:16px;margin-top:16px;font-size:.95rem}
+.ana2 i{font-style:normal;flex:none;width:30px;height:30px;border-radius:50%;background:var(--bg);display:grid;place-items:center}
+.sc{background:var(--soft);border-radius:14px;padding:13px 15px;margin-bottom:8px}
+.sc .eng{font-size:1rem;line-height:1.7}
+.sc .num{color:var(--sub);font-size:.8rem;font-weight:600;margin-bottom:2px}
+.sc .kr{color:var(--pri);font-size:.93rem;margin-top:6px;display:none;line-height:1.6}
+.sc.open .kr,.showko .sc .kr{display:block}
+.sc{display:block;width:100%;text-align:left}
+.pc{border:1px solid var(--line);border-radius:16px;padding:15px 16px;margin-bottom:10px}
+.pc .h{display:flex;gap:10px;align-items:flex-start;font-weight:600;margin-bottom:6px}
+.pc .h i{font-style:normal;flex:none;min-width:22px;height:22px;border-radius:6px;background:var(--soft2);color:var(--pri);font-size:.78rem;display:grid;place-items:center;margin-top:1px}
+.pc .b{color:var(--ink);opacity:.82;font-size:.94rem;line-height:1.65}
+.gc{border:1px solid var(--line);border-radius:16px;padding:14px 16px;margin-bottom:10px}
+.gc .ctx{font-size:.96rem;line-height:1.65;color:var(--sub)}
+.gc .ctx mark{background:var(--soft2);color:var(--pri);font-weight:600;padding:1px 4px;border-radius:5px}
+.pair{display:flex;gap:6px;flex-wrap:wrap;margin:9px 0 7px}
+.pair span{font-size:.85rem;border-radius:999px;padding:3px 11px;font-weight:600}
+.pair .ok{background:color-mix(in srgb,var(--good) 13%,transparent);color:var(--good)}
+.pair .ng{background:var(--badsoft);color:var(--bad);text-decoration:line-through}
+.gc .why{font-size:.92rem;line-height:1.6}
+.vr{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;align-items:start;padding:12px 0;border-bottom:1px solid var(--line)}
+.vr:last-child{border-bottom:0}
+.vr .pair{margin:0;flex-direction:column;align-items:flex-start}
+.vr .why{font-size:.92rem;color:var(--ink);opacity:.82;line-height:1.6}
+.wd{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.wd div{background:var(--soft);border-radius:12px;padding:10px 12px}
+.wd b{display:block;font-size:.98rem}
+.wd span{color:var(--sub);font-size:.85rem}
+.trap{border:1px dashed var(--warnbar);border-radius:16px;padding:14px 16px;margin-bottom:10px}
+.trap .eng{font-size:.96rem;line-height:1.65}
+.trap .b{color:var(--sub);font-size:.9rem;margin-top:8px;line-height:1.6}
+.trap small{color:var(--warnbar);font-weight:600;font-size:.8rem}
+.ox{border:1px solid var(--line);border-radius:16px;padding:14px 16px;margin-bottom:8px}
+.ox .q{font-size:.96rem;line-height:1.6}
+.ox .q em{font-style:normal;color:var(--pri);font-weight:600;margin-right:6px}
+.ox .bt{display:flex;gap:8px;margin-top:10px}
+.ox .bt button{flex:1;border-radius:12px;padding:8px;background:var(--soft);font-weight:600}
+.ox .bt button.ok{background:color-mix(in srgb,var(--good) 15%,transparent);color:var(--good)}
+.ox .bt button.ng{background:var(--badsoft);color:var(--bad)}
+.ox .a{display:none;margin-top:10px;font-size:.9rem;color:var(--sub);line-height:1.6}
+.ox.done .a{display:block}
+/* ---- Proof 참고: 탭 표시선, 히어로 빛, 단원 아이콘, 떠 있는 버튼 ---- */
+.ico{display:inline-block;vertical-align:-3px;color:var(--ink)}
+.tabbar button{position:relative}
+.tabbar button.on::before{content:"";position:absolute;top:-1px;left:50%;width:28px;height:3px;border-radius:0 0 3px 3px;background:var(--pri);transform:translateX(-50%)}
+.hero{background:linear-gradient(120deg,#3F6DB5 0%,#5F9E72 45%,#86A9E3 62%,#5F9E72 80%);box-shadow:0 14px 30px -14px rgba(63,109,181,.6)}
+.qcard{background:var(--soft);border-radius:18px;padding:16px 18px;margin-top:12px;display:block;width:100%;text-align:left}
+.qcard .tp{display:flex;justify-content:space-between;font-weight:600}
+.qcard .tp b{color:var(--pri)}
+.qcard .dz{display:flex;justify-content:space-between;margin-top:14px}
+.qcard .dz div{display:flex;flex-direction:column;align-items:center;gap:6px;font-size:.78rem;color:var(--sub)}
+.qcard .dz i{width:34px;height:34px;border-radius:50%;background:var(--bg);display:grid;place-items:center;color:#fff}
+.qcard .dz .td i{border:1.5px dashed var(--pri);color:var(--pri)}
+.qcard .dz .td{color:var(--ink);font-weight:600}
+.qcard .dz .dn i{background:var(--pri)}
+.rec{display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--line);font-size:.95rem;color:var(--sub)}
+.rec b{color:var(--ink)}
+.urow{display:flex;align-items:center;gap:14px;width:100%;text-align:left;background:var(--soft);border-radius:18px;padding:16px;margin-bottom:10px}
+.urow .sq{width:42px;height:42px;border-radius:12px;background:var(--soft2);color:var(--pri);display:grid;place-items:center;font-weight:700;flex:none;font-size:.95rem}
+.urow .mid{flex:1;min-width:0}
+.urow b{display:block;font-weight:600;font-size:1rem}
+.urow small{color:var(--sub);font-size:.82rem}
+.urow .pb{height:4px;background:var(--line);border-radius:2px;margin-top:8px;overflow:hidden}
+.urow .pb i{display:block;height:100%;background:var(--pri);border-radius:2px}
+.urow .ch{color:var(--sub)}
+.fab{position:fixed;right:max(18px,calc(50vw - 362px));bottom:calc(env(safe-area-inset-bottom,0px) + 76px);z-index:15;display:flex;align-items:center;gap:6px;color:#fff;font-weight:600;border-radius:999px;padding:12px 20px;background:linear-gradient(90deg,#3F6DB5,#5F8ED6);box-shadow:0 10px 24px -8px rgba(63,109,181,.6)}
+body.playing .fab{display:none}
+.ana3{background:var(--soft);border-radius:16px;padding:14px 16px;margin-top:16px}
+.ana3 .ah{display:flex;align-items:center;gap:6px;font-weight:600;font-size:.88rem;color:var(--ink);margin-bottom:6px}
+.ana3 ul,.ln{list-style:none;margin:0;padding:0}
+.ana3 li,.ln li{position:relative;padding:3px 0 3px 14px;font-size:.95rem;line-height:1.55}
+.ana3 li::before,.ln li::before{content:"";position:absolute;left:2px;top:12px;width:5px;height:5px;border-radius:50%;background:var(--pri);opacity:.55}
+.ln li:first-child{font-weight:500}
+.ln li+li{color:var(--sub)}
+/* ---- 모의고사 설정 간격 넓히기 ---- */
+.card.w{padding:26px 24px}
+.card.w .lab{margin:30px 0 12px}
+.card.w .lab:first-child{margin-top:0}
+.card.w .chips{gap:10px}
+#cbs{margin-top:2px}
+.card.w .lab.ty{margin-top:42px}
+.card.w .est{margin:30px 0 16px}
+/* ---- 큐노트 폴더·설정·리포트 화면 ---- */
+.fhd{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.ftl{display:flex;align-items:center;gap:10px}
+.ftl svg{width:26px;height:26px;color:var(--pri);flex:none}
+.ftl h1{margin:0;font-size:1.55rem;font-weight:700;letter-spacing:-.035em}
+.fav{color:var(--sub);display:grid;place-items:center}
+.fav svg{width:22px;height:22px;color:inherit}
+.fmeta{color:var(--sub);font-size:.9rem;margin:8px 0 20px}
+.ftab{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.ftab button{display:flex;align-items:center;justify-content:center;gap:8px;background:var(--soft);border-radius:14px;padding:15px 8px;font-weight:600;font-size:1rem;color:var(--ink)}
+.ftab button.on{background:var(--soft2);color:var(--pri)}
+.ftab small{font-weight:500;color:var(--pri);opacity:.75;font-size:.85rem;margin-left:2px}
+.ftile{display:block;width:100%;text-align:left;background:var(--soft);border-radius:16px;padding:17px 18px}
+.ftile b{display:flex;align-items:center;gap:6px;font-size:1.05rem;margin-bottom:4px}
+.ftile b svg{color:var(--pri)}
+.ftile span{color:var(--sub);font-size:.9rem}
+.setc{background:var(--soft);border-radius:18px;padding:16px 18px 18px;margin-bottom:10px}
+.setc b{display:block;font-size:1.05rem}
+.setc small{display:block;color:var(--sub);font-size:.85rem;margin:3px 0 14px}
+.setc .gbtn{padding:12px}
+.faq{display:flex;align-items:center;width:100%;text-align:left;padding:13px 0;gap:12px}
+.faq div{flex:1}
+.faq b{display:block;font-size:1.02rem;font-weight:600}
+.faq span{display:block;color:var(--sub);font-size:.88rem;margin-top:2px}
+.faq i{font-style:normal;color:var(--sub);font-size:1.2rem;transition:transform .2s}
+.faq.open i{transform:rotate(90deg)}
+.stile{display:flex;align-items:center;gap:14px;width:100%;text-align:left;background:var(--soft);border-radius:16px;padding:20px 18px}
+.stile svg{color:var(--pri);flex:none}
+.stile b{font-size:1.05rem;font-weight:600}
+.grid2.k{grid-template-columns:1fr 1fr}
+.foot{color:var(--sub);font-size:.8rem;text-align:center;margin:20px 0 10px}
+.pv{background:var(--soft);border-radius:14px;padding:16px 18px}
+.pv b{display:block}
+.pv span{color:var(--sub);font-size:.92rem}
+.inp{width:100%;font:inherit;color:var(--ink);background:var(--bg);border:1.5px solid var(--soft2);border-radius:12px;padding:12px 14px}
+img.av{object-fit:cover;width:46px;height:46px;border-radius:50%}
+.drow{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--line)}
+.drow b{display:block} .drow span{color:var(--sub);font-size:.88rem}
+.rhd{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:8px 0 14px;color:var(--sub);font-size:.9rem}
+.rpill{background:linear-gradient(90deg,#A9C1E6,#C6D6EF);color:#fff;font-weight:600;border-radius:999px;padding:10px 16px;white-space:nowrap;box-shadow:0 8px 20px -10px rgba(63,109,181,.6)}
+.rcard{border:1px solid var(--line);border-radius:18px;padding:28px 18px;text-align:center;color:var(--sub);box-shadow:0 8px 24px -16px rgba(35,60,100,.18)}
+.rrow{display:grid;grid-template-columns:84px 1fr 44px 40px;align-items:center;gap:10px;padding:9px 0;font-size:.93rem}
+.rrow .rb{height:8px;background:var(--soft2);border-radius:4px;overflow:hidden}
+.rrow .rb i{display:block;height:100%;background:var(--pri);border-radius:4px}
+.rrow b{text-align:right;font-weight:600} .rrow small{color:var(--sub);text-align:right}
+/* 홈 카드: 가짜 빛 없이 단색 */
+.hero{background:#3F6DB5!important;box-shadow:none!important}
+.hero::before,.hero::after{display:none!important}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .hero{background:#345C9C!important}}
+:root[data-theme="dark"] .hero{background:#345C9C!important}
+/* ---- 자세한 해설 ---- */
+.xp{display:flex;flex-direction:column;gap:12px}
+.x1{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;font-weight:600;line-height:1.55}
+.xa{flex:none;background:var(--pri);color:#fff;border-radius:8px;padding:3px 10px;font-size:.88rem}
+.xb{background:var(--bg);border:1px solid var(--line);border-radius:14px;padding:13px 14px}
+.xt{display:flex;align-items:center;gap:6px;font-size:.82rem;font-weight:700;color:var(--pri);margin-bottom:8px}
+.xev+.xev{margin-top:10px;padding-top:10px;border-top:1px dashed var(--line)}
+.xev .eng{font-size:.95rem;line-height:1.65}
+.xev .kr{color:var(--sub);font-size:.9rem;margin-top:3px;line-height:1.6}
+.xo{display:flex;gap:10px;padding:9px 0;border-top:1px solid var(--line)}
+.xo:first-of-type{border-top:0;padding-top:0}
+.xn{flex:none;color:var(--sub)}
+.xo.ok .xn{color:var(--pri);font-weight:700}
+.xot{font-size:.92rem;line-height:1.55}
+.xr{font-size:.9rem;color:var(--ink);opacity:.85;margin-top:3px;line-height:1.6}
+.xo.ok .xr{color:var(--good);opacity:1;font-weight:500}
+.xx{color:var(--bad);font-weight:700}
+.xtip{background:var(--soft2);border-radius:14px;padding:13px 14px;font-size:.92rem;line-height:1.6}
+.xp .xb ul{padding-left:18px;margin:6px 0}
+.xs{display:flex;flex-direction:column;gap:8px}
+.xsh{display:flex;align-items:center;gap:8px;font-weight:700;font-size:.95rem}
+.xsh i{font-style:normal;flex:none;width:22px;height:22px;border-radius:50%;background:var(--pri);color:#fff;font-size:.78rem;display:grid;place-items:center}
+.fm{margin:0;padding:12px 14px 12px 32px;background:var(--bg);border:1px solid var(--line);border-radius:14px;font-size:.92rem;line-height:1.6}
+.fm li+li{margin-top:4px}
+.fm b{color:var(--pri);font-weight:600}
+.wr{margin-top:4px;display:block}
+.arrbank,.arrseq{display:flex;flex-wrap:wrap;gap:8px}
+.arrseq{min-height:52px;padding:10px;border:1.5px dashed var(--line);border-radius:14px}
+.arrseq.ok{border-style:solid;border-color:var(--good)}
+.arrseq.no{border-style:solid;border-color:var(--bad)}
+.arrseq .ph{color:var(--sub);font-size:.88rem}
+.wchip{background:var(--soft);border:1px solid var(--line);border-radius:10px;padding:7px 12px;font-size:.98rem;font-family:"Pretendard","Noto Sans KR",sans-serif}
+.wchip:disabled{opacity:.35}
+.wchip.on{background:var(--soft2);border-color:var(--pri);color:var(--ink)}
+.wchip.on:disabled{opacity:1}
+.vtag{background:var(--soft2);color:var(--pri);font-size:.78rem;padding:2px 8px;border-radius:5px;font-weight:600}
+.vsw{display:flex;flex-wrap:wrap;gap:6px 12px;font-size:.92rem}
+.vsw s{color:var(--sub)}
+.vsw b{color:var(--pri)}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+@media (max-width:480px){h1.t{font-size:1.5rem}.grid2{grid-template-columns:1fr}}
+</style>
+
+<style>
+/* bitnote 추가 */
+.note table{min-width:0}.note td,.note th{padding:10px 11px}.note td:first-child,.note th:first-child{white-space:nowrap}
+.pcmp>div>b{min-height:2.6em;display:flex;align-items:flex-end;text-align:center}
+
+.note{line-height:1.75}
+.note p{margin:10px 0}
+.note code{background:var(--soft);border-radius:5px;padding:1px 6px;font-size:.92em}
+.note ol.sum{margin:0 0 8px;padding-left:20px}.note ol.sum li{margin:5px 0}
+.note .card{margin:12px 0;line-height:1.8}
+.note .sumh{margin-top:26px}
+.dgw{overflow-x:auto;margin:14px 0;-webkit-overflow-scrolling:touch}
+.dg{display:block;margin:0 auto;max-width:none}
+.dg text{font-family:inherit;fill:var(--ink);font-size:13px}
+.dg .tb{font-weight:600}
+.dg .s{fill:var(--sub);font-size:11.5px;font-weight:500}
+.dg .lb{fill:var(--pri);font-weight:700;font-size:13px}
+.dg .bx{fill:var(--soft);stroke:var(--line);stroke-width:1}
+.dg .bp{fill:var(--soft2);stroke:var(--pri);stroke-width:1}
+.dg .bw{fill:var(--warn);stroke:var(--warnbar);stroke-width:1}
+.dg .br{fill:var(--badsoft);stroke:var(--bad);stroke-width:1}
+.dg .ln{stroke:var(--sub);stroke-width:1.3;fill:none}
+.dg .lnb{stroke:var(--bad);stroke-width:1.3;fill:none;stroke-dasharray:5 4}
+.dg .mk2{fill:none;stroke:var(--sub);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.cells{display:flex;flex-wrap:wrap;gap:3px;margin:6px 0 4px}
+.cells i{font-style:normal;width:26px;height:32px;border-radius:6px;display:grid;place-items:center;font-weight:700;font-size:.95rem;background:var(--soft);border:1px solid var(--line)}
+.cells i.c1{background:var(--soft2);border-color:var(--pri);color:var(--pri)}
+.cells i.c2{background:var(--warn);border-color:var(--warnbar)}
+.cells i.c3{background:var(--badsoft);border-color:var(--bad)}
+.cells i.cn{background:var(--bg)}
+.cap{color:var(--sub);font-size:.88rem;margin:14px 0 0!important}
+.fl{font-weight:600;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.frac{display:inline-flex;flex-direction:column;vertical-align:middle;text-align:center;line-height:1.35;margin:0 3px}
+.frac i{font-style:normal;padding:0 5px}
+.frac i:first-child{border-bottom:1.5px solid currentColor}
+.cz{overflow-x:auto;margin:12px 0}
+.cz div{display:flex;gap:2px;width:max-content}
+.cz div+div{margin-top:2px}
+.cz i{font-style:normal;width:24px;height:28px;display:grid;place-items:center;background:var(--soft);border-radius:5px;font-size:.9rem}
+.cz div+div i{background:var(--soft2);color:var(--pri);font-weight:700}
+table.tt{min-width:0}table.tt td,table.tt th{text-align:center;padding:9px 6px}
+.srow{display:flex;align-items:center;gap:12px;width:100%;text-align:left;padding:13px 4px;border-bottom:1px solid var(--line)}
+.srow .no{flex:none;min-width:36px;height:26px;border-radius:7px;background:var(--soft);color:var(--sub);font-size:.82rem;font-weight:600;display:grid;place-items:center}
+.srow .mid{flex:1;min-width:0}.srow b{display:block;font-weight:600}.srow small{color:var(--sub);font-size:.82rem}
+.srow .ck{color:var(--sub);flex:none}.srow.dn .ck{color:var(--pri)}.srow.dn .no{background:var(--soft2);color:var(--pri)}
+.pn{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.pn .obtn{font-size:.88rem;padding:12px 10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.given{line-height:1.8;font-size:.97rem}
+.given .gt{display:table;font-size:.8rem;font-weight:700;color:var(--sub);border:1px solid var(--line);border-radius:4px;padding:0 8px;margin-bottom:4px}
+.opt .tx{line-height:1.55}
+.hb{display:grid;place-items:center;width:38px;height:38px;border-radius:50%;color:var(--sub)}
+.fmeta{color:var(--sub);font-size:.88rem;margin:-4px 0 6px}
+.urow .sq{font-size:.85rem}
+.exp .link{margin:12px 0 0;display:inline-block}
+.empty2 .ico{display:inline-grid}
+
+.one{background:var(--soft2);border-radius:16px;padding:14px 16px;margin:14px 0;line-height:1.7}
+.one b:first-child{display:block;color:var(--pri);font-size:.82rem;margin-bottom:2px}
+.one.top1{margin-top:0}
+.star{background:var(--warn);border-radius:14px;padding:13px 16px;margin:16px 0;line-height:1.7;font-size:.95rem}
+.star>b:first-child{display:block;color:var(--warnbar);font-size:.85rem;margin-bottom:2px}
+.toc{display:flex;flex-direction:column;gap:2px;background:var(--soft);border-radius:16px;padding:8px;margin:14px 0 6px}
+.toc button{display:flex;align-items:center;gap:10px;text-align:left;padding:9px 8px;border-radius:10px;font-size:.95rem}
+.toc button:active{background:var(--bg)}
+.toc i{font-style:normal;flex:none;width:22px;height:22px;border-radius:6px;background:var(--bg);color:var(--pri);font-size:.78rem;font-weight:700;display:grid;place-items:center}
+.note section{scroll-margin-top:70px}
+.note .nh{margin-top:46px}
+.sumc div{display:flex;gap:8px;align-items:flex-start;padding:6px 0;line-height:1.55}
+.sumc svg{color:var(--pri);flex:none;margin-top:3px}
+.urow small.rd{display:inline-block;margin-left:6px;color:var(--pri)}
+.ladder{display:flex;flex-direction:column-reverse;gap:4px;margin:12px 0}
+.ladder div{display:flex;justify-content:space-between;background:var(--soft);border-radius:10px;padding:8px 14px}
+.ladder div:nth-child(1){margin-right:40%}.ladder div:nth-child(2){margin-right:30%}.ladder div:nth-child(3){margin-right:20%}.ladder div:nth-child(4){margin-right:10%}
+.ladder div:last-child{background:var(--soft2)}.ladder span{color:var(--sub)}
+.pcmp{display:flex;align-items:center;justify-content:space-between;gap:4px;margin:14px 0}
+.pcmp>div{display:flex;flex-direction:column;align-items:center;gap:6px;font-size:.82rem}
+.pcmp small{color:var(--sub);font-size:.75rem;text-align:center}
+.pa{color:var(--sub);font-size:1.1rem}
+.pix{display:grid;grid-template-columns:repeat(4,18px);gap:2px;padding:4px;background:var(--line);border-radius:6px}
+.pix i{width:18px;height:18px;border-radius:2px}
+.dg .ball{fill:var(--bad)}
+.divp{display:flex;gap:14px;align-items:stretch;margin:12px 0}
+.dl{flex:1;background:var(--soft);border-radius:14px;padding:8px 14px}
+.dl div{display:grid;grid-template-columns:1fr 1fr 28px;padding:4px 0;border-bottom:1px dashed var(--line);font-size:.95rem}
+.dl div:last-child{border:0}.dl b{color:var(--pri);text-align:center;background:var(--soft2);border-radius:6px}
+.du{display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--pri);font-size:1.6rem;font-weight:700}
+.du small{font-size:.75rem;color:var(--sub);text-align:center;font-weight:500;line-height:1.4}
+.big2{font-size:1.25rem;color:var(--pri);letter-spacing:.06em}
+.hs{background:var(--soft);border-radius:14px;padding:6px 12px;margin:12px 0}
+.hr{display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px dashed var(--line)}
+.hr:last-child{border:0}.hr small{flex:none;width:38px;color:var(--sub);font-size:.78rem}
+.hr div{display:flex;flex-wrap:wrap;gap:5px}
+.hr i{font-style:normal;background:var(--bg);border:1px solid var(--line);border-radius:7px;padding:2px 9px;font-weight:600;font-size:.9rem}
+.hr i.m{background:var(--soft2);border-color:var(--pri);color:var(--pri)}
+.cells i.sep{background:none;border:0;width:8px;color:var(--sub)}
+.lock{display:flex;align-items:center;justify-content:center;gap:10px;margin:14px 0 4px;color:var(--sub)}
+.dial{display:flex;gap:3px}.dial i{font-style:normal;width:28px;height:38px;border-radius:7px;background:var(--soft2);color:var(--pri);font-weight:800;font-size:1.1rem;display:grid;place-items:center}
+.kit{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0}
+.kit div{background:var(--soft);border-radius:14px;padding:12px 14px;display:flex;flex-direction:column;gap:2px}
+.kit div.k{background:var(--soft2);outline:1.5px solid var(--pri)}
+.kit b{font-size:1.02rem}.kit span{color:var(--pri);font-size:.88rem;font-weight:600}.kit small{color:var(--sub);font-size:.8rem;line-height:1.45}
+.cia{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0}
+.cia div{background:var(--soft);border-radius:14px;padding:12px 8px;text-align:center;display:flex;flex-direction:column;gap:2px}
+.cia b{font-family:"Outfit",sans-serif;font-size:1.6rem;color:var(--pri);line-height:1.1}.cia span{font-weight:600}.cia small{color:var(--sub);font-size:.8rem;line-height:1.4}
+.vs{display:flex;align-items:center;justify-content:center;gap:8px;margin:14px 0}
+.vs div{background:var(--soft);border-radius:12px;padding:8px 14px;text-align:center}
+.vs div.on{background:var(--soft2);outline:1.5px solid var(--pri)}
+.vs small{display:block;color:var(--sub);font-size:.75rem}.vs b{font-size:1.2rem}.vs div.on b{color:var(--pri)}.vs span{color:var(--sub)}
+.vs2,.pc{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0}
+.vs2 div,.pc div{background:var(--soft);border-radius:14px;padding:13px 14px;display:flex;flex-direction:column;gap:4px;line-height:1.5}
+.vs2 b{font-size:1.05rem;color:var(--pri)}.vs2 small{color:var(--sub);font-size:.82rem}
+.pc b{display:block;font-size:.85rem;color:var(--pri)}.pc div+div b{color:var(--bad)}
+.code{background:var(--soft);border:1px solid var(--line);border-radius:12px;padding:12px 14px;font:13px/1.6 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;overflow-x:auto;white-space:pre;margin:10px 0;color:var(--ink)}
+.given .code{margin:4px 0 0;background:var(--bg);font-size:11.5px;padding:10px 12px}
+.fmt{display:flex;flex-direction:column;gap:6px;margin:12px 0}
+.fmt div{display:flex;gap:12px;align-items:flex-start;background:var(--soft);border-radius:12px;padding:11px 13px;line-height:1.55}
+.fmt div.on{background:var(--soft2);outline:1.5px solid var(--pri)}
+.fmt div>b{flex:none;width:46px;font-family:"Outfit",sans-serif;color:var(--pri)}
+.fmt span{font-size:.92rem}
+.past{border:1.5px dashed var(--pri);border-radius:14px;padding:13px 16px;margin:14px 0;line-height:1.7;font-size:.95rem}
+.past>b:first-child{display:inline-block;background:var(--pri);color:#fff;font-size:.78rem;border-radius:6px;padding:1px 8px;margin-right:8px}
+.qhead .tg.tx{background:var(--pri);color:#fff}.qhead .tg.tz{background:var(--bad);color:#fff}
+.lv{display:inline-grid;place-items:center;min-width:24px;height:22px;border-radius:6px;font-size:.78rem;font-weight:700;padding:0 6px;color:#fff}
+.lv.l하{background:#3FA07A}.lv.l중{background:#D9962B}.lv.l상{background:#E5484D}
+.pp~.tw table,#app>.tw table{min-width:0}
+.pcard{display:flex;align-items:center;justify-content:space-between;width:100%;text-align:left;border:1.5px dashed var(--pri);border-radius:16px;padding:14px 16px;margin-top:12px;color:var(--sub)}
+.pcard small{display:block;font-size:.8rem}.pcard b{color:var(--ink);font-size:1rem}
+.lvbar{display:flex;gap:4px;margin:0 0 12px;border-radius:12px;overflow:hidden}
+.lvbar div{padding:10px 8px;color:#fff;font-size:.85rem;text-align:center;min-width:64px}
+.lvbar b{margin-right:6px}.lvbar .l하{background:#3FA07A}.lvbar .l중{background:#D9962B}.lvbar .l상{background:#E5484D}
+.pp{display:flex!important;gap:12px;align-items:flex-start}
+.pn2{flex:none;width:28px;height:28px;border-radius:8px;background:var(--soft2);color:var(--pri);font-weight:700;display:grid;place-items:center;font-size:.85rem}
+.pp .mid{flex:1;min-width:0}.pp .m{line-height:1.6}.pp .m .lv{height:19px;font-size:.72rem;margin-right:4px}
+.xd{display:flex;flex-direction:column;gap:10px;margin-top:10px}
+.xblk{background:var(--bg);border:1px solid var(--line);border-radius:14px;padding:12px 14px}
+.xblk p{margin:0;line-height:1.65;font-size:.95rem}
+.xh{display:flex;align-items:center;gap:6px;font-size:.82rem;font-weight:700;color:var(--pri);margin-bottom:7px}
+.xst{margin:0;padding-left:20px;line-height:1.7;font-size:.95rem}.xst li+li{margin-top:5px}
+.xop{display:flex;gap:10px;padding:8px 0;border-top:1px dashed var(--line)}.xop:first-of-type{border-top:0;padding-top:0}
+.xop .xn{flex:none;color:var(--sub)}.xop .xot{font-size:.93rem;line-height:1.5}
+.xop .xr{font-size:.88rem;color:var(--sub);margin-top:2px;line-height:1.5}
+.xop.ok .xn,.xop.ok .xr{color:var(--good);font-weight:600}
+.xop.my .xr{color:var(--bad)}
+.tipb{background:var(--soft2);border-color:transparent}
+.xone{background:var(--warn);border-radius:14px;padding:12px 14px;font-size:.95rem;line-height:1.6}
+.xone b{display:block;color:var(--warnbar);font-size:.8rem;margin-bottom:2px}
+.hb:not(.av2){display:none}
+.av2{width:34px;height:34px;border-radius:50%;overflow:hidden;background:var(--soft2);color:var(--pri);display:grid;place-items:center;font-weight:700}
+.av2 img{width:100%;height:100%;object-fit:cover}
+.acc{display:flex;align-items:center;gap:12px;background:var(--soft);border-radius:16px;padding:14px 16px}
+.acc .av{width:44px;height:44px;border-radius:50%;background:var(--soft2);color:var(--pri);display:grid;place-items:center;font-weight:700;flex:none;object-fit:cover}
+.acc .av.sq{border-radius:11px}
+.acc .mid{flex:1;min-width:0}.acc b{display:block;font-weight:600}.acc small{color:var(--sub);font-size:.82rem;line-height:1.45;display:block}
+.acc .gbtn.sm{padding:9px 14px!important;font-size:.88rem}
+.row .obtn{display:flex;align-items:center;justify-content:center;gap:6px}
+</style>
+
+
+
+</head>
+<body>
+<header class="top"><div class="bar"><button class="logo" onclick="go('home')">bitnote</button><div class="row"><span class="pill" aria-label="푼 문제 수"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span id="solved">0</span></span><button class="hb" onclick="go('set')" aria-label="설정"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M12 2.5v3M12 18.5v3M4.4 4.4l2.1 2.1M17.5 17.5l2.1 2.1M2.5 12h3M18.5 12h3M4.4 19.6l2.1-2.1M17.5 6.5l2.1-2.1"/></svg></button></div></div></header>
+<main id="app"></main>
+<nav class="tabbar" id="tabbar"></nav>
+<script>
+/* ===== 도식 헬퍼 ===== */
+const AR='<defs><marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" class="mk2"/></marker></defs>';
+function svgW(w,h,inner,label){return `<div class="dgw"><svg class="dg" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" role="img" aria-label="${label||''}">${AR}${inner}</svg></div>`}
+function bx(x,y,w,h,t,s,k){return `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="9" class="${k||'bx'}"/>`+(s?`<text x="${x+w/2}" y="${y+h/2-8}" text-anchor="middle" dominant-baseline="central" class="tb">${t}</text><text x="${x+w/2}" y="${y+h/2+11}" text-anchor="middle" dominant-baseline="central" class="s">${s}</text>`:`<text x="${x+w/2}" y="${y+h/2}" text-anchor="middle" dominant-baseline="central" class="tb">${t}</text>`)}
+/* 상자 3개 흐름도 */
+function flow3(A,B,C,l1,l2,o={}){const y=26,h=54,w=96,g=28;let x=[2,2+w+g,2+2*(w+g)];let s='';
+ s+=bx(x[0],y,w,h,A[0],A[1],A[2])+bx(x[1],y,w,h,B[0],B[1],B[2])+bx(x[2],y,w,h,C[0],C[1],C[2]);
+ [[x[0]+w,x[1],l1],[x[1]+w,x[2],l2]].forEach(([a,b,l])=>{s+=`<line x1="${a+2}" y1="${y+h/2}" x2="${b-3}" y2="${y+h/2}" class="ln" marker-end="url(#ah)"/><text x="${(a+b)/2}" y="${y-10}" text-anchor="middle" class="s">${l}</text>`});
+ let H=y+h+10;
+ if(o.keys){[x[0]+w+g/2,x[1]+w+g/2].forEach(cx=>{s+=`<rect x="${cx-22}" y="${y+h+26}" width="44" height="28" rx="7" class="bw"/><text x="${cx}" y="${y+h+40}" text-anchor="middle" dominant-baseline="central" class="tb">키</text><line x1="${cx}" y1="${y+h+24}" x2="${cx}" y2="${y+h/2+6}" class="ln" marker-end="url(#ah)"/>`});H=y+h+64}
+ if(o.back){const yy=y+h+24;s+=`<path d="M${x[2]+w/2} ${y+h+2} L${x[2]+w/2} ${yy} L${x[0]+w/2} ${yy} L${x[0]+w/2} ${y+h+6}" class="lnb" marker-end="url(#ah)"/><rect x="${(x[0]+x[2]+w)/2-70}" y="${yy+10}" width="140" height="28" rx="7" class="br"/><text x="${(x[0]+x[2]+w)/2}" y="${yy+24}" text-anchor="middle" dominant-baseline="central" class="tb">${o.back}</text>`;H=yy+48}
+ return svgW(2+3*w+2*g+2,H,s,`${A[0]}에서 ${C[0]}까지의 흐름`)}
+/* 송신자-수신자 그림 */
+function ab(t,aS,bS,ka,kb){const W=350;let s=`<text x="2" y="14" class="tb">${t}</text>`;
+ s+=bx(2,26,124,52,'A (송신자)',aS,'bx')+bx(224,26,124,52,'B (수신자)',bS,'bx');
+ s+=`<line x1="130" y1="52" x2="220" y2="52" class="ln" marker-end="url(#ah)"/><text x="175" y="42" text-anchor="middle" class="s">암호문 전송</text>`;
+ if(kb){s+=bx(2,92,124,46,ka[0],ka[1],ka[2])+bx(224,92,124,46,kb[0],kb[1],kb[2])}else{s+=bx(85,92,180,40,ka[0],ka[1],ka[2])}
+ return svgW(W,146,s,t)}
+/* 허프만 트리: 잎은 문자열, 가지는 {v,c:[왼,오],e:[왼 번호,오 번호]} */
+function tree(root,cap){const nl=n=>typeof n==='string'?1:nl(n.c[0])+nl(n.c[1]);const sp=Math.min(54,Math.floor(344/nl(root))),bw=Math.min(46,sp-6),D=60,bh=30;let leaves=0,maxd=0;
+ function lay(n,d){maxd=Math.max(maxd,d);if(typeof n==='string'){const o={v:n,leaf:1,x:leaves*sp+sp/2,d};leaves++;return o}const L=lay(n.c[0],d+1),R=lay(n.c[1],d+1);return{v:n.v,e:n.e,c:[L,R],x:(L.x+R.x)/2,d}}
+ const r=lay(root,0);const W=Math.max(leaves*sp,200)+4,H=maxd*D+bh+14;let s='',t='';
+ (function draw(n){const y=6+n.d*D;if(n.c){n.c.forEach((c,i)=>{const cy=6+c.d*D;s+=`<line x1="${n.x+2}" y1="${y+bh}" x2="${c.x+2}" y2="${cy}" class="ln"/>`;const mx=(n.x+c.x)/2+2,my=(y+bh+cy)/2;t+=`<text x="${mx+(i?9:-9)}" y="${my-2}" text-anchor="middle" dominant-baseline="central" class="lb">${n.e[i]}</text>`;draw(c)})}
+  s+=`<rect x="${n.x+2-bw/2}" y="${y}" width="${bw}" height="${bh}" rx="8" class="${n.leaf?'bp':'bx'}"/><text x="${n.x+2}" y="${y+bh/2}" text-anchor="middle" dominant-baseline="central" class="tb">${n.v}</text>`})(r);
+ return svgW(W,H,s+t,cap||'허프만 트리')}
+function cells(str,cls){return `<div class="cells">${[...str].map(ch=>`<i class="${cls?cls(ch):''}">${ch}</i>`).join('')}</div>`}
+const rag=ch=>({R:'c1',A:'c2',G:'c3'}[ch]||'');
+function frac(a,b){return `<span class="frac"><i>${a}</i><i>${b}</i></span>`}
+
+/* ===== 추가 그림 ===== */
+function txt(x,y,t,c,a){return `<text x="${x}" y="${y}" text-anchor="${a||'middle'}" dominant-baseline="central" class="${c||'tb'}">${t}</text>`}
+/* 비트 8개 = 1바이트 */
+function bitsPic(){const b='01000001';let s='';[...b].forEach((v,i)=>{const x=4+i*42;s+=`<rect x="${x}" y="8" width="36" height="44" rx="8" class="${v==='1'?'bp':'bx'}"/>`+txt(x+18,30,v);});
+ s+=`<path d="M4 62 L4 70 L338 70 L338 62" class="ln"/>`+txt(171,86,'비트 8개 = 1바이트 → 대문자 A','s');return svgW(342,98,s,'비트 8개로 A를 표현')}
+/* 책상과 책장 */
+function deskPic(){let s=bx(2,8,140,58,'책상 = RAM','지금 쓰는 것','bx')+bx(208,8,140,58,'책장 = 보조 기억','하드디스크, USB','bx');
+ s+=`<line x1="146" y1="37" x2="203" y2="37" class="ln" marker-end="url(#ah)"/>`+txt(175,26,'저장','s');
+ s+=bx(2,84,140,34,'전원 끄면 사라짐','','br')+bx(208,84,140,34,'전원 꺼도 그대로','','bp');return svgW(350,124,s,'RAM과 보조 기억 비교')}
+/* 손실·비손실 픽셀 비교 */
+function pixPic(){const o=[20,35,50,65,30,45,60,75,40,55,70,85,50,65,80,95];const avg=(i)=>{const r=Math.floor(i/4),c=i%4,R=r-r%2,C=c-c%2;return(o[R*4+C]+o[R*4+C+1]+o[(R+1)*4+C]+o[(R+1)*4+C+1])/4};
+ const g=f=>`<div class="pix">${o.map((v,i)=>`<i style="background:color-mix(in srgb,var(--pri) ${f(i)}%,var(--bg))"></i>`).join('')}</div>`;
+ return `<div class="pcmp"><div><b>원본 사진</b>${g(i=>o[i])}</div><span class="pa">›</span><div><b>비손실 복원</b>${g(i=>o[i])}<small>원본과 똑같음</small></div><span class="pa">/</span><div><b>손실 복원</b>${g(avg)}<small>뭉개짐 (정보 버림)</small></div></div>`}
+/* 공간적 중복 */
+function spacePic(){let s='';for(let r=0;r<4;r++)for(let c=0;c<8;c++){const x=4+c*30,y=4+r*24;s+=`<rect x="${x}" y="${y}" width="28" height="22" rx="3" class="${r<2?'bp':'bx'}"/>`}
+ s+=txt(4+8*30+8,28,'파랑 × 16','tb','start')+txt(4+8*30+8,76,'흰색 × 16','tb','start');return svgW(348,104,s,'공간적 중복성 예시')}
+/* 시간적 중복 */
+function timePic(){let s='';[30,62,94].forEach((bx_,i)=>{const x=4+i*116;s+=`<rect x="${x}" y="6" width="104" height="66" rx="8" class="bx"/><rect x="${x}" y="54" width="104" height="18" rx="0" class="bp"/><circle cx="${x+bx_-20}" cy="42" r="9" class="ball"/>`+txt(x+52,86,`${i+1}번째 장면`,'s')});
+ return svgW(352,96,s,'시간적 중복성 예시')}
+/* 2로 나누기 */
+function divPic(){const rows=[[65,32,1],[32,16,0],[16,8,0],[8,4,0],[4,2,0],[2,1,0],[1,0,1]];
+ return `<div class="divp"><div class="dl">${rows.map(([a,b,r])=>`<div><span>${a} ÷ 2</span><span>= ${b}</span><b>${r}</b></div>`).join('')}</div><div class="du">↑<small>나머지를<br>아래에서<br>위로 읽기</small></div></div><p class="fl">65 → <b class="big2">1000001</b></p>`}
+/* 허프만 합치는 과정 */
+function hSteps(steps){return `<div class="hs">${steps.map((r,i)=>`<div class="hr"><small>${i+1}단계</small><div>${r.map(c=>`<i class="${c[0]==='['?'m':''}">${c.replace(/[\[\]]/g,'')}</i>`).join('')}</div></div>`).join('')}</div>`}
+/* http vs https */
+function httpPic(){let s='';[['http://','pw: 1234','br','그대로 보임'],['https://','X8#k@q2','bp','알아볼 수 없음']].forEach(([t,m,k,lab],i)=>{const y=i*92;
+ s+=txt(2,y+12,t,'tb','start')+bx(2,y+26,62,40,'나','','bx')+bx(286,y+26,62,40,'서버','','bx')+`<line x1="66" y1="${y+46}" x2="282" y2="${y+46}" class="ln" marker-end="url(#ah)"/>`+bx(118,y+30,114,32,m,'',k)+txt(175,y+78,'중간에서 엿보면 → '+lab,'s')});
+ return svgW(350,178,s,'http와 https 비교')}
+/* 자물쇠 경우의 수 */
+function lockPic(){return `<div class="lock"><div class="dial">${'0000'.split('').map(d=>`<i>${d}</i>`).join('')}</div><span>→ … →</span><div class="dial">${'9999'.split('').map(d=>`<i>${d}</i>`).join('')}</div></div><p class="fl" style="justify-content:center">모두 10,000가지 → 다 돌려 보면 언젠가 열림</p>`}
+/* 블록체인 */
+function chainPic(){let s='';[['블록 1','데이터','해시 A'],['블록 2','이전: A','해시 B'],['블록 3','이전: B','해시 C']].forEach(([a,b,c],i)=>{const x=2+i*120;
+ s+=`<rect x="${x}" y="6" width="104" height="86" rx="9" class="bx"/>`+txt(x+52,22,a)+txt(x+52,46,b,i?'lb':'s')+`<rect x="${x+10}" y="60" width="84" height="24" rx="6" class="bp"/>`+txt(x+52,72,c,'s');
+ if(i<2)s+=`<line x1="${x+106}" y1="49" x2="${x+118}" y2="49" class="ln" marker-end="url(#ah)"/>`});return svgW(348,98,s,'블록체인 구조')}
+const star=t=>`<div class="star"><b>★ 시험 포인트</b>${t}</div>`;
+const one=t=>`<div class="one"><b>딱 한 줄</b>${t}</div>`;
+
+/* ===== 수업 노트 (회차별 한 페이지) ===== */
+const LESSONS=[
+{id:1,date:'11/11',title:'디지털 데이터 압축',pages:'교과서 p.47~52',
+one:'컴퓨터는 모든 걸 0과 1로 저장하는데, 그대로 두면 너무 크니까 <b>반복되는 걸 찾아서 줄인다.</b> 이게 압축이에요.',
+secs:[
+{id:'1-1',t:'디지털 데이터와 비트',h:`
+<p>자, 시작할게요. 컴퓨터 속 사진, 노래, 글자, 동영상… 전부 다 사실 <mark>0과 1</mark>로 되어 있어요. 이렇게 0과 1로 표현한 데이터를 <b>디지털 데이터</b>라고 해요.</p>
+<p>이때 0이나 1 하나를 저장하는 칸이 <b>비트(bit)</b>예요. 디지털 데이터의 <mark>가장 작은 단위</mark>죠.</p>
+${bitsPic()}
+<div class="tip"><b>비유</b> 비트는 전등 스위치예요. 켜짐(1), 꺼짐(0) 딱 두 가지. 스위치 하나론 별거 없지만, 8개를 모으면 글자 하나(A)가 되고, 수백만 개를 모으면 사진이 돼요.</div>
+<p>반대로 <b>아날로그</b>는 자연 그대로의 <b>연속적인</b> 값이에요. 수은 온도계 눈금처럼 쭉 이어져 있죠.</p>
+<div class="sumh">용량 단위</div>
+<div class="ladder"><div><b>1Byte</b><span>= 8bit</span></div><div><b>1KB</b><span>= 1,024Byte</span></div><div><b>1MB</b><span>= 1,024KB</span></div><div><b>1GB</b><span>= 1,024MB</span></div><div><b>1TB</b><span>= 1,024GB</span></div></div>
+<p>계단 하나 올라갈 때마다 <b>1,024배</b>예요. 그 위로 PB, EB도 있어요.</p>
+${star('1,000배가 아니라 <b>1,024배</b>! 그래서 1TB는 1,000GB보다 커요. 비트와 바이트 단위가 섞여 나오면 8을 곱하거나 나누는 것도 잊지 마세요.')}
+<div class="sumh">디지털화: 아날로그 → 디지털</div>
+<div class="flow"><div class="node"><small>1. 표본화</small>일정한 간격으로 값을 콕콕 찍어요.</div><div class="arr"></div><div class="node"><small>2. 양자화</small>찍은 값을 정해진 계단 높이에 맞춰요.</div><div class="arr"></div><div class="node k"><small>3. 부호화</small>그 높이를 0과 1로 적어요.</div></div>
+<div class="tip"><b>외우는 법</b> "표·양·부" 순서. 부드러운 곡선을 계단으로 바꾸는 과정이라고 생각하면 돼요.</div>`},
+{id:'1-2',t:'주기억과 보조 기억',h:`
+<p>컴퓨터에는 저장하는 곳이 두 군데 있어요. 공부하는 상황으로 생각해 볼게요.</p>
+${deskPic()}
+<ul class="sum"><li><b>주기억(RAM)</b> = 책상. 지금 펼쳐 놓고 쓰는 곳. <mark>전원 끄면 싹 사라져요.</mark></li><li><b>보조 기억(하드디스크, USB)</b> = 책장. 오래 보관하는 곳. 전원 꺼도 그대로예요.</li></ul>
+<p>그래서 남겨야 할 건 보조 기억에 저장해야 해요. 그런데 책장도 칸이 정해져 있잖아요? 데이터가 계속 늘어나면 자리가 모자라요. <b>그래서 압축이 필요한 거예요.</b></p>`},
+{id:'1-3',t:'압축과 복원, 손실과 비손실',h:`
+<p>압축은 딱 두 동작이에요. <b>줄이기</b>와 <b>되돌리기</b>.</p>
+${flow3(['원본','데이터','bx'],['압축','데이터','bp'],['복원','데이터','bx'],'인코딩','디코딩')}
+<ul class="sum"><li><mark>압축 = 인코딩</mark> (작게 만들기)</li><li><mark>복원 = 디코딩</mark> (원래대로 되돌리기)</li></ul>
+<div class="tip"><b>비유</b> 이삿짐 옷을 진공팩에 넣는 거예요. 옮길 땐 납작하게(인코딩), 입을 땐 다시 부풀려서(디코딩).</div>
+<div class="sumh">손실 압축 vs 비손실 압축</div>
+<p>그런데 되돌렸을 때 <b>원본이랑 똑같냐, 아니냐</b>로 두 종류가 갈려요. 그림으로 보세요.</p>
+${pixPic()}
+<div class="tw"><table><tr><th></th><th>손실 압축</th><th>비손실 압축</th></tr>
+<tr><td>복원하면</td><td>원본과 <b>다름</b></td><td>원본과 <b>똑같음</b></td></tr>
+<tr><td>방법</td><td>티 안 나는 정보를 버림</td><td>버리는 것 없음</td></tr>
+<tr><td>예시</td><td>JPEG, MP3, MPEG4</td><td>ZIP, PNG, GIF, BMP, WMV</td></tr>
+<tr><td>잘 맞는 것</td><td>사진, 음악, 영상</td><td>글, 프로그램 코드</td></tr></table></div>
+<div class="tip"><b>비유</b> 손실 압축은 카톡으로 사진 보낼 때 화질이 살짝 떨어지는 거예요. 눈으로는 거의 모르니까 괜찮죠. 그런데 코드는 한 글자만 바뀌어도 프로그램이 안 돌아가니까 꼭 비손실이에요.</div>
+<div class="sumh">압축하면 뭐가 좋아?</div>
+<ul class="sum"><li>저장 공간 절약 (같은 책장에 더 많이)</li><li>전송 속도 향상 (같은 시간에 더 많이)</li><li>에너지·전자 폐기물 감소 → 환경 보호</li><li>활용: 클라우드, 동영상 스트리밍, 초고속 통신망</li></ul>
+<div class="sumh">이미지 압축 기법 4가지 (교과서 53쪽)</div>
+<p>이미지 파일 확장자마다 압축 방식이 달라요. 작년 기출에 그대로 나왔으니 꼭 챙기세요.</p>
+<div class="fmt"><div><b>BMP</b><span>압축 기법이 <b>적용되지 않은</b> 윈도 기본 비트맵. 일반적으로 반복 길이 압축 지원</span></div>
+<div class="on"><b>JPEG</b><span><b>손실</b> 압축, 인터넷에서 많이 씀. <b>인간의 시각적 특성</b>을 활용해 <b>압축률이 높음</b></span></div>
+<div><b>GIF</b><span><b>비손실</b>, 파일 전송 시간 최소화. <b>최대 256색</b>, 투명 배경·<b>애니메이션</b> 지원</span></div>
+<div><b>PNG</b><span><b>비손실</b>, 품질 저하 없음. JPEG와 GIF의 장점을 합침, 투명색·<b>트루 컬러</b> 지원</span></div></div>
+<div class="tip"><b>외우는 법</b> 손실은 JPEG 하나뿐! "<b>J</b>PEG = <b>J</b>ust 버림". 움짤(애니메이션)은 GIF, 256색도 GIF, 트루 컬러는 PNG, 압축 안 한 건 BMP.</div>
+<p>사람 눈은 <b>색상 차이에는 둔하고 밝기 차이에는 민감</b>해요. JPEG는 이걸 이용해서 눈치 못 챌 색 정보를 버려요.</p>
+<div class="past"><b>작년 기출</b>"손실 압축, 인터넷에서 많이 사용, 인간의 시각적 특성 활용, 압축률이 높음" → 정답 <b>JPEG</b> (오답 선지에 MP3도 있었어요. MP3는 소리라서 이미지 기법이 아니에요!)</div>
+${star('손실 예시 <b>JPEG, MP3, MPEG4</b> / 비손실 예시 <b>ZIP, PNG, GIF</b>를 섞어서 "손실끼리 짝지은 것은?"으로 잘 나와요. "압축하면 품질이 좋아진다" 같은 선지는 무조건 틀린 거예요.')}`},
+{id:'1-4',t:'압축의 원리: 중복성과 압축률',h:`
+<p>자, 이게 압축의 핵심이에요. 딱 한 마디. <mark>반복되는 건 한 번만 저장하자.</mark> 이걸 <b>중복성 제거</b>라고 해요.</p>
+<div class="sumh">① 공간적 중복성: 위치에 따라 반복</div>
+${spacePic()}
+<p>하늘 사진을 생각해 보세요. 위쪽은 파란 칸이 쭉, 아래쪽은 흰 칸이 쭉 이어지죠. 파란색 16번을 다 적지 말고 "파랑 × 16"이라고 한 번만 쓰면 확 줄어요.</p>
+<div class="sumh">② 시간적 중복성: 시간에 따라 반복</div>
+${timePic()}
+<p>동영상은 사진(프레임)을 빠르게 넘기는 거예요. 장면마다 배경은 그대로고 공만 움직이죠? 그러니까 배경은 한 번만 저장하고 <b>바뀐 부분만</b> 저장해요.</p>
+${star('"한 장 안에서 반복" = 공간적, "장면이 바뀌어도 반복" = 시간적. 사진 예시면 공간, 동영상 예시면 시간이에요.')}
+<div class="sumh">압축률</div>
+<p class="fl">압축률 = ${frac('압축 전 용량','압축 후 용량')}</p>
+<ul class="sum"><li><b>1보다 크면</b> 줄어든 것 → 클수록 좋아요.</li><li>1이면 그대로, <b>1보다 작으면 오히려 늘어난</b> 거예요.</li></ul>
+<div class="card">예) 200KB → 50KB면 압축률 = ${frac(200,50)} = <b>4</b></div>
+<p>압축이 잘 됐는지는 <b>용량이 얼마나 줄었나</b> + <b>품질이 얼마나 유지됐나</b>로 판단해요.</p>
+${star('분자, 분모 거꾸로 쓰는 실수 조심! "압축 <b>전</b>이 위". 압축률 0.5는 "절반으로 줄었다"가 아니라 "2배로 늘었다"예요.')}`},
+{id:'1-5',t:'문자 코드: 아스키와 유니코드',h:`
+<p>글자도 결국 0과 1이에요. 어떻게? 글자마다 <mark>번호(코드)</mark>를 정해 둔 표가 있거든요. 그게 <b>코드표</b>예요.</p>
+<div class="sumh">아스키코드: A = 65</div>
+<p>대문자 A는 65번이에요. 이걸 2진수로 바꾸면 이렇게 돼요.</p>
+${divPic()}
+<p>아스키코드는 글자 하나를 <b>7비트</b>로 표현해요. (앞의 비트 그림에서 8칸 중 맨 앞 0을 빼면 1000001이죠.)</p>
+<div class="tip"><b>응용</b> A가 65니까 B 66, C 67, D 68. D = 64 + 4 = <b>1000100</b>이에요.</div>
+<div class="sumh">유니코드: 전 세계 공용 코드표</div>
+<p>나라마다 코드표가 다르면? 우리나라에서 "가"라고 저장한 번호를 다른 나라 컴퓨터가 엉뚱한 글자로 읽어요. 그래서 <b>글자가 깨지는</b> 거예요.</p>
+<p>이걸 막으려고 <b>전 세계 문자를 하나의 표로</b> 만든 국제 표준이 <b>유니코드</b>(UTF-8, UTF-16)예요.</p>
+${star('A = 65 = <b>1000001</b> (7비트). 글자가 깨지는 이유 = <b>문자 코드 체계가 달라서</b>.')}`},
+{id:'1-6',t:'반복 길이 압축',h:`
+<p>여기부터는 선생님이 <b>정확하게 이해하라</b>고 하신 부분이에요. 집중!</p>
+<p>방법은 단순해요. 같은 글자가 줄줄이 나오면 <mark>글자 + 몇 번</mark>으로 쓰는 거예요.</p>
+<div class="tip"><b>비유</b> "ㅋㅋㅋㅋㅋㅋㅋㅋ"를 "ㅋ×8"로 쓰는 거예요.</div>
+<p class="cap">원본 19글자</p>${cells('RRRRRAAAAGGGRRRRRGG',rag)}
+<p class="cap">압축 결과 10글자</p>${cells('R5A4G3R5G2',ch=>({R:'c1',A:'c2',G:'c3'}[ch]||'cn'))}
+<p class="fl">압축률 = ${frac(19,10)} = 1.9</p>
+<div class="warn"><b>함정</b> R이 앞에 5개, 뒤에 5개 있다고 R10으로 합치면 안 돼요! <b>연속</b>된 것만 묶어요. 그래서 R5 … R5로 따로 써요.</div>
+<div class="sumh">비트로 세면? (수업)</div>
+<div class="tw"><table><tr><th></th><th>계산</th><th>결과</th></tr>
+<tr><td>원본</td><td>19글자 × 7비트</td><td><b>133비트</b></td></tr>
+<tr><td>묶음 1개</td><td>글자 7비트 + 횟수 3비트 (5 = 101)</td><td>10비트</td></tr>
+<tr><td>압축 후</td><td>묶음 5개 × 10비트</td><td><b>50비트</b></td></tr></table></div>
+<div class="sumh">약점: 반복이 없으면 오히려 손해</div>
+<p class="cap">ABCDEF (6글자)</p>${cells('ABCDEF')}
+<p class="cap">압축하면 12글자</p>${cells('A1B1C1D1E1F1',ch=>/\d/.test(ch)?'c3':'')}
+<p>숫자 1이 계속 붙어서 <b>2배로 늘어났어요.</b> 그래서 데이터 특성을 보고 압축 방법을 골라야 해요.</p>
+<div class="sumh">교과서 실습 결과 (모두 20글자)</div>
+<div class="tw"><table><tr><th>문자 데이터</th><th>압축률</th></tr>
+<tr><td>RRRRRAAAAGGGRRRRRGGG → R5A4G3R5G3</td><td>2.0</td></tr>
+<tr><td>RRRAAGGGGRRRAAAGGGRR → R3A2G4R3A3G3R2</td><td>약 1.4</td></tr>
+<tr><td>AABBBCDDDEEEFFGGGHHH → A2B3C1D3E3F2G3H3</td><td>1.25</td></tr>
+<tr><td>ABCDEFGHIJKLMNOPQRST → A1B1…T1</td><td>0.5</td></tr></table></div>
+<p>같은 20글자인데 반복이 많을수록 압축률이 높죠? 이미지(같은 색 픽셀, 예: WWBBBWWW → W2B3W3)나 배경 변화가 적은 동영상에도 써요.</p>
+<div class="sumh">파이썬 코드는 이렇게 생각해요 (교과서 52쪽)</div>
+<div class="flow"><div class="node"><small>한 글자씩 앞 글자와 비교</small>같으면 <code>count</code> +1</div><div class="arr"></div><div class="node"><small>다르면</small>앞 글자 + <code>count</code>를 결과에 붙이고 <code>count</code>를 1로</div><div class="arr"></div><div class="node k"><small>마지막</small>남은 글자 + <code>count</code> 붙이기, 압축률 = <code>len(data) / len(encoded)</code></div></div>
+${star('① 연속된 것만 묶기 ② 묶음 개수 정확히 세기 ③ 반복 없으면 늘어난다 ④ <b>비손실</b> 압축이다. 이 네 개가 계속 나와요.')}`},
+{id:'1-7',t:'허프만 압축',h:`
+<p>반복 길이 압축은 반복이 없으면 손해였죠? 그래서 나온 게 허프만 압축이에요. 아이디어는 이거예요.</p>
+${one('<mark>자주 나오는 글자는 짧은 코드, 드물게 나오는 글자는 긴 코드</mark>')}
+<div class="tip"><b>비유</b> 카톡에서 자주 쓰는 "응"은 "ㅇㅇ", "고고"는 "ㄱㄱ"로 짧게 쓰잖아요. 자주 쓰는 말일수록 짧게 줄이면 전체 타자 수가 확 줄어요.</div>
+<div class="sumh">만드는 법: 딱 3가지만</div>
+<ol class="sum"><li>글자마다 몇 번 나왔는지(<b>빈도수</b>) 센다.</li><li><b>가장 작은 두 개</b>를 합친다. 하나 남을 때까지 반복!</li><li>완성된 나무(<b>이진 트리</b>)를 위에서부터 따라 내려가며 가지 번호를 읽는다.</li></ol>
+<div class="sumh">수업 예제: R10 G5 A4</div>
+${hSteps([['R10','G5','A4'],['R10','[9]'],['[19]']])}
+<p>2단계에서 가장 작은 G5와 A4를 합쳐 9, 3단계에서 R10과 9를 합쳐 19. 이걸 나무로 그리면 이래요. (수업 규칙: <b>오른쪽 0, 왼쪽 1</b>)</p>
+${tree({v:'19',c:[{v:'9',c:['A4','G5'],e:['1','0']},'R10'],e:['1','0']},'R10 G5 A4 허프만 트리')}
+<p>맨 위(<b>루트</b>)에서 출발해서 R까지 가 보세요. 오른쪽 한 번 → <b>0</b>. G는 왼쪽(1) 갔다가 오른쪽(0) → <b>10</b>. A는 왼쪽 두 번 → <b>11</b>.</p>
+<div class="tw"><table><tr><th>글자</th><th>코드</th><th>비트</th></tr><tr><td>R (10번)</td><td>0</td><td>10 × 1 = 10</td></tr><tr><td>G (5번)</td><td>10</td><td>5 × 2 = 10</td></tr><tr><td>A (4번)</td><td>11</td><td>4 × 2 = 8</td></tr><tr><td colspan="2"><b>합계</b></td><td><b>28비트</b></td></tr></table></div>
+<div class="vs"><div><small>그대로</small><b>133</b></div><span>›</span><div><small>반복 길이</small><b>50</b></div><span>›</span><div class="on"><small>허프만</small><b>28</b></div></div>
+<p>가장 많이 나온 R이 가장 짧은 코드(1비트)를 받은 거, 보이죠? 이게 허프만의 전부예요.</p>
+<div class="sumh">코드가 붙어 있어도 안 헷갈리는 이유</div>
+<p>어떤 코드도 <b>다른 코드의 앞부분이 아니에요.</b> 0으로 시작하면 무조건 R. 1로 시작하면 다음 숫자를 봐서 G(10)인지 A(11)인지 정해져요.</p>
+<p class="cap">010110을 읽으면?</p>${cells('0│10│11│0',ch=>ch==='│'?'sep':'c1')}<p>→ <b>R G A R</b>. 딱 한 가지로만 읽혀요.</p>
+<div class="warn"><b>가지 번호 주의</b> 수업 필기는 "오른쪽 0, 왼쪽 1", 교과서는 "<b>왼쪽 0, 오른쪽 1</b>"이에요. 규칙을 바꾸면 0과 1만 뒤집히고 <b>전체 비트 수는 같아요.</b> 시험 기준은 선생님께 확인!</div>
+<div class="sumh">교과서 예제: RABRBGRARRARG</div>
+${hSteps([['R6','A3','B2','G2'],['R6','A3','[4]'],['R6','[7]'],['[13]']])}
+${tree({v:'13',c:[{v:'7',c:[{v:'4',c:['B2','G2'],e:['0','1']},'A3'],e:['0','1']},'R6'],e:['0','1']},'RABRBGRARRARG 허프만 트리')}
+<ul class="sum"><li>교과서 규칙(왼쪽 0, 오른쪽 1): R = 1, A = 01, G = 001, B = 000</li><li>원본 13글자 × 8비트 = <b>104비트</b> → 허프만 <b>24비트</b> (6 + 6 + 6 + 6)</li></ul>
+<div class="sumh">작년 기출 그대로: ABBGGGABGGG</div>
+<div class="past"><b>작년 기출 (3문제 세트)</b>허프만 압축(내림차순 정렬 기준)으로 ① 트리 고르기 ② 압축 결과 비트열 고르기 ③ 압축률 구하기가 연달아 나왔어요.</div>
+${hSteps([['G6','B3','A2'],['G6','[5]'],['[11]']])}
+<p>내림차순이니까 <b>큰 게 왼쪽</b>에 서요. G6이 왼쪽, 5(B3, A2)가 오른쪽. 교과서 규칙(왼쪽 0, 오른쪽 1)으로 그리면 이래요.</p>
+${tree({v:'11',c:['G6',{v:'5',c:['B3','A2'],e:['0','1']}],e:['0','1']},'ABBGGGABGGG 허프만 트리')}
+<div class="tw"><table><tr><th>글자</th><th>왼쪽 0 · 오른쪽 1</th><th>왼쪽 1 · 오른쪽 0</th></tr><tr><td>G (6번)</td><td>0</td><td>1</td></tr><tr><td>B (3번)</td><td>10</td><td>01</td></tr><tr><td>A (2번)</td><td>11</td><td>00</td></tr></table></div>
+<p class="cap">A B B G G G A B G G G를 하나씩 바꾸면 (왼쪽 0 규칙)</p>${cells('1110100001110000',()=>'c1')}
+<ul class="sum"><li>합계: 6×1 + 3×2 + 2×2 = <b>16비트</b></li><li>원본: 11글자 × 8비트 = 88비트</li></ul>
+<p class="fl">압축률 = ${frac(88,16)} = <b>5.5</b></p>
+<div class="warn"><b>진짜 함정</b> 작년 시험엔 "왼쪽 1 · 오른쪽 0" 트리(<code>0001011110001111</code>)와 "왼쪽 0 · 오른쪽 1" 트리(<code>1110100001110000</code>)가 <b>둘 다 선지에</b> 있었어요. 올해 수업 필기는 "오른쪽 0, 왼쪽 1"이에요. 규칙에 따라 정답이 갈리니까 시험 전에 선생님께 꼭 확인하세요! 압축률(5.5)은 규칙과 상관없이 같아요.</div>
+<div class="sumh">도전: A5 B9 C12 D13 E16 F45</div>
+${hSteps([['A5','B9','C12','D13','E16','F45'],['C12','D13','[14]','E16','F45'],['[14]','E16','[25]','F45'],['[25]','[30]','F45'],['F45','[55]'],['[100]']])}
+<div class="warn"><b>여기서 많이 틀려요</b> 14를 만든 다음, 14+E16이 아니라 <b>C12+D13</b>을 먼저 합쳐요. 매번 "지금 남은 것 중 제일 작은 두 개"예요.</div>
+${tree({v:'100',c:['F45',{v:'55',c:[{v:'25',c:['C12','D13'],e:['0','1']},{v:'30',c:['E16',{v:'14',c:['A5','B9'],e:['0','1']}],e:['0','1']}],e:['0','1']}],e:['0','1']},'A5부터 F45까지 허프만 트리')}
+<ul class="sum"><li>F 1비트, C·D·E 3비트, A·B 4비트</li><li>45×1 + (12+13+16)×3 + (5+9)×4 = <b>224비트</b> (모두 3비트로 쓰면 300비트)</li></ul>
+<div class="sumh">연습: PEPERODAY</div>
+<p>빈도수 P2 E2 R1 O1 D1 A1 Y1. 8비트씩이면 72비트예요.</p>
+${tree({v:'9',c:[{v:'4',c:['E2','P2'],e:['1','0']},{v:'5',c:[{v:'2',c:['O1','R1'],e:['1','0']},{v:'3',c:['Y1',{v:'2',c:['A1','D1'],e:['1','0']}],e:['1','0']}],e:['1','0']}],e:['1','0']},'PEPERODAY 허프만 트리')}
+<ul class="sum"><li>P·E 2비트, R·O·Y 3비트, A·D 4비트 → 8 + 9 + 8 = <b>25비트</b></li><li>빈도수가 같은 게 많으면 나무 모양은 달라질 수 있지만 <b>전체 비트 수는 같아요.</b></li></ul>
+${star('① 가장 작은 두 개부터 합치기 ② 전체 비트 = 빈도수 × 코드 길이의 합 ③ 빈도수 높을수록 짧은 코드 ④ 어떤 코드도 다른 코드의 앞부분이 아님')}`}
+],
+sum:['비트 = 최소 단위, 1Byte = 8bit, 위로는 1,024배씩','디지털화: 표본화 → 양자화 → 부호화','RAM은 전원 끄면 사라짐 → 보조 기억에 저장','압축 = 인코딩, 복원 = 디코딩','손실(JPEG·MP3·MPEG4) vs 비손실(ZIP·PNG·GIF)','압축 원리 = 중복성 제거 (공간적 / 시간적)','압축률 = 압축 전 ÷ 압축 후, 1보다 클수록 좋음','A = 65 = 1000001 (아스키 7비트), 깨짐 = 코드 체계 차이','반복 길이 압축: 연속된 것만 묶기, 반복 없으면 늘어남','허프만: 빈도 높을수록 짧은 코드, 작은 두 개씩 합치기']},
+{id:2,date:'11/12',title:'암호화',pages:'교과서 p.56~61',
+one:'암호화는 <b>허락받은 사람만 볼 수 있게 데이터를 바꾸는 기술</b>이고, 핵심은 <b>키(열쇠)를 어떻게 관리하느냐</b>예요.',
+secs:[
+{id:'2-1',t:'http와 https',h:`
+<p>인터넷 주소창, 맨 앞을 한번 보세요. http로 시작하나요, https로 시작하나요? 이 <b>s 하나</b>가 엄청난 차이예요.</p>
+${httpPic()}
+<ul class="sum"><li><b>http://</b> 데이터를 <b>그대로</b> 보내요. 엽서처럼 중간에서 누구나 읽을 수 있어요. → <mark>비밀번호, 카드 번호 입력 금지!</mark></li><li><b>https://</b> 데이터를 <b>암호화해서</b> 보내요. 봉인된 편지처럼 받는 사람만 열 수 있어요.</li></ul>
+<div class="tip"><b>덤</b> 실제 https는 뒤에 배울 공개키 암호와 비밀키 암호를 섞어서 써요. 시험에선 "https = 암호화해서 전송"이면 충분해요.</div>`},
+{id:'2-2',t:'모든 암호는 깰 수 있다?',h:`
+<p>충격적인 사실 하나. <b>모든 암호는 이론적으로 다 깰 수 있어요.</b> 왜냐면 가능한 경우를 하나씩 다 넣어 보면 언젠가는 맞거든요.</p>
+${lockPic()}
+<p>그럼 암호가 왜 안전하냐? <mark>푸는 데 시간이 엄청 오래 걸리게</mark> 만들기 때문이에요.</p>
+<div class="tw"><table><tr><th>비밀번호</th><th>경우의 수</th></tr><tr><td>숫자 4자리</td><td>1만 가지</td></tr><tr><td>숫자 8자리</td><td>1억 가지</td></tr><tr><td>영어 대소문자 + 숫자 8자리</td><td>약 218조 가지</td></tr></table></div>
+<p>길고 복잡할수록 경우의 수가 폭발해서, 컴퓨터로도 몇백 년 걸리게 만드는 거예요. <b>시간이 곧 안전</b>이에요.</p>
+<div class="warn"><b>양자 컴퓨터</b> 경우의 수를 엄청나게 빨리 계산할 수 있어요. 그래서 양자 컴퓨터가 나오면 지금의 암호가 깨질 수 있다고 해요.</div>
+<div class="sumh">교과서 도입: 에니그마</div>
+<p>제2차 세계 대전 때 독일군 암호 <b>에니그마</b>는 24시간마다 규칙이 바뀌었어요. <b>앨런 튜링</b>이 <b>봄브</b>라는 기계를 만들어 결국 풀어냈죠. (영화 '이미테이션 게임')</p>`},
+{id:'2-3',t:'암호 시스템의 구성 요소',h:`
+<p>암호를 "편지를 상자에 넣고 자물쇠로 잠그는 것"이라고 생각하면 끝이에요.</p>
+<div class="kit"><div><b>평문</b><span>편지 내용</span><small>암호화 안 된 원래 데이터</small></div><div><b>암호문</b><span>잠긴 상자</span><small>키와 알고리즘으로 바꾼 데이터</small></div><div class="k"><b>키</b><span>열쇠</span><small>암호화·복호화에 쓰는 약속된 규칙 정보</small></div><div><b>알고리즘</b><span>자물쇠 작동 방식</span><small>암호화(복호화) 절차, 키가 필요</small></div></div>
+${star('"암호화와 복호화 과정에서 사용되는 약속된 규칙 정보" = <b>키</b>. 이 문장 그대로 나와요.')}
+<div class="sumh">섀넌의 원칙 (교과서 보충)</div>
+<ul class="sum"><li><b>혼돈</b>: 암호문과 <b>키</b>의 관계를 숨겨요.</li><li><b>확산</b>: 암호문과 <b>평문</b>의 관계를 숨겨요.</li></ul>
+<div class="tip"><b>외우는 법</b> "혼돈은 키, 확산은 평문"</div>`},
+{id:'2-4',t:'암호화와 복호화',h:`
+${flow3(['평문','hello','bx'],['암호문','X89V#','bp'],['평문','hello','bx'],'암호화','복호화',{keys:1})}
+<ul class="sum"><li><mark>암호화</mark>: 평문 → 암호문 (잠그기)</li><li><mark>복호화</mark>: 암호문 → 평문 (열기)</li></ul>
+<div class="warn"><b>선생님이 제일 강조한 것</b> 중요한 건 <b>키</b>예요. 아무리 튼튼한 금고도 열쇠를 아무 데나 두면 끝이죠. 키를 어떻게 관리하느냐가 관건이고, 이게 뒤에 나오는 비밀키·공개키를 나누는 기준이에요.</div>`},
+{id:'2-5',t:'암호화가 지켜 주는 것',h:`
+<p>교과서는 암호화의 기능을 이렇게 정리해요. 이름만 봐도 뜻이 보이니까 겁먹지 마세요.</p>
+<div class="tw"><table><tr><th>기능</th><th>한마디로</th></tr>
+<tr><td><b>기밀성 보장</b></td><td>몰래 <b>보는</b> 걸 막음</td></tr>
+<tr><td><b>무결성 유지</b></td><td>몰래 <b>바꾸는</b> 걸 막음</td></tr>
+<tr><td><b>인증 및 식별 보장</b></td><td>진짜 그 사람인지 확인</td></tr>
+<tr><td><b>비인가 접근 방지</b></td><td>허락 없는 접근 차단</td></tr>
+<tr><td><b>보안 통신 보장</b></td><td>네트워크로 주고받을 때 보호</td></tr>
+<tr><td><b>보안 공격으로부터 보호</b></td><td>뚫려도 내용은 못 알아봄</td></tr>
+<tr><td><b>규정 준수</b></td><td>데이터 보호 규정 지키기</td></tr></table></div>
+<div class="sumh">정보 보호 3원칙 CIA</div>
+<div class="cia"><div><b>C</b><span>기밀성</span><small>허가된 사람만 <b>본다</b></small></div><div><b>I</b><span>무결성</span><small>허가된 사람만 <b>고친다</b></small></div><div><b>A</b><span>가용성</span><small>필요할 때 <b>언제든 쓴다</b></small></div></div>
+${star('"데이터가 중간에 변경되는 것 방지" = <b>무결성</b>. "용량을 줄인다"는 암호화 기능이 아니라 압축이에요.')}
+<div class="past"><b>작년 기출</b>&lt;보기&gt;에 "인증 및 식별 <b>차단</b>", "비인가자 접근 <b>허용</b>"처럼 말을 <b>반대로 바꾼</b> 함정이 나왔어요. 정답은 무결성 유지, 기밀성 보장, 보안 공격으로부터 보호 3개였어요. 끝말까지 꼼꼼히!</div>`},
+{id:'2-6',t:'치환형 암호와 전치형 암호',h:`
+<p>옛날 암호 두 가지예요. 차이는 딱 하나.</p>
+<div class="vs2"><div><b>치환형</b><span>글자를 <mark>다른 글자로</mark> 바꿈</span><small>글자가 옷을 갈아입음<br>예: 카이사르 암호</small></div><div><b>전치형</b><span>글자의 <mark>자리를</mark> 바꿈</span><small>글자들이 자리를 바꿔 앉음<br>예: 스키테일 암호</small></div></div>
+<div class="sumh">카이사르 암호 (치환형)</div>
+<p>로마의 카이사르가 쓴 암호예요. 알파벳을 정해진 칸만큼 밀어요. 아래는 <b>오른쪽 3칸</b>이에요.</p>
+<div class="cz"><div>${'abcdefghijklmnopqrstuvwxyz'.split('').map(c=>`<i>${c}</i>`).join('')}</div><div>${'defghijklmnopqrstuvwxyzabc'.split('').map(c=>`<i>${c}</i>`).join('')}</div></div>
+<p class="cap">평문</p>${cells('informatics')}<p class="cap">암호문 (3칸씩 밀기)</p>${cells('lqirupdwlfv',()=>'c1')}
+<ul class="sum"><li>"3칸 이동"이 바로 <b>키</b>예요.</li><li>끝에 가면 처음으로: x → a, y → b, z → c</li><li>복호화는 거꾸로 3칸: khoor → hello</li></ul>
+<div class="sumh">전치형 암호: 키 453216</div>
+<p><b>1단계</b> 키가 6자리니까 한 줄에 6글자씩 적어요. 빈칸은 <code>:</code>로 채워요.</p>
+<div class="tw"><table class="tt"><tr><th>열</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th></tr><tr><td>1줄</td><td>i</td><td>n</td><td>f</td><td>o</td><td>r</td><td>m</td></tr><tr><td>2줄</td><td>a</td><td>t</td><td>i</td><td>c</td><td>s</td><td>:</td></tr></table></div>
+<p><b>2단계</b> 키 순서대로 4번 열, 5번 열, 3번, 2번, 1번, 6번 열을 차례로 세워요.</p>
+<div class="tw"><table class="tt"><tr><th>키</th><th>4</th><th>5</th><th>3</th><th>2</th><th>1</th><th>6</th></tr><tr><td>1줄</td><td>o</td><td>r</td><td>f</td><td>n</td><td>i</td><td>m</td></tr><tr><td>2줄</td><td>c</td><td>s</td><td>i</td><td>t</td><td>a</td><td>:</td></tr></table></div>
+<p class="cap">암호문</p>${cells('orfnimcsita:',()=>'c1')}
+<p>글자는 하나도 안 바뀌고 <b>자리만</b> 바뀌었죠? 이게 치환형과의 차이예요.</p>
+<div class="sumh">카이사르 암호 파이썬 코드 읽기 (작년 기출)</div>
+<p>작년엔 카이사르 암호 프로그램을 주고 <b>실행 결과</b>를 고르게 했어요. 코드는 길어 보여도 하는 일은 딱 하나예요.</p>
+<pre class="code">alphabet = 'abcdefghijklmnopqrstuvwxyz'
+for char in plaintext:
+    if char not in alphabet:      # 알파벳이 아니면
+        ciphertext += char        #   그대로 붙임
+    else:
+        idx = alphabet.index(char)          # ① 몇 번째 글자?
+        idx = (idx + shift) % len(alphabet) # ② shift만큼 밀고 26으로 나눈 나머지
+        ciphertext += alphabet[idx]         # ③ 그 자리 글자 붙이기</pre>
+<div class="flow"><div class="node"><small>① index</small>a는 0번, b는 1번 … z는 25번</div><div class="arr"></div><div class="node"><small>② (idx + shift) % 26</small>shift가 <b>양수면 오른쪽</b>, <b>음수면 왼쪽</b>으로 밀어요. <code>% 26</code>은 끝을 넘어가면 처음으로 돌려 주는 장치예요.</div><div class="arr"></div><div class="node k"><small>③ alphabet[idx]</small>새 번호의 글자를 붙여요.</div></div>
+<div class="card"><b>예) fighting, shift = -5 (왼쪽 5칸)</b><br>f(5) → 0 → a, i(8) → 3 → d, g(6) → 1 → b, h(7) → 2 → c, t(19) → 14 → o, i → d, n(13) → 8 → i, g → b<br>결과: <b>adbcodib</b></div>
+<div class="warn"><b>오답 선지 패턴</b> ightingf, ingfight처럼 <b>글자 순서만 돌린</b> 선지가 나와요. 카이사르는 글자를 <b>바꾸는</b> 치환형이지 자리를 옮기는 게 아니에요!</div>
+<div class="sumh">전치형 암호 다시 한 번: 키 2413, computer</div>
+<p>키가 4자리 → 4글자씩 끊기. 그다음 <b>키에 적힌 숫자 순서대로 열을 뽑아요.</b></p>
+<div class="tw"><table class="tt"><tr><th>열</th><th>1</th><th>2</th><th>3</th><th>4</th></tr><tr><td>1줄</td><td>c</td><td>o</td><td>m</td><td>p</td></tr><tr><td>2줄</td><td>u</td><td>t</td><td>e</td><td>r</td></tr></table></div>
+<p>키 2413 → 2번, 4번, 1번, 3번 열 순서: <b>o p c m</b> / <b>t r u e</b> → <b>opcmtrue</b></p>
+<div class="past"><b>작년 기출</b>평문 network, 키 3241 → netw / ork: → 3·2·4·1번 열 → tewn / kr:o → <b>tewnkr:o</b>. 빈칸 채운 <code>:</code>도 그대로 들어가요. "n3e2t4w1…"처럼 숫자를 끼워 넣은 선지는 함정!</div>
+<div class="sumh">스키테일 암호 (전치형)</div>
+<p>기원전 450년경 고대 그리스에서 쓴, 가장 오래된 암호예요. 막대에 종이를 감고 글을 쓴 뒤 풀면 글자가 뒤죽박죽이 돼요. <b>같은 굵기의 막대</b>에 다시 감아야 읽을 수 있어요. 막대 굵기가 키인 셈이에요.</p>
+${star('카이사르 = <b>치환형</b>, 스키테일 = <b>전치형</b>. 카이사르는 직접 암호문 만들기 / 평문 찾기 / 몇 칸인지 찾기 계산 문제가 나와요.')}`},
+{id:'2-7',t:'비밀키 암호 (대칭키)',h:`
+${one('암호화와 복호화에 <mark>같은 키 하나</mark>를 써요. 그래서 <b>대칭키</b>.')}
+${ab('비밀키 암호','비밀키로 잠금','같은 비밀키로 열기',['키 1개를 둘이 똑같이 공유','','bp'])}
+<div class="tip"><b>비유</b> 집 현관 열쇠를 복사해서 가족끼리 나눠 갖는 거예요. 편하고 빠르죠. 그런데 한 명이 잃어버리면? <b>우리 집 문이 뚫려요.</b> 그리고 처음에 열쇠를 상대에게 안전하게 건네주는 것부터가 문제예요.</div>
+<div class="pc"><div><b>장점</b>빠르다, 만들기 쉽다</div><div><b>단점</b>키를 전달·관리하기 어렵다</div></div>
+<p>대표 예시: <b>DES, AES</b> (이름만 알면 돼요. DES는 옛날 표준, AES는 그 후속으로 지금 많이 써요.)</p>`},
+{id:'2-8',t:'공개키 암호 (비대칭키)',h:`
+${one('<mark>서로 다른 키 두 개</mark>를 써요. 누구나 가져가는 <b>공개키</b> + 나만 가진 <b>개인키</b>. 그래서 <b>비대칭키</b>.')}
+<div class="tip"><b>비유</b> 우체통이에요. 편지 넣는 구멍(<b>공개키</b>)은 누구나 쓸 수 있지만, 꺼내는 열쇠(<b>개인키</b>)는 우체부만 있어요. 열쇠를 건네줄 필요가 없으니 비밀키의 단점이 해결돼요.</div>
+${ab('공개키 암호','B의 공개키로 잠금','B의 개인키로 열기',['B의 공개키','누구나 가짐 · 잠금용','bw'],['B의 개인키','B만 가짐 · 열기용','br'])}
+<div class="flow"><div class="node"><small>1</small>받는 사람 B가 공개키·개인키 한 쌍을 만든다</div><div class="arr"></div><div class="node"><small>2</small>B가 공개키를 공개한다</div><div class="arr"></div><div class="node"><small>3</small>보내는 사람 A가 B의 공개키를 받아온다</div><div class="arr"></div><div class="node"><small>4</small>A가 <b>B의 공개키</b>로 잠근다</div><div class="arr"></div><div class="node"><small>5</small>암호문을 B에게 보낸다</div><div class="arr"></div><div class="node k"><small>6</small>B가 <b>자기 개인키</b>로 연다</div></div>
+${star('A가 B에게 보낼 때 → 잠그는 키 <b>B의 공개키</b>, 여는 키 <b>B의 개인키</b>. "받는 사람 키 두 개"만 기억하면 끝!')}
+<p>대표 예시: <b>RSA, ECC</b></p>
+<div class="sumh">한눈에 비교</div>
+<div class="tw"><table><tr><th></th><th>비밀키 (대칭)</th><th>공개키 (비대칭)</th></tr>
+<tr><td>키 개수</td><td>1개 (같은 키)</td><td>2개 (다른 키)</td></tr>
+<tr><td>키 전달</td><td>필요</td><td>불필요</td></tr>
+<tr><td>속도</td><td><b>빠름</b></td><td>느림</td></tr>
+<tr><td>장점</td><td>구현 쉬움</td><td>해독 어려움</td></tr>
+<tr><td>단점</td><td>키 관리 어려움</td><td>시간 오래 걸림</td></tr>
+<tr><td>예시</td><td>DES, AES</td><td>RSA, ECC</td></tr></table></div>`},
+{id:'2-9',t:'해시',h:`
+${one('아무 길이의 데이터를 <mark>고정된 길이</mark>의 값으로 바꾸는데, <mark>절대 되돌릴 수 없어요.</mark>')}
+${flow3(['평문','123456','bx'],['해시 함수','믹서기','bp'],['해시값','acfde0127e0','bx'],'','',{back:'되돌리기 불가'})}
+<div class="tip"><b>비유</b> 믹서기예요. 딸기를 넣으면 딸기주스가 나오지만, 주스를 다시 딸기로 못 만들죠. 그런데 같은 딸기를 넣으면 <b>항상 같은 주스</b>가 나와요.</div>
+<div class="sumh">되돌릴 수 없는데 어디에 써? → 로그인!</div>
+${flow3(['회원가입','1234','bx'],['해시','변환','bp'],['서버 저장','acf…','bw'],'','')}
+${flow3(['로그인','1234','bx'],['해시','변환','bp'],['비교','같으면 OK','bp'],'','')}
+<p>서버에는 해시값만 있어요. 로그인할 때도 입력한 비밀번호를 해시로 바꿔서 <b>같은지만</b> 비교해요. 그래서 <mark>서버 관리자도 내 비밀번호를 몰라요.</mark> 해킹당해도 원래 비밀번호는 바로 안 드러나요.</p>
+<ul class="sum"><li>비밀번호 저장, 인증 번호·일회용 비밀번호 확인</li><li>데이터 <b>위조·변조</b> 확인</li><li>블록체인</li></ul>
+<div class="sumh">대표 해시 함수</div>
+<ul class="sum"><li><b>MD5</b>: 취약점이 발견돼서 지금은 보안용으로 권장 안 해요.</li><li><b>SHA</b>: 미국 국가안보국(NSA)이 <b>1993년</b>에 설계. SHA-1, 2, 3으로 발전했어요.</li></ul>
+<div class="sumh">블록체인과 해시</div>
+${chainPic()}
+<p>블록마다 <b>앞 블록의 해시값</b>이 들어 있어요. 블록 1을 몰래 바꾸면 해시 A가 바뀌고, 그럼 블록 2, 3이 다 안 맞게 돼요. 그래서 위조·변조가 거의 불가능해요.</p>
+${star('해시 = <b>고정 길이 + 복호화 불가(단방향)</b>. "해시값을 복호화해서 비교한다"는 선지는 무조건 틀려요.')}
+<div class="past"><b>작년 기출</b>"해시를 이용한 암호 기법으로 옳지 않은 것은?" → 정답은 "평문을 암호화하고 암호문을 <b>복호화하는 것이 가능</b>하다". 나머지 선지(단방향, 고정 길이, 위·변조 확인, 비밀번호를 해시값으로 저장)는 모두 맞는 말이었어요.</div>`}
+],
+sum:['http는 그대로, https는 암호화해서 전송','모든 암호는 경우의 수로 깰 수 있다 → 현대 암호는 시간으로 지킨다','구성 요소: 평문, 암호문, 키, 암호화(복호화) 알고리즘','암호화 = 평문 → 암호문, 복호화 = 암호문 → 평문, 핵심은 키 관리','CIA: 기밀성(보기) · 무결성(고치기) · 가용성(언제든 쓰기)','치환형 = 글자를 바꿈(카이사르), 전치형 = 자리를 바꿈(스키테일)','비밀키 = 같은 키 1개, 빠르지만 키 관리 어려움 (DES, AES)','공개키 = 받는 사람의 공개키로 잠그고 개인키로 엶, 느림 (RSA, ECC)','해시 = 고정 길이, 복호화 불가, 일치 여부 확인 (MD5, SHA)']}
+];
+/* 예상 문제: id, 회차, 소제목, 유형, 문제, 선지, 정답(1~5), 해설, 보기 */
+const BK5=['ㄱ','ㄷ','ㄱ, ㄴ','ㄴ, ㄷ','ㄱ, ㄴ, ㄷ'];
+const QS=[];
+function Q(id,s,tg,q,o,a,e,g){QS.push({id,l:+s[0],s,tg,q,o,a,e,g})}
+
+/* ---------- 1회차: 디지털 데이터 압축 ---------- */
+Q('a01','1-1','개념','디지털 데이터를 표현하는 최소 단위는?',['바이트(Byte)','비트(bit)','픽셀','프레임','헤르츠'],2,
+'비트는 0 또는 1 하나를 저장하는 가장 작은 단위예요. 바이트는 비트 8개 묶음, 픽셀은 이미지의 점 하나, 프레임은 동영상의 사진 한 장이에요.');
+Q('a02','1-1','개념','디지털 데이터에 대한 설명으로 옳지 않은 것은?',['문자, 숫자, 소리 등을 0과 1로 표현한다.','이미지와 동영상도 디지털 데이터로 표현할 수 있다.','비트 하나는 0 또는 1 중 하나의 상태를 저장한다.','아날로그 데이터는 자연 상태의 연속적인 값으로 표현된다.','디지털 데이터는 연속적인 값이므로 압축할 수 없다.'],5,
+'연속적인 값은 아날로그 데이터의 특징이에요. 디지털 데이터는 0과 1의 조합이고, 중복성을 제거해 압축할 수 있어요.');
+Q('a03','1-1','개념','1KB와 크기가 같은 것은?',['1,000비트','1,024비트','1,000바이트','1,024바이트','8,192바이트'],4,
+'1KB = 1,024Byte예요. 비트로 바꾸면 1,024 × 8 = 8,192비트예요. ⑤는 바이트라서 틀려요. 단위가 비트인지 바이트인지 끝까지 확인하세요.');
+Q('a04','1-1','계산','다음 중 용량이 가장 큰 것은?',['1,000GB','1TB','1,023GB','1,000,000MB','8,000Gbit'],2,
+'1TB = 1,024GB라서 가장 커요. ④ 1,000,000MB는 1,024로 나누면 약 976.6GB, ⑤ 8,000Gbit는 8로 나누면 1,000GB예요. 1,000이 아니라 1,024배라는 게 함정이에요.');
+Q('a05','1-1','순서','아날로그 데이터를 디지털 데이터로 바꾸는 디지털화 과정의 순서로 옳은 것은?',['표본화 → 양자화 → 부호화','양자화 → 표본화 → 부호화','부호화 → 표본화 → 양자화','표본화 → 부호화 → 양자화','양자화 → 부호화 → 표본화'],1,
+'먼저 일정 간격으로 샘플을 뽑고(표본화), 그 값을 정해진 단계로 맞춘 뒤(양자화), 2진수로 표현해요(부호화). "표·양·부"로 외우세요.');
+Q('a06','1-1','개념','디지털화 과정 중 다음 설명에 해당하는 것은?',['표본화','양자화','부호화','인코딩','복호화'],2,
+'추출한 표본을 정해진 단계의 값으로 맞추는 건 양자화예요. 일정 간격으로 뽑는 건 표본화, 0과 1로 표현하는 건 부호화예요.',
+'추출된 각 표본을 어느 정도의 정밀도로 표현할 것인지 정하여, 정해진 단계의 값으로 나타내는 과정');
+Q('a07','1-2','개념','주기억 장치(RAM)에 대한 설명으로 옳은 것은?',['전원이 꺼져도 저장된 내용이 유지된다.','전원이 꺼지면 작업 중이던 내용이 사라진다.','USB 메모리가 대표적인 예이다.','데이터를 오랫동안 보관하는 것이 주된 목적이다.','하드디스크와 같은 종류의 저장 장치이다.'],2,
+'RAM은 지금 작업 중인 내용을 기억하는 책상 같은 곳이라 전원이 꺼지면 내용이 사라져요. 오래 보관하는 건 하드디스크, USB 같은 보조 기억 장치예요.');
+Q('a08','1-2','보기','저장 장치에 대한 설명으로 옳은 것만을 <보기>에서 있는 대로 고른 것은?',BK5,3,
+'ㄱ, ㄴ은 맞아요. ㄷ은 틀려요. 보조 기억 장치도 용량이 한정돼 있어서 데이터가 많아지면 압축이 필요해요.',
+'ㄱ. RAM은 전원이 꺼지면 작업 내용을 잊어버린다.<br>ㄴ. 오래 보관해야 할 데이터는 보조 기억 장치에 저장한다.<br>ㄷ. 보조 기억 장치는 용량 제한이 없어 압축이 필요 없다.');
+Q('a09','1-3','개념','(가), (나)에 들어갈 말로 옳은 것은?',['(가) 인코딩, (나) 디코딩','(가) 디코딩, (나) 인코딩','(가) 암호화, (나) 복호화','(가) 부호화, (나) 양자화','(가) 복호화, (나) 암호화'],1,
+'압축 = 인코딩, 복원 = 디코딩이에요. 암호화·복호화는 2회차 암호 단원의 용어라 헷갈리지 마세요.',
+'데이터 압축 과정은 데이터를 더 작은 크기로 변환하는 (가)와, 압축된 데이터를 원래 형태로 변환하는 (나)로 이루어진다.');
+Q('a10','1-3','개념','손실 압축 방식으로만 짝지은 것은?',['ZIP, PNG','JPEG, MP3','GIF, BMP','ZIP, MP3','PNG, MPEG4'],2,
+'손실 압축은 JPEG, MP3, MPEG4예요. ZIP, PNG, GIF, BMP는 비손실 압축이에요.');
+Q('a11','1-3','적용','반드시 비손실 압축을 사용해야 하는 데이터로 가장 적절한 것은?',['여행 사진','음악 파일','동영상 강의','프로그램 소스 코드 파일','영상 썸네일 이미지'],4,
+'코드나 텍스트는 한 글자만 달라져도 의미가 바뀌거나 프로그램이 작동하지 않아요. 사진·음악·영상은 사람이 잘 못 느끼는 정보를 조금 버려도 괜찮아서 손실 압축을 많이 써요.');
+Q('a12','1-3','개념','손실 압축에 대한 설명으로 옳은 것은?',['복원하면 원본 데이터와 완전히 같다.','사람이 잘 느끼지 못하는 정보 일부를 삭제하여 압축한다.','ZIP 파일이 대표적인 예이다.','주로 텍스트 문서를 압축할 때 사용한다.','비손실 압축보다 항상 용량을 적게 줄인다.'],2,
+'손실 압축은 일부 정보를 버려서 용량을 크게 줄이는 대신 복원해도 원본과 달라요. ①, ③, ④는 비손실 압축의 특징이에요.');
+Q('a13','1-3','개념','데이터 압축이 필요한 이유로 옳지 않은 것은?',['같은 저장 공간에 더 많은 데이터를 저장할 수 있다.','같은 시간에 더 많은 데이터를 전송할 수 있다.','스트리밍, 클라우드 서비스를 효율적으로 운영할 수 있다.','에너지 소비와 전자 폐기물을 줄여 환경 보호에 기여한다.','압축하면 데이터 품질이 항상 원본보다 좋아진다.'],5,
+'압축은 품질을 좋게 만드는 기술이 아니에요. 손실 압축은 오히려 품질이 조금 떨어질 수 있어요. 나머지는 모두 교과서가 말하는 압축의 필요성이에요.');
+Q('a14','1-3','개념','압축과 복원에 대한 설명으로 옳은 것은?',['압축 데이터는 원본 데이터보다 용량이 크다.','복원된 데이터는 압축 데이터보다 용량이 작다.','압축 데이터는 원본 데이터보다 용량이 작다.','손실 압축은 복원하면 원본과 같아진다.','비손실 압축은 복원해도 원본과 달라진다.'],3,
+'압축하면 작아지고 복원하면 다시 커져요. ④와 ⑤는 손실·비손실의 설명이 서로 바뀌었어요.');
+Q('a15','1-4','개념','데이터 압축의 기본 원리로 가장 적절한 것은?',['중복성 제거','비트 수 늘리기','키 공유','해시값 변환','데이터 정렬'],1,
+'압축의 원리는 반복되는 정보를 한 번만 저장하는 중복성 제거예요.');
+Q('a16','1-4','개념','(가), (나)에 나타나는 중복성의 종류로 옳은 것은?',['(가) 공간적 중복성, (나) 시간적 중복성','(가) 시간적 중복성, (나) 공간적 중복성','(가), (나) 모두 공간적 중복성','(가), (나) 모두 시간적 중복성','(가) 공간적 중복성, (나) 중복성 없음'],1,
+'한 장의 사진 안에서 위치에 따라 같은 색이 반복되면 공간적 중복성, 시간이 흐르며 프레임마다 같은 배경이 반복되면 시간적 중복성이에요.',
+'(가) 사진의 위쪽에는 파란색이, 아래쪽에는 흰색이 반복된다.<br>(나) 동영상의 각 프레임에 비슷한 배경이 반복된다.');
+Q('a17','1-4','계산','원본 200KB인 파일을 압축했더니 50KB가 되었다. 압축률은?',['0.25','2','4','150','250'],4-1,
+'압축률은 압축 전 용량을 압축 후 용량으로 나눠요. 200 ÷ 50 = 4예요. ①은 거꾸로 나눈 값, ④는 뺀 값이에요.');
+Q('a18','1-4','개념','압축률에 대한 설명으로 옳은 것은?',['압축 후 용량을 압축 전 용량으로 나눈 값이다.','압축률이 1보다 작을수록 압축 효과가 크다.','압축률이 1보다 크면 용량이 줄어든 것이다.','압축률은 데이터의 품질만으로 결정된다.','압축률이 0.5이면 용량이 절반으로 줄어든 것이다.'],3,
+'압축률 = 압축 전 ÷ 압축 후라서 1보다 크면 줄어든 거예요. ⑤처럼 0.5면 압축 후가 원본의 2배, 즉 오히려 늘어난 거예요.');
+Q('a19','1-4','보기','데이터 압축의 효율성을 평가하는 기준으로 옳은 것만을 <보기>에서 있는 대로 고른 것은?',BK5,3,
+'교과서는 압축 효율성을 원본과 비교해 용량이 얼마나 줄었는지, 품질이 얼마나 유지되는지로 평가한다고 해요. 파일 이름은 상관없어요.',
+'ㄱ. 용량이 얼마나 줄었는가<br>ㄴ. 품질이 얼마나 유지되는가<br>ㄷ. 파일 이름이 얼마나 짧은가');
+Q('a20','1-5','계산','아스키코드에서 대문자 \'A\'는 10진수 65이다. \'A\'를 2진수로 나타낸 것은?',['100011','1000001','1000011','1100001','0100001'],2,
+'65를 2로 계속 나누면 나머지가 1, 0, 0, 0, 0, 0, 1이고, 아래에서 위로 읽으면 1000001이에요. ③ 1000011은 67(C)이에요.');
+Q('a21','1-5','계산','\'A\'가 10진수 65일 때, \'D\'를 2진수로 나타낸 것은?',['1000010','1000011','1000100','1000101','1001000'],3,
+'A=65, B=66, C=67, D=68이에요. 68 = 64 + 4라서 1000100이에요. ①은 66(B), ②는 67(C), ④는 69(E)예요.');
+Q('a22','1-5','개념','수업에서 다룬 아스키코드는 문자 하나를 몇 비트로 표현하는가?',['4비트','6비트','7비트','16비트','32비트'],3,
+'아스키코드는 7비트예요. 그래서 반복 길이 압축 계산에서 문자 하나를 7비트로 셌어요.');
+Q('a23','1-5','개념','유니코드에 대한 설명으로 옳은 것은?',['영어 대문자만 표현할 수 있다.','전 세계 문자를 하나의 체계로 표현하기 위한 국제 표준이다.','이미지 손실 압축 방식이다.','문자의 빈도수로 코드를 만드는 압축 알고리즘이다.','아스키코드보다 적은 비트로 모든 문자를 표현한다.'],2,
+'유니코드(UTF-8, UTF-16)는 나라마다 다른 코드 때문에 글자가 깨지는 문제를 해결하려고 만든 국제 표준이에요. ④는 허프만 압축 설명이에요.');
+Q('a24','1-5','적용','다른 나라에서 만든 텍스트 파일을 열었더니 글자가 깨져 보였다. 가장 큰 원인은?',['파일이 손실 압축되었기 때문','서로 다른 문자 코드 체계를 사용했기 때문','RAM의 전원이 꺼졌기 때문','해시값으로 변환되었기 때문','암호화 키를 잃어버렸기 때문'],2,
+'문자는 코드표 번호로 저장돼요. 만든 쪽과 여는 쪽의 코드 체계가 다르면 번호를 다른 글자로 읽어서 깨져 보여요.');
+Q('a25','1-6','계산','문자열 AAABBBBCCD를 반복 길이 압축으로 나타낸 것은? (교과서 방식)',['A3B4C2D','A3B4C2D1','3A4B2C1D','A3B4C2D2','AB3C2D1'],2,
+'문자 다음에 반복 횟수를 써요. D는 한 번만 나와도 D1로 써요. ③처럼 숫자를 앞에 쓰면 교과서 방식이 아니에요.');
+Q('a26','1-6','계산','RRRRRAAAAGGGRRRRRGG를 반복 길이 압축한 결과와 압축률을 바르게 짝지은 것은?',['R10A4G5, 1.9','R5A4G3R5G2, 1.9','R5A4G3R5G2, 0.5','R5A4G5, 2.0','R5A4G3R5G2, 1.0'],2,
+'연속된 것만 묶어야 해요. R5 A4 G3 R5 G2로 10글자이고, 압축률은 19 ÷ 10 = 1.9예요. ①은 연속이 아닌 R까지 합친 것이라 틀려요.');
+Q('a27','1-6','계산','WWWWWWWWBBBB를 반복 길이 압축했을 때 압축률은?',['1.5','2','3','4','6'],3,
+'W8B4로 4글자가 돼요. 12 ÷ 4 = 3이에요.');
+Q('a28','1-6','계산','반복 길이 압축 결과가 X3Y1Z4일 때 원래 문자열은?',['XYZ','XXXYZZZZ','XXXYZZZ','XYYYZZZZ','XXXYYZZZZ'],2,
+'X 3번, Y 1번, Z 4번이에요. 복원(디코딩)은 숫자만큼 문자를 다시 늘어놓으면 돼요.');
+Q('a29','1-6','적용','반복 길이 압축을 했을 때 압축 효과가 가장 낮은 것은?',['AAAAAAAAAA','AAAAABBBBB','AABBAABBAA','ABCDEFGHIJ','AAAAAAAAAB'],4,
+'①은 A10(3글자), ②는 A5B5(4글자), ③은 A2B2A2B2A2(10글자), ⑤는 A9B1(4글자)인데, ④는 A1B1…J1로 20글자가 돼서 오히려 2배로 늘어나요(압축률 0.5).');
+Q('a30','1-6','보기','반복 길이 압축에 대한 설명으로 옳은 것만을 <보기>에서 있는 대로 고른 것은?',BK5,3,
+'ㄷ이 함정이에요. 반복 길이 압축은 복원하면 원본과 똑같이 돌아오는 비손실 압축이에요.',
+'ㄱ. 같은 문자가 연속해서 반복될 때 효과적이다.<br>ㄴ. 중복이 없으면 원본보다 길어질 수 있다.<br>ㄷ. 복원하면 원본과 달라지는 손실 압축이다.');
+Q('a31','1-6','계산','문자 하나는 7비트, 반복 횟수는 3비트로 나타낸다고 할 때, RRRRRAAAAGGGRRRRRGG의 원본 비트 수와 반복 길이 압축 후 비트 수를 순서대로 고른 것은?',['133비트, 40비트','133비트, 50비트','152비트, 50비트','133비트, 70비트','152비트, 80비트'],2,
+'원본: 19 × 7 = 133비트. 압축 후: 묶음 하나가 7 + 3 = 10비트이고, R5 A4 G3 R5 G2로 묶음 5개라서 50비트예요. 묶음을 4개로 세면 ①이 나와요.');
+Q('a32','1-6','적용','흰색(W)과 검은색(B) 픽셀로 된 이미지의 한 줄 WWBBBBWW를 반복 길이 압축으로 나타낸 것은?',['W2B4W2','W2B4','W4B4','2W4B2W','WB4W'],1,
+'이미지에서도 같은 색이 연속되면 색 + 횟수로 써요. 앞의 W2와 뒤의 W2는 떨어져 있으니 따로 써야 해요.');
+Q('a33','1-6','적용','반복 길이 압축을 활용하기에 적절하지 않은 것은?',['같은 색이 넓게 이어지는 이미지','배경 변화가 적은 동영상','같은 문자가 연속되는 문자열','모든 문자가 서로 다른 짧은 문장','흰색과 검은색만으로 된 단순한 아이콘'],4,
+'모든 문자가 서로 달라 연속 반복이 없으면 오히려 길어져요.');
+Q('a34','1-6','적용','교과서 52쪽 반복 길이 압축 프로그램에서 압축률을 구하는 식으로 옳은 것은? (data는 원본, encoded는 압축 결과)',['len(encoded) / len(data)','len(data) / len(encoded)','len(data) - len(encoded)','len(data) * len(encoded)','count / len(data)'],2,
+'압축률 = 압축 전 ÷ 압축 후이니까 원본 길이를 압축 결과 길이로 나눠요.');
+Q('a35','1-7','개념','허프만 압축의 원리로 옳은 것은?',['모든 문자에 같은 길이의 코드를 부여한다.','빈도수가 높은 문자에 짧은 코드, 낮은 문자에 긴 코드를 부여한다.','연속해서 반복되는 문자를 문자와 횟수로 나타낸다.','문자의 위치를 바꾸어 표현한다.','알파벳을 일정한 칸만큼 이동시킨다.'],2,
+'③은 반복 길이 압축, ④는 전치형 암호, ⑤는 카이사르 암호의 설명이에요. 단원끼리 섞어서 내기 좋은 문제예요.');
+Q('a36','1-7','적용','다음 빈도수로 허프만 트리를 만들 때 가장 먼저 합치는 두 문자는?',['A, B','E, F','C, D','A, F','B, C'],1,
+'가장 작은 두 개부터 합쳐요. A5 + B9 = 14가 첫 번째예요.','A: 5, B: 9, C: 12, D: 13, E: 16, F: 45');
+Q('a37','1-7','계산','다음 빈도수로 허프만 트리를 만들 때 두 번째로 만들어지는 노드의 값은?',['14','21','25','30','55'],3,
+'첫 번째로 A5 + B9 = 14가 생기면 남은 값은 C12, D13, 14, E16, F45예요. 이 중 가장 작은 두 개는 C12와 D13이라서 25가 돼요. 14와 E16을 먼저 합치면 안 돼요.','A: 5, B: 9, C: 12, D: 13, E: 16, F: 45');
+Q('a38','1-7','적용','다음 빈도수로 허프만 압축을 할 때 가장 짧은 코드를 받는 문자는?',['A','B','C','E','F'],5,
+'빈도수가 가장 높은 F(45)가 1비트 코드를 받아요. 가장 긴 코드는 빈도수가 가장 낮은 A와 B예요.','A: 5, B: 9, C: 12, D: 13, E: 16, F: 45');
+Q('a39','1-7','계산','다음 빈도수로 허프만 압축을 했을 때 전체 비트 수는?',['100비트','200비트','224비트','256비트','300비트'],3,
+'F는 1비트, C·D·E는 3비트, A·B는 4비트예요. 45×1 + (12+13+16)×3 + (5+9)×4 = 45 + 123 + 56 = 224비트. 모든 문자를 3비트로 쓰면 300비트이니 76비트 줄어요.','A: 5, B: 9, C: 12, D: 13, E: 16, F: 45');
+Q('a40','1-7','계산','R이 10번, G가 5번, A가 4번 나오는 19글자를 허프만 압축했을 때 전체 비트 수는?',['19비트','28비트','38비트','50비트','133비트'],2,
+'G5 + A4 = 9, R10 + 9 = 19. R은 1비트, G와 A는 2비트예요. 10×1 + 5×2 + 4×2 = 28비트. ④는 반복 길이 압축, ⑤는 아스키 원본이에요.');
+Q('a41','1-7','계산','허프만 코드가 R = 1, A = 01, G = 001, B = 000일 때, 1010001을 해독한 것은?',['RABR','RAGR','RRAB','ARBR','RABG'],1,
+'앞에서부터 끊어 읽어요. 1(R) / 01(A) / 000(B) / 1(R) → RABR. 어떤 코드도 다른 코드의 앞부분이 아니라서 한 가지로만 읽혀요.');
+Q('a42','1-7','계산','문자 하나를 8비트로 저장할 때, RABRBGRARRARG의 원본 비트 수와 허프만 압축 후 비트 수를 바르게 짝지은 것은?',['104비트, 24비트','104비트, 26비트','91비트, 24비트','13비트, 24비트','104비트, 13비트'],1,
+'원본은 13 × 8 = 104비트. 빈도수 R6 A3 B2 G2에서 R 1비트, A 2비트, B·G 3비트라서 6 + 6 + 6 + 6 = 24비트예요. ③은 7비트로 계산한 값이에요.');
+Q('a43','1-7','적용','허프만 코드로 사용할 수 없는 코드 묶음은?',['{0, 10, 11}','{1, 01, 001, 000}','{0, 01, 11}','{00, 01, 10, 11}','{1, 00, 01}'],3,
+'0이 01의 앞부분이라서 01을 받았을 때 "0 다음 1"인지 "01"인지 헷갈려요. 허프만 코드는 어떤 코드도 다른 코드의 앞부분이 되면 안 돼요.');
+Q('a44','1-7','보기','허프만 압축에 대한 설명으로 옳은 것만을 <보기>에서 있는 대로 고른 것은?',BK5,5,
+'셋 다 맞아요. 빈도수가 작은 두 개를 합치는 걸 반복해 이진 트리를 만들고, 가지에 0과 1을 붙여 코드를 읽어요.',
+'ㄱ. 빈도수가 낮은 문자일수록 긴 코드를 받는다.<br>ㄴ. 빈도수가 작은 두 개를 합치는 과정을 반복해 트리를 만든다.<br>ㄷ. 트리의 가지에 0과 1을 부여해 코드를 정한다.');
+Q('a45','1-7','계산','PEPERODAY를 문자당 8비트로 저장할 때의 비트 수와, 허프만 압축 후 비트 수를 바르게 짝지은 것은?',['72비트, 25비트','72비트, 27비트','63비트, 25비트','72비트, 9비트','81비트, 25비트'],1,
+'원본 9 × 8 = 72비트. P·E(각 2번)는 2비트, R·O·Y(각 1번)는 3비트, A·D(각 1번)는 4비트예요. (2×2)+(2×2) + 3×3 + 4×2 = 8 + 9 + 8 = 25비트.');
+Q('a46','1-7','개념','허프만 트리의 가지 번호 규칙을 "왼쪽 0, 오른쪽 1"에서 "왼쪽 1, 오른쪽 0"으로 바꾸면 어떻게 되는가?',['전체 비트 수가 달라진다.','각 문자 코드의 0과 1이 뒤바뀌지만 전체 비트 수는 같다.','각 문자의 코드 길이가 달라진다.','코드를 해독할 수 없게 된다.','문자의 빈도수가 바뀐다.'],2,
+'트리 모양은 그대로이고 번호만 뒤집혀요. 코드 길이도 그대로라 전체 비트 수는 같아요. 수업 필기와 교과서 규칙이 반대니까 꼭 알아 두세요.');
+
+/* ---------- 2회차: 암호화 ---------- */
+Q('b01','2-1','개념','데이터를 암호화하여 전송하는 웹 사이트 주소의 시작 부분은?',['http://','https://','www.','.kr','.html'],2,
+'https의 s는 secure(안전한)예요. http는 데이터를 그대로 보내요.');
+Q('b02','2-1','적용','주소가 http://로 시작하는 사이트에서 가장 하지 말아야 할 행동은?',['뉴스 기사 읽기','날씨 확인하기','비밀번호와 카드 번호 입력하기','공지 사항 확인하기','사진 구경하기'],3,
+'http는 엽서처럼 내용이 그대로 노출돼요. 중요한 정보를 입력하면 중간에서 가로챌 수 있어요.');
+Q('b03','2-2','개념','현대 암호가 안전하다고 할 수 있는 가장 큰 이유는?',['절대 풀 수 없는 원리를 쓰기 때문','해독하는 데 매우 오랜 시간이 걸리도록 설계되었기 때문','암호문을 아무에게도 보내지 않기 때문','키를 사용하지 않기 때문','평문을 짧게 만들기 때문'],2,
+'모든 경우의 수를 대입하면 이론적으로는 다 풀려요. 그래서 현대 암호는 푸는 데 엄청나게 오래 걸리게 만드는 게 핵심이에요.');
+Q('b04','2-2','보기','암호의 안전성에 대한 설명으로 옳은 것만을 <보기>에서 있는 대로 고른 것은?',BK5,5,
+'셋 다 수업 내용 그대로예요. 양자 컴퓨터는 경우의 수를 엄청 빠르게 계산할 수 있어 현대 암호를 위협해요.',
+'ㄱ. 가능한 경우의 수를 모두 대입하면 이론적으로 풀 수 있다.<br>ㄴ. 현대 암호는 오랜 시간 동안 풀지 못하도록 설계한다.<br>ㄷ. 양자 컴퓨터는 현대 암호에 위협이 될 수 있다.');
+Q('b05','2-2','개념','제2차 세계 대전 당시 독일의 암호 체계 에니그마를 해독하기 위해 봄브라는 기계를 개발한 인물은?',['찰스 배비지','앨런 튜링','클로드 섀넌','율리우스 카이사르','폰 노이만'],2,
+'컴퓨터 과학의 아버지 앨런 튜링이에요. 섀넌은 혼돈·확산 원칙을, 카이사르는 카이사르 암호를 만들었어요.');
+Q('b06','2-3','개념','암호화되지 않은 상태의 데이터를 무엇이라 하는가?',['평문','암호문','키','해시값','알고리즘'],1,'평문은 누구나 읽을 수 있는 원래 데이터예요.');
+Q('b07','2-3','개념','다음 설명에 해당하는 암호 시스템의 구성 요소는?',['평문','암호문','키','프레임','비트'],3,
+'키는 열쇠 역할을 하는 약속된 규칙 정보예요. 카이사르 암호의 "3칸 이동"도 키예요.','암호화와 복호화 과정에서 사용되는 약속된 규칙 정보');
+Q('b08','2-3','개념','암호 시스템의 구성 요소가 아닌 것은?',['평문','암호문','키','암호화(복호화) 알고리즘','압축률'],5,'구성 요소는 평문, 암호문, 키, 암호화(복호화) 알고리즘 네 가지예요. 압축률은 1회차 압축 단원 용어예요.');
+Q('b09','2-3','개념','섀넌이 제시한 암호 설계 원칙 중 다음 설명에 해당하는 것은?',['확산','혼돈','치환','전치','해시'],2,
+'혼돈은 암호문과 키의 관계를 숨겨요. 확산은 암호문과 평문의 관계를 숨겨요. "혼돈은 키"로 외우세요.','암호문과 키의 상관관계를 숨겨 암호문에서 키를 알아내기 어렵게 한다.');
+Q('b10','2-3','개념','섀넌이 제시한 암호 설계 원칙 중 다음 설명에 해당하는 것은?',['혼돈','확산','기밀성','가용성','인증'],2,
+'평문과의 관계를 숨기는 건 확산이에요.','암호문과 평문의 상관관계를 숨겨 암호문에서 평문을 알아내기 어렵게 한다.');
+Q('b11','2-4','개념','복호화에 대한 설명으로 옳은 것은?',['평문을 암호문으로 바꾸는 과정','암호문을 평문으로 바꾸는 과정','원본 데이터를 압축하는 과정','평문을 해시값으로 바꾸는 과정','키를 평문으로 바꾸는 과정'],2,'암호화는 평문 → 암호문, 복호화는 암호문 → 평문이에요.');
+Q('b12','2-4','개념','수업에서 암호 시스템의 보안을 지키는 데 가장 중요하다고 강조한 것은?',['암호문의 길이','키의 관리','평문의 글자 수','알고리즘의 이름','전송 속도'],2,
+'키를 잃어버리거나 알려주면 다 깨져요. 키를 어떻게 관리하느냐가 관건이에요.');
+Q('b13','2-5','개념','암호화가 제공하는 기능 중 "데이터가 중간에서 변경되는 것을 방지"하는 것은?',['기밀성 보장','무결성 유지','가용성 보장','규정 준수 요구 사항 충족','인증 및 식별 보장'],2,
+'몰래 바꾸는 걸 막는 건 무결성이에요. 몰래 보는 걸 막는 건 기밀성이에요.');
+Q('b14','2-5','개념','정보 보호의 3원칙(CIA)과 그 설명을 바르게 짝지은 것은?',['기밀성 - 허가된 사용자만 정보에 접근할 수 있다.','무결성 - 허가된 사용자가 필요할 때 언제든 접근할 수 있다.','가용성 - 허가된 사용자만 정보를 수정할 수 있다.','기밀성 - 정보가 변경되지 않도록 보장한다.','가용성 - 비인가자의 접근을 차단한다.'],1,
+'기밀성은 접근, 무결성은 수정·삭제, 가용성은 필요할 때 사용이에요. ②와 ③은 설명이 서로 바뀌었어요.');
+Q('b15','2-5','개념','정보 보호의 3원칙 중 "허가된 사용자가 필요할 때 언제든 정보에 접근할 수 있어야 한다"는 것은?',['기밀성','무결성','가용성','확산','혼돈'],3,'"사용 가능함"이라서 가용성이에요.');
+Q('b16','2-5','개념','암호화가 제공하는 기능으로 옳지 않은 것은?',['기밀성 보장','무결성 유지','인증 및 식별 보장','비인가 접근 방지','데이터 용량 감소'],5,'용량을 줄이는 건 압축의 기능이에요. 암호화는 보안 기능을 제공해요.');
+Q('b17','2-6','개념','치환형 암호 기법에 대한 설명으로 옳은 것은?',['평문 문자의 위치를 이동시킨다.','평문의 각 문자를 다른 문자로 바꾼다.','데이터를 고정된 길이로 바꾼다.','공개키와 개인키를 사용한다.','연속 반복되는 문자를 횟수로 나타낸다.'],2,
+'치환형은 글자 자체를 바꾸고, 전치형은 위치를 바꿔요. ③은 해시, ④는 공개키, ⑤는 반복 길이 압축이에요.');
+Q('b18','2-6','개념','카이사르 암호와 스키테일 암호를 바르게 분류한 것은?',['카이사르 - 치환형, 스키테일 - 전치형','카이사르 - 전치형, 스키테일 - 치환형','둘 다 치환형','둘 다 전치형','카이사르 - 해시, 스키테일 - 공개키'],1,
+'카이사르는 알파벳을 다른 알파벳으로 바꾸는 치환형, 스키테일은 막대에 감아 글자 위치를 뒤섞는 전치형이에요.');
+Q('b19','2-6','계산','평문 informatics를 오른쪽으로 3칸 이동하는 카이사르 암호로 암호화한 것은?',['lqirupdwlfv','lqirupdwlfu','hqirupdwlfv','informatics','orfnimcsita:'],1,
+'i→l, n→q, f→i, o→r, r→u, m→p, a→d, t→w, i→l, c→f, s→v. ⑤는 전치형 암호 결과예요.');
+Q('b20','2-6','계산','평문 cat을 오른쪽으로 3칸 이동하는 카이사르 암호로 암호화한 것은?',['dbu','fdw','ecv','fdx','zxq'],2,'c→f, a→d, t→w. ①은 1칸, ③은 2칸, ⑤는 왼쪽으로 3칸 이동한 결과예요.');
+Q('b21','2-6','계산','오른쪽으로 3칸 이동하는 카이사르 암호로 만든 암호문이 khoor이다. 평문은?',['hello','world','khoor','nkrru','gdkkn'],1,'복호화는 반대로 왼쪽으로 3칸 옮겨요. k→h, h→e, o→l, o→l, r→o.');
+Q('b22','2-6','계산','평문 xyz를 오른쪽으로 3칸 이동하는 카이사르 암호로 암호화한 것은?',['abc','xyz','uvw','yza','bcd'],1,'z 다음은 다시 a로 돌아가요. x→a, y→b, z→c.');
+Q('b23','2-6','계산','카이사르 암호로 평문 dog가 암호문 grj가 되었다. 오른쪽으로 몇 칸 이동했는가?',['1칸','2칸','3칸','4칸','5칸'],3,'d→g, o→r, g→j 모두 3칸이에요. 이 "3"이 키예요.');
+Q('b24','2-6','계산','평문 programming을 오른쪽으로 5칸 이동하는 카이사르 암호로 암호화한 것은?',['uwtlwfrrnsl','tvskveqqmrk','vxumxgssotm','uwtlwfrrnsm','orprgaimmgn:'],1,'p→u, r→w, o→t, g→l, a→f, m→r, i→n, n→s. ②는 4칸, ③은 6칸이에요.');
+Q('b25','2-6','계산','다음 방법으로 평문 informatics를 전치형 암호로 암호화한 결과는?',['orfnimcsita:','lqirupdwlfv','informatics:','mrofni:scita','nifromtaics'],1,
+'inform / atics: 두 줄을 4, 5, 3, 2, 1, 6번 열 순서로 읽으면 orfnim / csita: → orfnimcsita:',
+'키는 453216이다. 평문을 한 줄에 6글자씩 적고 빈칸은 \':\'로 채운 뒤, 키 순서대로 열을 다시 배치한다.');
+Q('b26','2-6','계산','다음 방법으로 평문 abcdef를 전치형 암호로 암호화한 결과는?',['cabfde','abcdef','bcaefd','cbafed','acbdfe'],1,
+'abc / def 두 줄을 3, 1, 2번 열 순서로 읽으면 cab / fde → cabfde예요.','키는 312이다. 평문을 한 줄에 3글자씩 적은 뒤, 키 순서(3번 열, 1번 열, 2번 열)대로 열을 다시 배치한다.');
+Q('b27','2-6','개념','전치형 암호의 특징으로 옳은 것은?',['글자가 다른 글자로 바뀐다.','사용된 글자의 종류와 개수는 그대로이고 위치만 바뀐다.','암호문을 평문으로 되돌릴 수 없다.','반드시 공개키가 필요하다.','키를 사용하지 않는다.'],2,'전치형은 자리만 바꿔서 글자 구성은 그대로예요. 키(열 순서, 막대 굵기)는 필요해요.');
+Q('b28','2-6','개념','스키테일 암호에 대한 설명으로 옳은 것은?',['고대 로마의 카이사르가 만든 치환형 암호이다.','막대에 감아 쓴 글을 같은 굵기의 막대로만 읽을 수 있는 전치형 암호이다.','알파벳을 3칸씩 이동하는 암호이다.','현대에 널리 쓰이는 공개키 암호이다.','1993년 미국 국가안보국이 설계했다.'],2,
+'스키테일은 기원전 450년경 고대 그리스의 전치형 암호예요. 막대 굵기가 키 역할을 해요. ⑤는 SHA 해시 설명이에요.');
+Q('b29','2-7','개념','비밀키 암호 기법에 대한 설명으로 옳은 것은?',['서로 다른 두 개의 키를 사용한다.','암호화와 복호화에 같은 키를 사용하며 대칭키 암호라고도 한다.','암호문을 평문으로 복호화할 수 없다.','RSA가 대표적이다.','키를 누구에게나 공개해도 안전하다.'],2,'①, ⑤는 공개키 암호, ③은 해시, ④의 RSA는 공개키 암호예요.');
+Q('b30','2-7','개념','비밀키 암호 기법의 단점으로 가장 적절한 것은?',['암호화 속도가 매우 느리다.','키를 안전하게 공유하고 관리하기 어렵다.','키가 두 개라서 복잡하다.','복호화가 불가능하다.','구현이 매우 어렵다.'],2,
+'같은 키를 상대에게 건네줘야 해서, 전달 중에 새거나 한 사람이 잃어버리면 뚫려요. 비밀키는 오히려 빠르고 구현이 쉬워요.');
+Q('b31','2-7','개념','비밀키 암호 기법의 대표적인 예로만 짝지은 것은?',['RSA, ECC','DES, AES','MD5, SHA','DES, RSA','AES, ECC'],2,'비밀키는 DES·AES, 공개키는 RSA·ECC, 해시는 MD5·SHA예요. 세 짝을 묶어서 외우세요.');
+Q('b32','2-8','적용','공개키 암호 기법으로 A가 B에게 메시지를 보낼 때, A가 암호화에 사용하는 키는?',['A의 공개키','A의 개인키','B의 공개키','B의 개인키','A와 B가 공유한 비밀키'],3,
+'받는 사람(B)이 열 수 있어야 하니까 B의 공개키로 잠가요. 그러면 B의 개인키를 가진 B만 열 수 있어요.');
+Q('b33','2-8','적용','공개키 암호 기법으로 A가 보낸 암호문을 B가 복호화할 때 사용하는 키는?',['A의 공개키','A의 개인키','B의 공개키','B의 개인키','비밀키'],4,'B의 공개키로 잠근 건 B의 개인키로만 열 수 있어요.');
+Q('b34','2-8','순서','공개키 암호 기법의 과정을 순서대로 바르게 나열한 것은?',['(나) → (라) → (가) → (마) → (다)','(라) → (나) → (가) → (마) → (다)','(나) → (가) → (라) → (마) → (다)','(가) → (나) → (라) → (마) → (다)','(나) → (라) → (마) → (가) → (다)'],1,
+'키 쌍을 만들고(나) → 공개키를 공개하고(라) → A가 그 공개키로 암호화하고(가) → 보내고(마) → B가 개인키로 연다(다).',
+'(가) A가 B의 공개키로 평문을 암호화한다.<br>(나) B가 공개키와 개인키 쌍을 생성한다.<br>(다) B가 자신의 개인키로 복호화한다.<br>(라) B가 공개키를 공개한다.<br>(마) A가 암호문을 B에게 전송한다.');
+Q('b35','2-8','개념','공개키 암호 기법의 대표적인 예로만 짝지은 것은?',['DES, AES','RSA, ECC','MD5, SHA','AES, RSA','ZIP, PNG'],2,'RSA는 큰 수의 소인수분해, ECC는 타원 곡선을 이용해요.');
+Q('b36','2-8','개념','비밀키 암호와 공개키 암호를 비교한 내용으로 옳은 것은?',['비밀키 암호는 공개키 암호보다 속도가 느리다.','공개키 암호는 서로 다른 두 개의 키를 사용한다.','비밀키 암호는 키를 전달할 필요가 없다.','공개키 암호는 암호화 키와 복호화 키가 같다.','공개키 암호의 대표적인 예는 DES이다.'],2,'비밀키는 빠르지만 키 전달이 필요하고, 공개키는 키가 두 개이고 느려요. DES는 비밀키 암호예요.');
+Q('b37','2-8','보기','공개키 암호 기법에 대한 설명으로 옳은 것만을 <보기>에서 있는 대로 고른 것은?',BK5,3,
+'ㄴ이 함정이에요. 공개키 암호는 비밀키 암호보다 느려요.','ㄱ. 공개키는 누구에게 공개되어도 된다.<br>ㄴ. 비밀키 암호보다 암호화·복호화 속도가 빠르다.<br>ㄷ. 비대칭키 암호라고도 한다.');
+Q('b38','2-8','적용','공개키 암호를 "누구나 편지를 넣을 수 있지만 우체부만 열쇠로 열 수 있는 우체통"에 비유할 때, 편지를 넣는 투입구에 해당하는 것은?',['개인키','공개키','암호문','평문','해시값'],2,'누구나 쓸 수 있는 투입구가 공개키, 우체부만 가진 열쇠가 개인키예요.');
+Q('b39','2-9','개념','해시에 대한 설명으로 옳은 것은?',['암호문을 평문으로 쉽게 복원할 수 있다.','다양한 길이의 데이터를 고정된 길이의 값으로 변환한다.','같은 입력이라도 매번 다른 값이 나온다.','두 개의 키를 사용한다.','문자의 위치를 이동시킨다.'],2,'해시는 단방향이라 복원이 불가능하고, 같은 입력이면 항상 같은 값이 나와요.');
+Q('b40','2-9','개념','해시 함수가 "단방향"이라는 것의 의미로 옳은 것은?',['평문 → 해시값 변환은 가능하지만 해시값 → 평문은 불가능하다.','해시값 → 평문은 가능하지만 평문 → 해시값은 불가능하다.','양쪽 방향 모두 가능하다.','양쪽 방향 모두 불가능하다.','키만 있으면 해시값을 평문으로 되돌릴 수 있다.'],1,'믹서기처럼 과일 → 주스는 되지만 주스 → 과일은 안 돼요. 키가 있어도 마찬가지예요.');
+Q('b41','2-9','적용','해시의 활용으로 옳지 않은 것은?',['비밀번호를 서버에 저장할 때','데이터가 위조·변조되었는지 확인할 때','블록체인에서 블록을 연결할 때','로그인할 때 비밀번호가 맞는지 확인할 때','받은 암호문을 다시 평문으로 복호화하여 메일 내용을 읽을 때'],5,'해시는 복호화가 불가능해서 내용을 되살리는 데는 쓸 수 없어요. 그건 비밀키·공개키 암호의 역할이에요.');
+Q('b42','2-9','적용','해시를 이용하는 로그인에서 서버가 비밀번호를 확인하는 방법으로 옳은 것은?',['저장된 평문 비밀번호와 입력값을 비교한다.','저장된 해시값을 복호화한 뒤 입력값과 비교한다.','입력한 비밀번호를 해시값으로 바꿔 저장된 해시값과 비교한다.','공개키로 비밀번호를 복호화해 비교한다.','관리자가 직접 비밀번호를 확인한다.'],3,'서버는 평문을 갖고 있지 않고, 해시값은 복호화도 안 돼요. 그래서 입력값도 해시로 바꿔서 일치하는지만 봐요.');
+Q('b43','2-9','적용','해시를 이용해 비밀번호를 저장한 서버가 해킹당해도 원래 비밀번호가 바로 드러나지 않는 이유는?',['서버에 평문으로 저장되어 있기 때문','해시값만 저장되어 있고 해시값은 복호화할 수 없기 때문','개인키로 잠겨 있기 때문','손실 압축되어 있기 때문','반복 길이 압축되어 있기 때문'],2,'그래서 서버 관리자도 내 비밀번호를 알 수 없어요.');
+Q('b44','2-9','개념','1993년 미국 국가안보국(NSA)이 설계한 해시 알고리즘 모음은?',['MD5','SHA','RSA','AES','ECC'],2,'SHA는 SHA-1, SHA-2, SHA-3으로 발전했어요. MD5도 해시지만 NSA가 만든 건 아니에요.');
+Q('b45','2-9','보기','해시 함수에 대한 설명으로 옳은 것만을 <보기>에서 있는 대로 고른 것은?',BK5,3,
+'ㄷ이 함정이에요. 해시값은 입력 길이와 상관없이 항상 고정된 길이예요.','ㄱ. MD5는 취약점이 발견되어 보안용으로 권장되지 않는다.<br>ㄴ. SHA는 SHA-1, SHA-2, SHA-3 등으로 발전했다.<br>ㄷ. 입력 데이터가 길어지면 해시값의 길이도 늘어난다.');
+Q('b46','2-9','개념','블록체인에 저장된 데이터의 위조·변조가 어려운 이유로 가장 적절한 것은?',['중앙 기관 한 곳이 모든 데이터를 관리하기 때문','각 블록에 이전 블록의 해시값이 저장되어, 하나를 바꾸면 이후 모든 블록에 영향을 주기 때문','공개키를 사용하지 않기 때문','데이터를 반복 길이 압축하기 때문','손실 압축으로 원본을 지우기 때문'],2,'블록체인은 중앙 기관 없이 참여자들이 함께 관리해요. 블록끼리 해시값으로 사슬처럼 이어져 있어요.');
+Q('b47','2-9','종합','(가)~(다)에 해당하는 암호 기법을 바르게 짝지은 것은?',['(가) 비밀키, (나) 공개키, (다) 해시','(가) 공개키, (나) 비밀키, (다) 해시','(가) 해시, (나) 공개키, (다) 비밀키','(가) 비밀키, (나) 해시, (다) 공개키','(가) 공개키, (나) 해시, (다) 비밀키'],1,
+'같은 키 하나 = 비밀키, 서로 다른 키 두 개 = 공개키, 고정 길이·복호화 불가 = 해시.','(가) 암호화와 복호화에 같은 키를 사용한다.<br>(나) 서로 다른 두 개의 키를 사용한다.<br>(다) 데이터를 고정된 길이의 값으로 바꾸며 복호화할 수 없다.');
+Q('b48','2-6','종합','다음 중 성격이 다른 하나는?',['카이사르 암호','스키테일 암호','DES','RSA','허프만 압축'],5,'①~④는 모두 암호 기법이고, 허프만은 데이터를 줄이는 압축 기법이에요. 단원을 섞어 묻는 문제예요.');
+/* ---------- 작년 기출 스타일 (김포고 2025 1학년 정보) ---------- */
+function X(...a){Q(...a);QS[QS.length-1].x=1}
+const CZ=`<pre class="code">def caesar_cipher(plaintext, shift):
+    alphabet = 'abcdefghijklmnopqrstuvwxyz'
+    plaintext = plaintext.lower()
+    ciphertext = ''
+    for char in plaintext:
+        if char not in alphabet:
+            ciphertext = ciphertext + char
+        else:
+            idx = alphabet.index(char)
+            idx = (idx + shift) % len(alphabet)
+            ciphertext = ciphertext + alphabet[idx]
+    return ciphertext
+`;
+X('c01','1-1','기출형','디지털 데이터 용량 단위 중 1GB와 같은 용량에 해당하는 것은?',['1024 Byte','1024 KB','1024 MB','1024 TB','1024 bit'],3,
+'Byte → KB → MB → GB → TB로 한 칸 올라갈 때마다 1,024배예요. 1GB는 바로 아래 단위인 MB의 1,024배예요.');
+X('c02','1-1','기출형','디지털 데이터 용량 단위 중 1PB와 같은 용량에 해당하는 것은?',['1024 GB','1024 MB','1024 TB','1024 EB','1000 TB'],3,
+'TB 바로 위가 PB, 그 위가 EB예요. 1PB = 1,024TB. 1,000TB는 1,024가 아니라서 틀려요.');
+X('c03','1-3','기출형','다음 설명에 해당하는 이미지 데이터 압축 기법은?',['BMP','JPEG','GIF','PNG','MP3'],3,
+'256색, 애니메이션 = GIF예요. MP3는 소리 파일이라 이미지 압축 기법이 아니에요.',
+'◦ 비손실 압축을 사용하며 인터넷에서 파일 전송 시간을 최소화하기 위해 설계된 방식<br>◦ 최대 256색을 표현하며, 투명색 배경과 애니메이션 효과를 지원');
+X('c04','1-3','기출형','다음 설명에 해당하는 이미지 데이터 압축 기법은?',['BMP','JPEG','GIF','PNG','ZIP'],4,
+'품질 저하 없는 비손실 + JPEG와 GIF의 장점 + 트루 컬러 = PNG예요. GIF는 256색까지라서 트루 컬러가 안 돼요.',
+'◦ 비손실 압축을 사용하며 품질 저하 없이 인터넷에서 표현할 수 있음<br>◦ JPEG와 GIF의 장점을 합친 방식으로, 투명색과 트루 컬러를 지원');
+X('c05','1-3','기출형','다음 설명에 해당하는 이미지 형식은?',['BMP','JPEG','GIF','PNG','MPEG4'],1,
+'압축 기법이 적용되지 않은 윈도 기본 비트맵 방식은 BMP예요.','◦ 압축 기법이 적용되지 않으며 윈도에서 기본적으로 지원하는 비트맵 방식<br>◦ 일반적으로 반복 길이 압축을 지원');
+X('c06','1-3','기출형','이미지 압축 기법에 대한 설명으로 옳은 것만을 <보기>에서 있는 대로 고른 것은?',['ㄱ','ㄷ','ㄱ, ㄴ','ㄴ, ㄷ','ㄱ, ㄴ, ㄷ'],3,
+'ㄷ이 함정이에요. PNG는 비손실 압축이에요. 손실 압축 이미지 기법은 JPEG뿐이에요.',
+'ㄱ. JPEG는 손실 압축을 사용하며 인간의 시각적 특성을 활용한다.<br>ㄴ. GIF는 비손실 압축을 사용하며 애니메이션 효과를 지원한다.<br>ㄷ. PNG는 손실 압축을 사용하여 압축률이 가장 높다.');
+X('c07','1-7','기출형','문자열 SKSSYSKSSSKS를 허프만 압축(내림차순 정렬 기준, 빈도수가 큰 쪽을 왼쪽, 왼쪽 가지 0·오른쪽 가지 1)했을 때 각 문자의 코드는?',['S: 0, K: 10, Y: 11','S: 1, K: 01, Y: 00','S: 0, K: 11, Y: 10','S: 10, K: 0, Y: 11','S: 00, K: 01, Y: 1'],1,
+'빈도수 S8 K3 Y1. 작은 두 개 K3 + Y1 = 4를 먼저 합치고, S8과 4를 합쳐 12. S8이 왼쪽(0), 4가 오른쪽(1). 4 안에서 K3이 왼쪽(10), Y1이 오른쪽(11). ②는 왼쪽 1·오른쪽 0 규칙으로 읽은 결과예요.');
+X('c08','1-7','기출형','문자열 SKSSYSKSSSKS를 위와 같은 규칙(S: 0, K: 10, Y: 11)으로 허프만 압축한 결과는?',['0100011010000100','1011100101111011','0100011010000101','01000110100001000','0101100100001100'],1,
+'S K S S Y S K S S S K S → 0 10 0 0 11 0 10 0 0 0 10 0 → 0100011010000100 (16비트). ②는 0과 1이 뒤집힌 규칙의 결과예요. 길이부터 세 보면(16자리) 빨리 거를 수 있어요.');
+X('c09','1-7','기출형','문자 하나를 8비트로 저장할 때, SKSSYSKSSSKS를 허프만 압축한 경우의 압축률은? (S: 0, K: 10, Y: 11)',['4.5','5','5.5','6','6.5'],4,
+'원본 12글자 × 8비트 = 96비트. 압축 후 S8×1 + K3×2 + Y1×2 = 16비트. 압축률 = 96 ÷ 16 = 6.');
+X('c10','1-7','기출형','작년 기출 문자열 ABBGGGABGGG를 허프만 압축했을 때의 압축률은? (문자 하나는 8비트)',['4.4','4.5','5.5','5.7','8'],3,
+'A2 B3 G6 → G 1비트, A·B 2비트. 6 + 6 + 4 = 16비트. 원본 11 × 8 = 88비트. 88 ÷ 16 = 5.5. 가지 번호 규칙이 달라도 압축률은 같아요.');
+X('c11','1-7','기출형','ABBGGGABGGG를 허프만 압축(내림차순, 큰 쪽 왼쪽, 왼쪽 가지 1·오른쪽 가지 0)한 결과는?',['1110100001110000','0001011110001111','1100101010110101010','01010111111010111111','10101000000101000000'],2,
+'왼쪽 1 규칙이면 G = 1, B = 01, A = 00. A B B G G G A B G G G → 00 01 01 1 1 1 00 01 1 1 1 = 0001011110001111. ①은 왼쪽 0 규칙의 결과예요. 작년엔 이 두 개가 다 선지에 있었어요!');
+X('c12','1-7','기출형','허프만 코드가 S: 0, K: 10, Y: 11일 때 비트열 1001100을 해독한 것은?',['KSYSS','KYSS','SKYSS','KSSYS','YSKSS'],1,
+'앞에서부터 끊어요. 10(K) / 0(S) / 11(Y) / 0(S) / 0(S) → KSYSS.');
+X('c13','2-6','기출형','다음은 카이사르 암호화 프로그램이다. 실행 결과로 옳은 것은?',['vwxgb','pqrav','wxygc','udwxs','tuvdy'],1,
+'shift가 3이니까 오른쪽 3칸: s→v, t→w, u→x, d→g, y→b. ②는 왼쪽 3칸, ③은 4칸이에요. ⑤는 1칸이에요.',
+CZ+`
+print(caesar_cipher('study', 3))</pre>`);
+X('c14','2-6','기출형','다음 프로그램의 실행 결과로 옳은 것은?',['nruhd','hlobx','ilpcy','hlobw','gknaw'],2,
+'shift가 -3이니까 왼쪽 3칸: k→h, o→l, r→o, e→b, a→x. a에서 왼쪽으로 가면 z, y, x로 돌아가요(% 26 덕분). ①은 오른쪽 3칸이에요.',
+CZ+`
+print(caesar_cipher('KOREA', -3))</pre>`);
+X('c15','2-6','기출형','카이사르 암호 프로그램에서 idx = (idx + shift) % len(alphabet) 의 % len(alphabet)이 하는 역할로 가장 적절한 것은?',['문자를 대문자로 바꾼다.','알파벳 범위를 넘어가면 처음(또는 끝)으로 돌아가게 한다.','알파벳이 아닌 문자를 지운다.','문자의 위치를 뒤바꾼다.','암호문을 해시값으로 바꾼다.'],2,
+'len(alphabet)은 26이에요. 26으로 나눈 나머지를 쓰니까 z 다음이 a로, a 이전이 z로 돌아가요.');
+X('c16','2-6','기출형','카이사르 암호 프로그램으로 caesar_cipher(평문, 2)를 실행했더니 crrng가 출력되었다. 평문은?',['apple','ettpi','bqqmf','crrng','zoonk'],1,
+'shift 2로 암호화했으니 거꾸로 왼쪽 2칸: c→a, r→p, r→p, n→l, g→e → apple. ②는 오른쪽으로 한 번 더 민 결과예요.');
+X('c17','2-6','기출형','다음 프로그램의 실행 결과로 옳은 것은?',['dss','zoo','vkk','css','dts'],1,
+'오른쪽 4칸: z(25) → 29 % 26 = 3 → d, o → s, o → s. 끝을 넘어가면 처음으로 돌아와요.',
+CZ+`
+print(caesar_cipher('zoo', 4))</pre>`);
+X('c18','2-6','기출형','전치형 암호 기법으로 평문 computer를 키 \'2413\'으로 암호화한 결과는? (키 길이만큼 한 줄에 적고, 키 숫자 순서대로 열을 배치)',['opcmtrue','cmoputer','pocmrtue','c2o4m1p3u2t4e1r3','retupmoc'],1,
+'comp / uter → 2·4·1·3번 열 → o p c m / t r u e → opcmtrue. ④처럼 숫자를 끼워 넣는 건 전치형이 아니에요.');
+X('c19','2-6','기출형','전치형 암호 기법으로 평문 hello를 키 \'312\'로 암호화한 결과는? (빈칸은 \':\'로 채움)',['lhe:lo','hel:lo','ehlol:','lhel:o','olleh:'],1,
+'hel / lo: → 3·1·2번 열 → l h e / : l o → lhe:lo. 빈칸 \':\'도 열 순서대로 함께 옮겨요.');
+X('c20','2-6','기출형','전치형 암호 기법으로 평문 security를 키 \'4132\'로 암호화한 결과는?',['usceyrti','ucesyirt','secu rity','ceusitry','yticruces'],1,
+'secu / rity → 4·1·3·2번 열 → u s c e / y r t i → usceyrti.');
+X('c21','2-5','기출형','다음 중 암호화의 기능에 해당하는 것만을 <보기>에서 있는 대로 고른 것은?',['ㄱ, ㄴ','ㄱ, ㄷ','ㄴ, ㄹ','ㄱ, ㄷ, ㅁ','ㄷ, ㄹ, ㅁ'],4,
+'ㄴ은 "방지"를 "허용"으로 바꾼 함정, ㄹ은 압축의 기능이에요. 작년에도 이렇게 말끝을 뒤집은 선지가 나왔어요.',
+'ㄱ. 데이터의 기밀성 보장<br>ㄴ. 비인가자 접근 허용<br>ㄷ. 인증 및 식별 보장<br>ㄹ. 데이터 용량 감소<br>ㅁ. 규정 준수 요구 사항 충족');
+X('c22','2-5','기출형','다음 중 암호화의 기능에 해당하지 않는 것만을 <보기>에서 있는 대로 고른 것은?',['ㄱ, ㄴ','ㄴ, ㄷ','ㄷ, ㄹ','ㄴ, ㅁ','ㄱ, ㄹ, ㅁ'],4,
+'ㄴ은 "유지"가 아니라 "변경 허용"이라 반대, ㅁ은 "보장"이 아니라 "차단"이라 반대예요. ㄱ, ㄷ, ㄹ은 교과서에 나온 그대로예요.',
+'ㄱ. 보안 공격으로부터 보호<br>ㄴ. 데이터의 무단 변경 허용<br>ㄷ. 보안 통신 보장<br>ㄹ. 데이터의 무결성 유지<br>ㅁ. 인증 및 식별 차단');
+X('c23','2-9','기출형','해시를 이용한 암호 기법에 대한 설명으로 옳지 않은 것은?',['단방향 암호 기법이다.','다양한 길이의 데이터를 고정된 길이의 값으로 변환한다.','입력 데이터가 길수록 해시값의 길이도 길어진다.','데이터가 위조 또는 변조되지 않았는지 확인하는 용도로 쓰인다.','비밀번호는 유출 방지를 위해 해시값으로 바꿔 서버에 저장된다.'],3,
+'해시값은 입력 길이와 상관없이 항상 같은 길이예요. 작년엔 "복호화가 가능하다"가 틀린 선지였으니 둘 다 기억하세요.');
+X('c24','2-9','기출형','해시를 이용한 암호 기법에 대한 설명으로 옳지 않은 것은?',['평문을 해시 함수에 넣으면 해시값이 나온다.','같은 평문을 넣으면 같은 해시값이 나온다.','해시값을 복호화하여 원래의 비밀번호를 확인할 수 있다.','MD5와 SHA는 해시 함수의 예이다.','블록체인은 해시를 이용해 위조·변조를 막는다.'],3,
+'해시는 복호화가 불가능해요. 작년 기출의 정답 선지와 같은 포인트예요.');
+
+/* ---------- 심화 ---------- */
+function Z(...a){Q(...a);QS[QS.length-1].z=1}
+Z('d01','1-7','심화','문자열 AAAAAAABBBBCCD를 허프만 압축했을 때 전체 비트 수는?',['21비트','24비트','25비트','28비트','42비트'],2,
+'빈도수 A7 B4 C2 D1. D1 + C2 = 3 → 3 + B4 = 7 → 7 + A7 = 14. 코드 길이는 A 1비트, B 2비트, C·D 3비트. 7×1 + 4×2 + 2×3 + 1×3 = 7 + 8 + 6 + 3 = 24비트. ⑤ 42비트는 네 글자를 모두 3비트로 쓴 경우예요.');
+Z('d02','1-7','심화','허프만 코드가 A: 0, B: 10, C: 110, D: 111일 때, 비트열 0101100111을 해독한 것은?',['ABCAD','ABACD','AABCD','ABCDA','BACAD'],1,
+'0(A) / 10(B) / 110(C) / 0(A) / 111(D) → ABCAD. 1로 시작하면 다음 자리, 11로 시작하면 그다음 자리까지 봐야 해요.');
+Z('d03','1-7','심화','허프만 압축에 대한 설명으로 옳은 것만을 <보기>에서 있는 대로 고른 것은?',['ㄱ','ㄷ','ㄱ, ㄴ','ㄴ, ㄷ','ㄱ, ㄴ, ㄷ'],3,
+'ㄷ이 함정이에요. 모든 문자의 빈도수가 같으면 코드 길이가 거의 같아져서 압축 효과가 작아요. 허프만은 빈도수 차이가 클수록 효과가 커요.',
+'ㄱ. 빈도수가 가장 높은 문자의 코드 길이는 다른 어떤 문자의 코드보다 길지 않다.<br>ㄴ. 압축 결과를 복원하려면 각 문자의 코드표(또는 트리)가 필요하다.<br>ㄷ. 모든 문자의 빈도수가 같을 때 압축 효과가 가장 크다.');
+Z('d04','1-6','심화','문자열 AAAAAAAABB(10글자)를 압축할 때, (가) 반복 길이 압축의 압축률(글자 수 기준)과 (나) 허프만 압축의 압축률(문자당 8비트 기준)을 바르게 짝지은 것은?',['(가) 2.5, (나) 4','(가) 2.5, (나) 8','(가) 5, (나) 8','(가) 2, (나) 5','(가) 0.4, (나) 0.125'],2,
+'(가) A8B2로 4글자 → 10 ÷ 4 = 2.5. (나) 문자가 두 종류라 A 0, B 1로 각각 1비트 → 10비트. 원본 80비트 ÷ 10 = 8. ⑤는 분자, 분모를 거꾸로 나눈 값이에요.');
+Z('d05','1-6','심화','반복 길이 압축을 했을 때 압축률이 정확히 1인 것은? (글자 수 기준)',['AAAABB','AABBCC','ABCABC','AAAAAA','AAABBB'],2,
+'AABBCC → A2B2C2로 6글자 그대로라 6 ÷ 6 = 1. ①은 A4B2(4글자), ③은 12글자(0.5), ④는 A6(2글자), ⑤는 A3B3(4글자)예요.');
+Z('d06','1-6','심화','반복 길이 압축 결과가 W3B1W3인 이미지 한 줄이 있다. 원본과 압축률을 바르게 짝지은 것은? (글자 수 기준)',['WWWBWWW, 약 1.17','WWWBWWW, 약 0.86','WWWBBBWWW, 1.5','WBWWW, 약 0.83','WWWBWWW, 7'],1,
+'원본은 W 3개, B 1개, W 3개 = 7글자. 압축 결과 W3B1W3은 6글자. 7 ÷ 6 ≈ 1.17. ②는 거꾸로 나눈 값이에요.');
+Z('d07','1-5','심화','아스키코드에서 대문자 A는 65이고, 소문자 a는 대문자 A보다 32 크다. 소문자 a를 7비트 2진수로 나타낸 것은?',['1000001','1100001','1000010','1110001','0100001'],2,
+'a = 65 + 32 = 97 = 64 + 32 + 1 → 1100001. A(1000001)와 비교하면 32 자리(왼쪽에서 둘째) 비트 하나만 달라요.');
+Z('d08','1-3','심화','가로 800픽셀, 세로 600픽셀인 이미지의 각 픽셀을 24비트 트루 컬러로 압축 없이 저장할 때 필요한 용량은?',['480,000바이트','1,440,000바이트','11,520,000바이트','14,400바이트','1,920,000바이트'],2,
+'픽셀 수 800 × 600 = 480,000개. 24비트 = 3바이트이니 480,000 × 3 = 1,440,000바이트(약 1.37MB). ③은 비트로 계산한 값(바이트로 안 바꿈)이에요. 그래서 BMP처럼 압축 안 한 이미지는 용량이 커요.');
+Z('d09','1-3','심화','GIF는 최대 256색을 표현한다. 픽셀 하나의 색을 나타내는 데 필요한 최소 비트 수는?',['4비트','6비트','8비트','16비트','256비트'],3,
+'n비트로 2를 n번 곱한 만큼의 색을 표현해요. 2를 8번 곱하면 256이라 8비트예요. 24비트 트루 컬러는 2를 24번 곱한 약 1,677만 색이에요.');
+Z('d10','1-4','심화','용량이 2MB인 파일을 압축했더니 압축률이 4였다. 압축 후 용량은?',['0.5KB','256KB','512KB','8MB','2,048KB'],3,
+'압축 후 = 압축 전 ÷ 압축률. 2MB = 2,048KB이고 2,048 ÷ 4 = 512KB. ④는 곱해 버린 값이에요.');
+Z('d11','2-6','심화','어떤 평문을 caesar_cipher(평문, 5)로 암호화했다. 같은 함수로 이 암호문을 다시 평문으로 되돌리는 호출만을 <보기>에서 있는 대로 고른 것은?',['ㄱ','ㄴ','ㄷ','ㄱ, ㄴ','ㄱ, ㄷ'],4,
+'오른쪽 5칸 민 걸 되돌리려면 왼쪽 5칸(-5)이에요. 그런데 % 26 때문에 오른쪽으로 21칸 가도 한 바퀴(26) 돌아서 같은 자리예요. 5 + 21 = 26. ㄷ은 5칸을 한 번 더 미는 거라 안 돼요.',
+'ㄱ. caesar_cipher(암호문, -5)<br>ㄴ. caesar_cipher(암호문, 21)<br>ㄷ. caesar_cipher(암호문, 5)');
+Z('d12','2-6','심화','다음 프로그램의 실행 결과로 옳은 것은?',['ij, bj!','ij,!bj!','IJ, BJ!','hi, ai!','jk, ck!'],1,
+'알파벳이 아닌 쉼표, 공백, 느낌표는 if char not in alphabet 쪽으로 가서 그대로 붙어요. h→i, i→j, a→b, i→j.',
+CZ+`
+print(caesar_cipher('hi, ai!', 1))</pre>`);
+Z('d13','2-6','심화','다음 프로그램의 실행 결과로 옳은 것은?',['DEF','def','abc','ABC','xyz'],2,
+'plaintext.lower()에서 먼저 소문자 abc로 바뀌고, 오른쪽 3칸이라 def가 돼요. 대문자 그대로 나오는 ①이 함정이에요.',
+CZ+`
+print(caesar_cipher('ABC', 3))</pre>`);
+Z('d14','2-2','심화','카이사르 암호(알파벳 26자)를 경우의 수로 깨려고 한다. 평문이 그대로 나오는 0칸 이동을 빼면 시도해야 할 키는 최대 몇 가지인가?',['3가지','13가지','25가지','26가지','676가지'],3,
+'이동 칸 수는 1~25칸뿐이에요(26칸은 한 바퀴라 0칸과 같아요). 그래서 카이사르 암호는 금방 깨져요. 현대 암호가 경우의 수를 엄청 크게 만드는 이유예요.');
+Z('d15','2-2','심화','숫자로만 된 비밀번호를 4자리에서 6자리로 늘리면, 모든 경우를 대입할 때 시도 횟수는 몇 배가 되는가?',['1.5배','2배','10배','100배','1,000배'],4,
+'4자리는 10,000가지, 6자리는 1,000,000가지. 자리 하나에 10배씩이니 두 자리 늘면 100배예요. 길이가 늘수록 경우의 수가 폭발해요.');
+Z('d16','2-6','심화','키 \'2413\'으로 전치형 암호화한 암호문이 cesic:ne이다. 평문은? (빈칸은 \':\'로 채웠음)',['science','scenice','cesicne','sicence','scien:ce'],1,
+'암호문을 4글자씩 끊으면 cesi / c:ne. 각 줄에서 1번째 글자는 원래 2번 열, 2번째는 4번 열, 3번째는 1번 열, 4번째는 3번 열이에요. 원래 자리로 돌리면 scie / nce: → science.');
+Z('d17','2-6','심화','평문 길이가 10글자이고 키가 \'3142\'인 전치형 암호(빈칸은 \':\'로 채움)로 암호화하면 암호문은 몇 글자인가?',['4글자','10글자','11글자','12글자','14글자'],4,
+'4글자씩 끊으면 4 + 4 + 2 → 마지막 줄 빈칸 2개를 :로 채워 4 × 3 = 12글자. 전치형은 글자를 바꾸지 않으니 원래 글자 10개 + 채운 칸 2개예요.');
+Z('d18','2-8','심화','공개키 암호 기법으로 A가 B에게 메시지를 보낸 뒤, B가 A에게 답장을 암호화해서 보내려 한다. B가 답장을 암호화할 때 쓰는 키는?',['A의 공개키','A의 개인키','B의 공개키','B의 개인키','B가 새로 만든 비밀키'],1,
+'이번엔 받는 사람이 A예요. 받는 사람의 공개키로 잠그고, 받는 사람이 자기 개인키로 열어요. 누가 보내든 "받는 사람의 키"만 기억하면 끝!');
+Z('d19','2-8','심화','10명이 서로 1:1로 몰래 통신하려 한다. (가) 비밀키 암호에서 필요한 키의 개수와 (나) 공개키 암호에서 필요한 키의 개수를 바르게 짝지은 것은?',['(가) 10개, (나) 20개','(가) 45개, (나) 20개','(가) 90개, (나) 10개','(가) 45개, (나) 10개','(가) 20개, (나) 45개'],2,
+'(가) 비밀키는 두 사람마다 키가 하나씩 필요해요. 10명 중 2명을 고르는 경우 = 10 × 9 ÷ 2 = 45개. (나) 공개키는 한 사람당 공개키·개인키 한 쌍이면 누구와도 통신할 수 있어서 10 × 2 = 20개. 사람이 많을수록 비밀키 관리가 어려운 이유예요.');
+Z('d20','2-5','심화','(가)~(다) 상황에서 침해된 정보 보호 원칙을 바르게 짝지은 것은?',['(가) 기밀성, (나) 무결성, (다) 가용성','(가) 가용성, (나) 기밀성, (다) 무결성','(가) 무결성, (나) 가용성, (다) 기밀성','(가) 기밀성, (나) 가용성, (다) 무결성','(가) 가용성, (나) 무결성, (다) 기밀성'],1,
+'몰래 본 것(유출) = 기밀성, 몰래 바꾼 것 = 무결성, 필요할 때 못 쓰게 된 것 = 가용성.',
+'(가) 해커가 학생들의 개인 정보를 몰래 빼냈다.<br>(나) 누군가 성적 처리 서버의 점수를 몰래 고쳤다.<br>(다) 공격으로 수강 신청 사이트가 마비되어 아무도 접속하지 못했다.');
+Z('d21','2-9','심화','비밀번호를 해시값으로 저장하는 서버에 대한 설명으로 옳은 것만을 <보기>에서 있는 대로 고른 것은?',['ㄱ','ㄷ','ㄱ, ㄴ','ㄴ, ㄷ','ㄱ, ㄴ, ㄷ'],3,
+'같은 입력이면 같은 해시값이 나오니 ㄱ은 맞아요. 한 글자만 달라도 완전히 다른 해시값이 나오니 ㄴ도 맞아요. ㄷ은 틀려요. 관리자도 해시값을 평문으로 되돌릴 수 없어서, 보통 비밀번호를 "찾아" 주지 못하고 새로 바꾸게 해요.',
+'ㄱ. 두 사용자의 비밀번호가 같다면 저장된 해시값도 같다.<br>ㄴ. 비밀번호에서 한 글자만 달라도 해시값이 달라져 로그인에 실패한다.<br>ㄷ. 사용자가 비밀번호를 잊으면 관리자가 해시값을 복호화해서 알려 줄 수 있다.');
+Z('d22','2-9','심화','블록 1 → 블록 2 → 블록 3 순서로 연결된 블록체인에서 누군가 블록 2의 데이터를 몰래 바꾸었다. 이때 일어나는 일로 가장 적절한 것은?',['블록 2만 바뀌고 다른 블록에는 아무 영향이 없다.','블록 1의 해시값이 바뀐다.','블록 2의 해시값이 바뀌어, 블록 3에 저장된 이전 블록 해시값과 맞지 않게 된다.','해시값을 복호화하면 원래 데이터로 자동 복구된다.','블록 3의 데이터도 같은 내용으로 자동으로 바뀐다.'],3,
+'데이터가 바뀌면 그 블록의 해시값이 바뀌어요. 블록 3은 블록 2의 "옛날" 해시값을 들고 있으니 서로 안 맞아서 위조가 바로 드러나요. 앞에 있는 블록 1은 영향이 없어요.');
+Z('d23','1-7','심화','허프만 코드로 사용할 수 있는 코드 묶음만을 <보기>에서 있는 대로 고른 것은?',['ㄱ','ㄴ','ㄱ, ㄴ','ㄱ, ㄷ','ㄴ, ㄷ'],4,
+'어떤 코드도 다른 코드의 앞부분이면 안 돼요. ㄴ은 1이 10의 앞부분이라 안 돼요. ㄱ과 ㄷ은 앞부분이 겹치는 코드가 없어요.',
+'ㄱ. {0, 10, 110, 111}<br>ㄴ. {1, 10, 01, 00}<br>ㄷ. {00, 01, 10, 110, 111}');
+Z('d24','1-3','심화','다음 상황에 가장 알맞은 압축 방식을 바르게 짝지은 것은?',['(가) 손실, (나) 비손실, (다) 손실','(가) 비손실, (나) 손실, (다) 비손실','(가) 손실, (나) 손실, (다) 비손실','(가) 비손실, (나) 비손실, (다) 손실','(가) 비손실, (나) 손실, (다) 손실'],2,
+'(가) 계약서는 한 글자도 바뀌면 안 되니 비손실, (나) 영상 스트리밍은 화질이 조금 떨어져도 빨리 보내는 게 중요하니 손실, (다) 프로그램 실행 파일은 1비트만 바뀌어도 작동이 안 되니 비손실.',
+'(가) 은행에 보내는 계약서 문서 파일<br>(나) 실시간으로 보는 동영상 스트리밍<br>(다) 친구에게 보내는 게임 실행 파일');
+
+/* ---------- 추가 문제 (난이도 직접 지정) ---------- */
+function E(d,...a){Q(...a);QS[QS.length-1].d=d}
+E('하','e01','1-1','개념','비트(bit) 하나가 표현할 수 있는 상태의 개수는?',['1가지','2가지','4가지','8가지','10가지'],2,'비트 하나는 0 아니면 1, 딱 두 가지예요. 전등 스위치의 켜짐·꺼짐처럼요.');
+E('하','e02','1-1','개념','1바이트(Byte)는 몇 비트(bit)인가?',['2비트','4비트','7비트','8비트','1,024비트'],4,'1Byte = 8bit. 7비트는 아스키코드 글자 하나의 크기라서 헷갈리기 쉬워요.');
+E('하','e03','1-2','개념','전원이 꺼져도 데이터가 남아 있는 보조 기억 장치로 옳은 것은?',['RAM','USB 메모리','CPU','레지스터','주기억 장치'],2,'USB, 하드디스크는 보조 기억 장치예요. RAM(주기억 장치)은 전원이 꺼지면 내용이 사라져요.');
+E('하','e04','1-3','개념','비손실 압축 방식으로 옳은 것은?',['JPEG','MP3','MPEG4','ZIP','손실 이미지'],4,'ZIP은 풀면 원래 그대로 돌아오는 비손실 압축이에요. JPEG, MP3, MPEG4는 손실 압축이에요.');
+E('하','e05','1-3','개념','수업에서 말한 데이터 압축의 필요성으로 가장 적절한 것은?',['통신 속도를 높이고 저장 공간을 아끼기 위해','데이터의 품질을 원본보다 높이기 위해','데이터를 암호화하기 위해','RAM의 전원을 유지하기 위해','문자 코드를 바꾸기 위해'],1,'용량이 크면 저장도 어렵고 주고받는 데 시간도 오래 걸려요. 그래서 압축해요.');
+E('하','e06','1-5','개념','전 세계 문자를 하나의 체계로 표현하기 위한 표준 코드로 옳은 것은?',['아스키코드','UTF-8 (유니코드)','허프만 코드','JPEG','SHA'],2,'유니코드에는 UTF-8, UTF-16 등이 있어요.');
+E('하','e07','1-6','개념','같은 문자가 연속해서 나오면 "문자 + 반복 횟수"로 나타내는 압축 기법은?',['허프만 압축','반복 길이 압축','손실 압축','해시','전치형 암호'],2,'영어로 run length encoding이에요.');
+E('하','e08','1-7','개념','허프만 트리에서 맨 위에 있는 노드를 부르는 이름은?',['잎(leaf)','루트(root)','가지(branch)','키(key)','블록(block)'],2,'맨 위 숫자가 루트예요. 루트 값은 전체 글자 수(빈도수의 합)와 같아요.');
+E('하','e09','2-3','개념','암호화에 대한 설명으로 가장 적절한 것은?',['데이터의 용량을 줄이는 기술','중요한 데이터를 허용되지 않은 사람이 보지 못하도록 바꾸는 기술','데이터를 정렬하는 기술','문자를 2진수로 바꾸는 기술','전원이 꺼져도 데이터를 남기는 기술'],2,'①은 압축, ④는 문자 코드 설명이에요.');
+E('하','e10','2-4','개념','(가), (나)에 들어갈 말로 옳은 것은?',['(가) 암호화, (나) 복호화','(가) 복호화, (나) 암호화','(가) 인코딩, (나) 디코딩','(가) 압축, (나) 복원','(가) 해시, (나) 치환'],1,'평문 → 암호문은 암호화, 암호문 → 평문은 복호화예요. 인코딩·디코딩은 압축 용어라 헷갈리지 마세요.','평문을 암호문으로 바꾸는 과정을 (가), 암호문을 평문으로 바꾸는 과정을 (나)라고 한다.');
+E('하','e11','2-7','개념','암호화와 복호화에 같은 키를 사용하는 비밀키 암호 기법의 다른 이름은?',['비대칭키 암호','대칭키 암호','해시 암호','전치형 암호','양자 암호'],2,'키가 양쪽에 똑같으니 "대칭"이에요.');
+E('하','e12','2-8','개념','서로 다른 두 개의 키(공개키, 개인키)를 사용하는 암호 기법은?',['비밀키 암호','대칭키 암호','공개키 암호','카이사르 암호','반복 길이 압축'],3,'공개키 암호 = 비대칭키 암호예요.');
+E('하','e13','2-9','개념','다음 중 해시 함수에 해당하는 것은?',['AES','RSA','MD5','DES','ECC'],3,'MD5, SHA는 해시. DES, AES는 비밀키. RSA, ECC는 공개키예요.');
+E('하','e14','2-6','개념','알파벳을 일정한 칸만큼 이동시켜 암호화하는 카이사르 암호를 만든 사람이 살았던 곳은?',['고대 그리스','고대 로마','제2차 세계 대전 중 독일','미국 국가안보국','영국'],2,'율리우스 카이사르는 고대 로마 사람이에요. 고대 그리스는 스키테일 암호예요.');
+E('하','e15','2-1','개념','https://로 시작하는 사이트의 특징으로 옳은 것은?',['데이터를 그대로 보낸다.','데이터를 암호화해서 보낸다.','데이터를 압축해서 화질을 높인다.','비밀번호를 입력할 수 없다.','해시값을 복호화한다.'],2,'https의 s는 안전하다(secure)는 뜻이에요.');
+E('중','e16','1-1','개념','디지털화 과정 중 "정해진 단계의 값을 0과 1의 2진수로 나타내는 과정"은?',['표본화','양자화','부호화','복호화','인코딩'],3,'표본화(값 뽑기) → 양자화(단계에 맞추기) → 부호화(0과 1로 적기). 복호화는 암호 용어예요.');
+E('중','e17','1-4','계산','300KB 파일을 압축했더니 60KB가 되었다. 압축률은?',['0.2','2','5','240','360'],3,'압축 전 ÷ 압축 후 = 300 ÷ 60 = 5.');
+E('중','e18','1-4','개념','어떤 파일의 압축률이 0.8로 나왔다. 이에 대한 설명으로 옳은 것은?',['용량이 20% 줄었다.','용량이 80% 줄었다.','압축 후 용량이 압축 전보다 커졌다.','압축 효과가 가장 좋다.','원본과 용량이 같다.'],3,'압축률 = 전 ÷ 후 = 0.8이면 후가 전보다 커요. 압축률이 1보다 작으면 오히려 늘어난 거예요.');
+E('중','e19','1-6','계산','BBBBBBWWWWBB를 반복 길이 압축했을 때의 결과와 압축률(글자 수 기준)은?',['B6W4B2, 2','B8W4, 3','B6W4B2, 0.5','B6W4, 3','6B4W2B, 2'],1,'떨어져 있는 B는 따로 써요. B6W4B2는 6글자, 12 ÷ 6 = 2.');
+E('중','e20','1-6','계산','반복 길이 압축 결과가 A2B3C1이다. 원래 문자열과 압축률을 바르게 짝지은 것은?',['AABBBC, 1','AABBBC, 0.5','ABBBC, 1','AABBBCC, 1','AABBC, 1.2'],1,'A 2개, B 3개, C 1개 = AABBBC(6글자). 압축 결과도 6글자라 압축률 1. 줄어든 게 없어요.');
+E('중','e21','1-7','적용','빈도수가 P: 5, Q: 3, R: 2인 문자들로 허프만 트리를 만들 때 가장 먼저 합쳐지는 값은?',['5','7','8','10','3'],1,'가장 작은 두 개 Q3 + R2 = 5를 먼저 합쳐요. 그다음 P5 + 5 = 10.');
+E('중','e22','1-7','계산','빈도수가 X: 4, Y: 3, Z: 2, W: 1인 문자들을 허프만 압축했을 때 전체 비트 수는?',['10비트','18비트','19비트','20비트','24비트'],3,'W1 + Z2 = 3 → Y3 + 3 = 6 → X4 + 6 = 10. 코드 길이 X 1, Y 2, Z·W 3비트. 4 + 6 + 6 + 3 = 19비트. 모두 2비트로 쓰면 20비트예요.');
+E('중','e23','1-5','계산','A가 10진수 65일 때, 대문자 C를 7비트 2진수로 나타낸 것은?',['1000001','1000010','1000011','1000100','1100011'],3,'C = 67 = 64 + 2 + 1 → 1000011. ⑤는 소문자 c(99)예요.');
+E('중','e24','2-6','계산','카이사르 암호로 평문 ibm을 왼쪽으로 1칸씩 이동해 암호화한 결과는?',['hal','jcn','hbl','ial','gzk'],1,'왼쪽 1칸: i→h, b→a, m→l → hal. ②는 오른쪽 1칸, ⑤는 왼쪽 2칸이에요.');
+E('중','e25','2-6','계산','전치형 암호 기법으로 평문 database를 키 \'3142\'로 암호화한 결과는?',['tdaasbea','dataabse','adatsaeb','tdaabesa','esabatad'],1,'data / base → 3·1·4·2번 열 → t d a a / s b e a → tdaasbea.');
+E('중','e26','2-6','계산','전치형 암호 기법으로 평문 algorithm을 키 \'312\'로 암호화한 결과는?',['galiormth','lagorimth','algorithm','gaiolrmht','mhtirogla'],1,'alg / ori / thm → 3·1·2번 열 → g a l / i o r / m t h → galiormth.');
+E('중','e27','2-7','개념','비밀키 암호 기법의 장점으로 가장 적절한 것은?',['키를 전달할 필요가 없다.','암호화·복호화 속도가 빠르다.','두 개의 키로 해독이 어렵다.','복호화가 불가능하다.','키를 누구에게나 공개해도 된다.'],2,'비밀키는 빠르고 구현이 쉬운 대신, 키 전달·관리가 어려워요.');
+E('중','e28','2-8','개념','공개키 암호 기법의 단점으로 가장 적절한 것은?',['키를 안전하게 전달하기 어렵다.','암호화·복호화 속도가 비밀키 암호보다 느리다.','키가 하나뿐이라 쉽게 해독된다.','암호문을 평문으로 되돌릴 수 없다.','DES만 사용할 수 있다.'],2,'①은 비밀키의 단점이에요. 공개키는 키 전달 문제는 없지만 느려요.');
+E('중','e29','2-5','적용','다음 상황과 관련 있는 정보 보호 원칙은?',['기밀성','무결성','가용성','확산','혼돈'],1,'허락받지 않은 사람이 "보지" 못하게 하는 건 기밀성이에요.','병원 진료 기록은 허락받은 의사만 볼 수 있고, 다른 사람은 내용을 볼 수 없어야 한다.');
+E('중','e30','2-9','적용','해시를 활용하는 경우로 옳지 않은 것은?',['로그인 비밀번호 저장','다운로드한 파일이 변조되지 않았는지 확인','블록체인의 블록 연결','친구에게 보낸 비밀 편지를 친구가 읽을 수 있게 복호화','인증 번호 일치 여부 확인'],4,'해시는 복호화가 안 되니, 상대가 내용을 읽어야 하는 편지에는 비밀키·공개키 암호를 써야 해요.');
+E('상','e31','1-7','계산','문자열 BANANA를 허프만 압축했을 때 전체 비트 수는?',['6비트','8비트','9비트','12비트','18비트'],3,'빈도수 A3 N2 B1. B1 + N2 = 3 → A3 + 3 = 6. A 1비트, N·B 2비트. 3×1 + 2×2 + 1×2 = 9비트.');
+E('상','e32','1-7','계산','문자 하나를 8비트로 저장할 때, BANANA를 허프만 압축한 경우의 압축률에 가장 가까운 것은?',['약 2.7','약 4.0','약 5.3','6','약 6.9'],3,'원본 6 × 8 = 48비트, 압축 후 9비트. 48 ÷ 9 ≈ 5.3.');
+E('상','e33','1-6','보기','반복 길이 압축과 허프만 압축을 비교한 설명으로 옳은 것만을 <보기>에서 있는 대로 고른 것은?',['ㄱ','ㄷ','ㄱ, ㄴ','ㄴ, ㄷ','ㄱ, ㄴ, ㄷ'],5,'셋 다 맞아요. ABAB처럼 연속 반복이 없으면 반복 길이 압축은 오히려 길어지지만, 허프만은 빈도수만 보니까 순서와 상관없어요.','ㄱ. 반복 길이 압축은 같은 문자가 "연속"될 때 효과가 크다.<br>ㄴ. 허프만 압축은 문자가 연속되지 않아도 빈도수 차이가 크면 효과가 있다.<br>ㄷ. 두 기법 모두 비손실 압축이다.');
+E('상','e34','2-6','계산','카이사르 암호 프로그램에서 caesar_cipher(\'zebra\', 27)의 실행 결과는?',['afcsb','zebra','bgdtc','yd aqz','afcrb'],1,'27 % 26 = 1이라 오른쪽 1칸과 같아요. z→a, e→f, b→c, r→s, a→b → afcsb.');
+E('상','e35','2-6','계산','키 \'312\'로 전치형 암호화한 암호문이 galiormth이다. 평문은?',['algorithm','logarithm','galiormth','algoritmh','rithmalgo'],1,'3글자씩 gal / ior / mth. 각 줄 1번째는 원래 3번 열, 2번째는 1번 열, 3번째는 2번 열. 되돌리면 alg / ori / thm → algorithm.');
+E('상','e36','2-8','보기','공개키 암호 기법에 대한 설명으로 옳은 것만을 <보기>에서 있는 대로 고른 것은?',['ㄱ','ㄴ','ㄱ, ㄴ','ㄱ, ㄷ','ㄴ, ㄷ'],3,'공개키는 원래 공개하는 키라서 남이 가져가도 개인키 없이는 못 열어요(ㄱ, ㄴ 맞음). ㄷ은 틀려요. 개인키를 공개하면 누구나 B에게 온 암호문을 열 수 있어요.','ㄱ. B의 공개키가 해커에게 알려져도 B에게 온 암호문은 안전하다.<br>ㄴ. B의 개인키는 B만 가지고 있어야 한다.<br>ㄷ. 보안을 위해 개인키를 공개하고 공개키를 숨긴다.');
+E('상','e37','2-9','종합','로그인할 때 쓰이는 보안 기술을 바르게 짝지은 것은?',['(가) 해시, (나) 암호화(https)','(가) 암호화(https), (나) 해시','(가) 반복 길이 압축, (나) 해시','(가) 해시, (나) 손실 압축','(가) 전치형 암호, (나) 카이사르 암호'],2,'보내는 길은 https 암호화로 보호하고, 서버엔 되돌릴 수 없는 해시값으로 저장해요.','(가) 내가 입력한 비밀번호가 서버로 가는 동안 중간에서 엿보지 못하게 한다.<br>(나) 서버에 비밀번호를 저장할 때 관리자도 원래 비밀번호를 알 수 없게 한다.');
+E('상','e38','1-4','계산','2MB인 사진을 JPEG로 압축했더니 400KB가 되었다. 압축률은? (1MB = 1,024KB)',['0.2','5','5.12','1,648','약 0.195'],3,'2MB = 2,048KB. 2,048 ÷ 400 = 5.12. MB를 1,000KB로 계산하면 ②의 5가 나와서 함정이에요.');
+E('상','e39','2-2','계산','영어 소문자(26개)만으로 된 4자리 비밀번호의 경우의 수는?',['104가지','10,000가지','456,976가지','26가지','650가지'],3,'자리마다 26가지 → 26 × 26 × 26 × 26 = 456,976가지. 숫자 4자리(10,000가지)보다 훨씬 많아요.');
+E('상','e40','1-7','적용','빈도수가 A: 5, B: 5, C: 5, D: 5인 문자열(20글자)을 허프만 압축했을 때에 대한 설명으로 옳은 것은?',['A만 1비트 코드를 받는다.','모든 문자가 2비트 코드를 받아 전체 40비트가 된다.','모든 문자가 1비트 코드를 받는다.','전체 20비트가 된다.','허프만 트리를 만들 수 없다.'],2,'5+5 = 10, 5+5 = 10, 10+10 = 20. 모든 문자가 깊이 2라서 2비트씩, 20 × 2 = 40비트. 빈도수가 똑같으면 허프만도 효과가 적어요.');
+/* 난이도 지정 */
+(function(){const M={
+ 하:'a01 a02 a05 a06 a07 a09 a10 a15 a22 a23 a24 a25 a28 a35 b01 b02 b06 b08 b11 b12 b15 b16 b17 b18 b19 b29 b31 b35 b44 c01 c02 c05',
+ 상:'a31 a37 a39 a41 a43 a45 a46 b24 b25 b26 b34 b45 b47 c08 c11 c14 c17 c20 c22'};
+ const d={};Object.entries(M).forEach(([k,v])=>v.split(' ').forEach(i=>d[i]=k));
+ QS.forEach(q=>{if(!q.d)q.d=q.z?'상':(d[q.id]||'중')})})();
+
+/* ===== 자세한 해설 (일타강사식) ===== */
+/* s: 풀이 단계, r: 선지별 이유(원래 선지 순서), k: 한 줄 정리 */
+const W={};function w(id,s,r,k){W[id]={s,r,k}}
+const CONCEPT={
+'1-1':'디지털 = 0과 1. 최소 단위는 비트, 8비트 = 1바이트, 그 위로는 1,024배씩. 디지털화는 표본화 → 양자화 → 부호화.',
+'1-2':'주기억(RAM) = 책상, 전원 끄면 사라짐. 보조 기억(하드디스크, USB) = 책장, 오래 보관.',
+'1-3':'압축 = 인코딩, 복원 = 디코딩. 손실(JPEG·MP3·MPEG4)은 원본과 다르게, 비손실(ZIP·PNG·GIF·BMP)은 똑같이 복원.',
+'1-4':'압축 원리 = 중복성 제거. 한 장 안 반복은 공간적, 장면끼리 반복은 시간적. 압축률 = 압축 전 ÷ 압축 후.',
+'1-5':'글자는 코드표 번호로 저장. 아스키 A = 65 = 1000001(7비트). 전 세계 공용은 유니코드(UTF-8, UTF-16).',
+'1-6':'반복 길이 압축 = "글자 + 연속 횟수". 연속된 것만 묶고, 반복이 없으면 오히려 길어짐. 비손실.',
+'1-7':'허프만 = 자주 나오는 글자는 짧은 코드. 빈도수 세기 → 가장 작은 두 개씩 합치기 → 트리 가지 번호 읽기.',
+'2-1':'http = 그대로(엽서), https = 암호화(봉인 편지).',
+'2-2':'모든 암호는 경우의 수를 다 넣으면 풀림 → 현대 암호는 "오래 걸리게"로 지킴. 양자 컴퓨터는 위협.',
+'2-3':'구성 요소 4개: 평문, 암호문, 키, 암호화(복호화) 알고리즘. 혼돈은 키를, 확산은 평문을 숨김.',
+'2-4':'암호화 = 평문 → 암호문, 복호화 = 암호문 → 평문. 가장 중요한 건 키 관리.',
+'2-5':'기밀성 = 몰래 보기 막기, 무결성 = 몰래 바꾸기 막기, 가용성 = 필요할 때 쓰기.',
+'2-6':'치환형 = 글자를 바꿈(카이사르), 전치형 = 자리를 바꿈(스키테일, 키 순서로 열 배치).',
+'2-7':'비밀키 = 대칭키 = 같은 키 1개. 빠르지만 키 전달·관리가 어려움. DES, AES.',
+'2-8':'공개키 = 비대칭키 = 공개키 + 개인키. 받는 사람의 공개키로 잠그고 받는 사람의 개인키로 엶. 느림. RSA, ECC.',
+'2-9':'해시 = 고정 길이 + 복호화 불가(단방향). 같은 입력이면 같은 값 → 일치 여부 확인용. MD5, SHA.'};
+
+/* ---------- 1회차 a ---------- */
+w('a01',['"최소 단위"라는 말이 보이면 바로 비트를 떠올려요.','비트 하나 = 0 또는 1. 이걸 8개 모은 게 바이트예요. 그러니까 바이트는 비트보다 커요.'],
+['비트 8개짜리 묶음. 최소가 아님','정답. 0 또는 1 하나를 저장하는 가장 작은 단위','이미지의 점 하나. 데이터 단위가 아님','동영상의 사진 한 장','진동수 단위. 상관없음'],'최소 단위 = 비트, 비트 8개 = 바이트.');
+w('a02',['"옳지 않은 것"을 찾는 문제예요. 선지마다 O/X를 붙여 봐요.','"연속적인 값"은 아날로그의 특징이에요. 디지털은 0과 1로 딱딱 끊어진 값이에요.','게다가 디지털 데이터는 중복성을 없애면 압축할 수 있어요. ⑤는 두 군데가 틀렸어요.'],
+['맞음. 디지털은 모든 걸 0과 1로','맞음. 이미지·동영상도 디지털 데이터','맞음. 비트 = 0 또는 1','맞음. 아날로그 = 연속적인 값','정답. 연속적인 건 아날로그이고, 디지털도 압축 가능'],'연속 = 아날로그, 0과 1 = 디지털.');
+w('a03',['1KB = 1,024Byte. 이건 무조건 외워요.','선지에 비트와 바이트가 섞여 있어요. 단위를 끝까지 봐야 해요.','비트로 바꾸면 1,024 × 8 = 8,192비트. 근데 ⑤는 "8,192바이트"라서 틀려요.'],
+['1,000도 아니고 비트도 아님','1,024는 맞지만 비트가 아니라 바이트여야 함','1,000이 아니라 1,024','정답. 1KB = 1,024Byte','숫자는 비트일 때 값. 단위가 바이트라 8배 큼'],'숫자와 단위를 둘 다 확인. 1KB = 1,024Byte = 8,192bit.');
+w('a04',['전부 GB로 바꿔서 비교해요.','1TB = 1,024GB. 1,000,000MB ÷ 1,024 ≈ 976.6GB. 8,000Gbit ÷ 8 = 1,000GB.','그럼 1,024GB가 제일 커요.'],
+['1,000GB','정답. 1,024GB로 가장 큼','1,023GB. 1TB보다 1GB 작음','약 976.6GB','비트라서 8로 나누면 1,000GB'],'단위를 하나로 통일하면 비교 끝. 1,000이 아니라 1,024!');
+w('a05',['디지털화 순서는 "표·양·부".','① 표본화: 일정 간격으로 값을 콕콕 찍기 → ② 양자화: 찍은 값을 정해진 계단에 맞추기 → ③ 부호화: 그 계단 번호를 0과 1로 적기.','찍어야 맞출 수 있고, 맞춰야 적을 수 있으니 순서가 바뀔 수 없어요.'],
+['정답. 표 → 양 → 부','양자화가 먼저일 수 없음. 찍은 값이 있어야 맞춤','부호화는 맨 마지막','양자화와 부호화 순서가 바뀜','완전히 거꾸로'],'표본화 → 양자화 → 부호화, "표·양·부".');
+w('a06',['설명의 핵심 단어는 "정해진 단계의 값으로 나타내는". 계단에 맞추는 거예요.','값을 찍는 건 표본화, 계단에 맞추는 건 양자화, 0과 1로 적는 건 부호화.'],
+['일정 간격으로 표본을 뽑는 과정','정답. 표본을 정해진 단계 값으로 맞춤','0과 1로 표현하는 과정','압축 용어','암호 용어'],'"단계·정밀도"가 나오면 양자화.');
+w('a07',['RAM = 책상이라고 생각해요. 작업 중인 걸 펼쳐 두는 곳.','책상은 집에 갈 때(전원 끌 때) 다 치워야 해요. 그래서 내용이 사라져요.','오래 보관하는 건 책장, 즉 하드디스크·USB 같은 보조 기억 장치예요.'],
+['보조 기억 장치의 특징','정답. 전원 끄면 사라짐','USB는 보조 기억 장치','오래 보관은 보조 기억 장치의 목적','하드디스크는 보조 기억 장치'],'RAM = 책상 = 전원 끄면 사라짐.');
+w('a08',['ㄱ, ㄴ, ㄷ에 각각 O/X를 붙이고 고르면 실수가 줄어요.','ㄱ: RAM은 전원 끄면 잊어버림 → O. ㄴ: 오래 둘 건 보조 기억 장치에 → O.','ㄷ: 보조 기억 장치도 용량이 정해져 있어요. 그래서 압축이 필요한 거예요 → X.'],
+['ㄴ도 맞음','ㄷ은 틀림','정답. ㄱ, ㄴ만 맞음','ㄷ이 들어가서 틀림','ㄷ이 들어가서 틀림'],'책장(보조 기억)도 칸이 한정 → 그래서 압축.');
+w('a09',['압축 단원의 짝꿍 용어: 압축 = 인코딩, 복원 = 디코딩.','작게 만드는 게 (가) → 인코딩, 원래대로 되돌리는 게 (나) → 디코딩.','암호화·복호화는 2회차 암호 단원 용어예요. 섞어서 내니까 조심!'],
+['정답','둘이 바뀜','암호 단원 용어','부호화·양자화는 디지털화 용어','암호 용어이고 순서도 바뀜'],'압축 = 인코딩, 복원 = 디코딩 / 암호화 ↔ 복호화는 따로.');
+w('a10',['손실 압축 3총사: JPEG(사진), MP3(소리), MPEG4(영상).','나머지 ZIP, PNG, GIF, BMP는 전부 비손실이에요.','"둘 다 손실"이어야 하니까 하나라도 비손실이 섞이면 탈락이에요.'],
+['둘 다 비손실','정답. 둘 다 손실','둘 다 비손실','ZIP이 비손실','PNG가 비손실'],'손실은 JPEG·MP3·MPEG4 세 개만 외우면 끝.');
+w('a11',['"반드시 비손실" = 한 글자, 한 비트만 바뀌어도 큰일 나는 데이터.','사진·음악·영상은 사람 눈귀가 못 알아챌 만큼 정보를 조금 버려도 괜찮아요.','소스 코드는 한 글자만 바뀌어도 프로그램이 안 돌아가요.'],
+['사진은 손실 압축(JPEG)도 괜찮음','음악은 MP3(손실)로 많이 씀','영상은 MPEG4(손실)로 많이 씀','정답. 코드는 한 글자도 바뀌면 안 됨','썸네일은 작게 보는 그림이라 손실 OK'],'글·코드·문서 = 비손실 필수.');
+w('a12',['손실 압축 = 티 안 나는 정보를 "버려서" 확 줄이는 방식.','버린 건 되돌릴 수 없으니 복원해도 원본과 달라요.','①, ③, ④는 비손실 압축의 설명이에요.'],
+['비손실 압축 설명','정답. 사람이 못 느끼는 정보를 삭제','ZIP은 비손실','텍스트는 비손실로 압축','보통 손실이 용량을 더 많이 줄임'],'손실 = 버린다 = 원본과 다르다.');
+w('a13',['"옳지 않은 것"이니 압축의 목적이 아닌 걸 찾아요.','압축은 용량을 줄이는 기술이지 품질을 올리는 기술이 아니에요.','오히려 손실 압축은 품질이 조금 떨어질 수 있어요.'],
+['맞음. 저장 공간 절약','맞음. 전송 속도 향상','맞음. 교과서 활용 분야','맞음. 교과서에 나온 환경 보호','정답. 압축은 품질을 높이지 않음'],'압축의 목적 = 공간 절약 + 전송 속도 + 환경. 품질 향상은 아님.');
+w('a14',['압축하면 작아지고, 복원하면 다시 커져요. 진공팩을 떠올려요.','④, ⑤는 손실·비손실 설명을 서로 바꿔 놓은 함정이에요.'],
+['압축하면 작아짐','복원하면 다시 커짐','정답','손실은 복원해도 원본과 다름','비손실은 복원하면 원본과 같음'],'압축 → 작게, 복원 → 다시 크게.');
+w('a15',['압축의 모든 원리는 딱 한 마디. 반복되는 건 한 번만 저장하자.','이걸 교과서 말로 "중복성 제거"라고 해요.'],
+['정답','비트를 늘리면 오히려 커짐','키는 암호 단원','해시는 암호 단원','정렬은 압축 원리가 아님'],'압축 원리 = 중복성 제거.');
+w('a16',['(가)는 사진 "한 장 안에서" 위치에 따라 반복 → 공간적.','(나)는 동영상 "장면이 넘어가도" 배경이 반복 → 시간적.','작년 기출 1번과 똑같은 구조예요.'],
+['정답','둘이 바뀜','(나)는 시간적','(가)는 공간적','동영상에도 중복성이 있음'],'사진 = 공간적, 동영상 = 시간적.');
+w('a17',['공식: 압축률 = 압축 전 ÷ 압축 후.','200 ÷ 50 = 4. 분자에 "전", 분모에 "후"!','①은 거꾸로 나눈 값, ④는 뺀 값이에요. 시험에 꼭 이런 함정이 같이 나와요.'],
+['50 ÷ 200. 거꾸로 나눔','계산 실수','정답. 200 ÷ 50 = 4','200 − 50. 뺄셈','200 + 50. 덧셈'],'압축률 = 전 ÷ 후, 클수록 좋음.');
+w('a18',['압축률 = 압축 전 ÷ 압축 후. 이걸로 선지를 하나씩 검사해요.','1보다 크면 "전 > 후" → 줄어든 거예요.','⑤ 0.5면 "후"가 "전"의 2배. 오히려 늘어난 거예요.'],
+['분자 분모가 거꾸로','1보다 클수록 효과가 큼','정답','품질과 용량 둘 다 봐야 함','0.5는 오히려 2배로 늘어난 것'],'압축률 1보다 크면 성공, 작으면 손해.');
+w('a19',['교과서: 압축 효율성은 "용량이 얼마나 줄었나" + "품질이 얼마나 유지되나"로 평가.','파일 이름 길이는 압축과 아무 상관이 없어요.'],
+['ㄴ도 맞음','ㄷ은 틀림','정답. ㄱ, ㄴ','ㄷ이 섞임','ㄷ이 섞임'],'효율성 = 용량 + 품질.');
+w('a20',['65를 2로 계속 나누고 나머지를 적어요.','65→1, 32→0, 16→0, 8→0, 4→0, 2→0, 1→1.','나머지를 아래에서 위로 읽으면 1000001. 또는 65 = 64 + 1이니까 맨 앞과 맨 뒤만 1!'],
+['수업 필기 오타. 35를 나타냄','정답. 65 = 64 + 1','67(C)','97(소문자 a)','8비트로 쓴 33. 자리 하나 밀림'],'A = 65 = 1000001. 64 + 1이라 양끝만 1.');
+w('a21',['A가 65면 B 66, C 67, D 68.','68 = 64 + 4. 64 자리와 4 자리만 1 → 1000100.','2진수 자리값 64, 32, 16, 8, 4, 2, 1을 외워 두면 금방 나와요.'],
+['66(B)','67(C)','정답. 68 = 64 + 4','69(E)','72(H)'],'자리값 64·32·16·8·4·2·1로 쪼개기.');
+w('a22',['수업에서 19글자 × 7비트 = 133비트로 계산했죠? 그 7비트예요.','아스키코드는 문자 하나를 7비트로 표현해요.'],
+['너무 작음','너무 작음','정답','유니코드(UTF-16)에서 나오는 크기','너무 큼'],'아스키 = 7비트.');
+w('a23',['유니코드는 "전 세계 공용 코드표"예요.','나라마다 코드가 다르면 글자가 깨지니까, 모든 나라 문자를 하나로 정리한 거예요.'],
+['전 세계 문자를 다 표현함','정답','이미지 압축과 무관','허프만 설명','더 적은 비트라는 말은 틀림'],'유니코드 = 전 세계 문자 표준(UTF-8, UTF-16).');
+w('a24',['글자는 코드표 번호로 저장돼요.','만든 쪽은 "가"를 15번으로 저장했는데, 여는 쪽 코드표에서 15번이 다른 글자면? 엉뚱한 글자가 나오죠.','수업 필기: "파일이 깨진다면 → 아 코드가 다르구나".'],
+['압축 때문에 글자가 깨지진 않음','정답','RAM 전원과 무관','해시와 무관','키를 잃으면 아예 못 열지 깨지는 게 아님'],'글자 깨짐 = 문자 코드 체계가 다름.');
+w('a25',['교과서 방식은 "글자 다음에 횟수".','A 3개 → A3, B 4개 → B4, C 2개 → C2, D 1개 → D1.','한 번만 나와도 1을 꼭 붙여요. 그래야 디코딩할 때 헷갈리지 않아요.'],
+['D 뒤에 1이 빠짐','정답','숫자가 앞에 있음. 교과서 방식 아님','D는 1개뿐','A 횟수가 빠짐'],'글자 + 횟수, 1번도 꼭 1.');
+w('a26',['연속된 것만 묶어요. R 5개 → R5, A 4개 → A4, G 3개 → G3, R 5개 → R5, G 2개 → G2.','앞의 R과 뒤의 R은 떨어져 있으니 따로 써요.','R5A4G3R5G2 = 10글자. 압축률 = 19 ÷ 10 = 1.9.'],
+['연속 안 된 R까지 합침','정답','결과는 맞지만 압축률을 거꾸로 나눔','G3과 뒤쪽이 빠짐','압축률 계산 틀림'],'"연속"만 묶기 + 압축률은 전 ÷ 후.');
+w('a27',['W 8개 → W8, B 4개 → B4. 결과는 W8B4로 4글자.','압축률 = 원본 12글자 ÷ 4글자 = 3.'],
+['계산 실수','12 ÷ 6. 결과 글자 수를 잘못 셈','정답','12 ÷ 3. 결과를 3글자로 셈','12 ÷ 2'],'결과 글자 수를 정확히 세기.');
+w('a28',['디코딩은 숫자만큼 글자를 다시 늘어놓는 거예요.','X 3번 → XXX, Y 1번 → Y, Z 4번 → ZZZZ. 이어 붙이면 XXXYZZZZ.'],
+['횟수를 무시함','정답','Z가 3개뿐','X가 1개, Y가 3개로 바뀜','Y가 2개'],'복원 = 숫자만큼 다시 펼치기.');
+w('a29',['각 선지를 직접 압축해 봐요.','① A10(3글자) ② A5B5(4글자) ③ A2B2A2B2A2(10글자) ④ A1B1…J1(20글자) ⑤ A9B1(4글자).','④는 10글자가 20글자로 2배가 돼요. 압축률 0.5로 최악!'],
+['10 → 3글자. 효과 큼','10 → 4글자','10 → 10글자, 효과 없음','정답. 10 → 20글자, 오히려 늘어남','10 → 4글자'],'반복이 하나도 없으면 반복 길이 압축은 손해.');
+w('a30',['ㄱ: 연속 반복이 많을수록 좋음 → O.','ㄴ: ABCDEF → A1B1C1D1E1F1처럼 길어질 수 있음 → O.','ㄷ: 숫자만큼 다시 펼치면 원본과 완전히 같아요. 그래서 비손실 → X.'],
+['ㄴ도 맞음','ㄷ은 틀림','정답. ㄱ, ㄴ','ㄷ이 섞임','ㄷ이 섞임'],'반복 길이 압축은 비손실!');
+w('a31',['원본: 19글자 × 7비트 = 133비트.','묶음 하나 = 글자 7비트 + 횟수 3비트 = 10비트.','묶음 개수 세기: R5, A4, G3, R5, G2 → 5개. 5 × 10 = 50비트.'],
+['묶음을 4개로 셈','정답','원본을 8비트로 계산','묶음을 7개로 셈','둘 다 틀림'],'비트 계산은 "묶음 개수 × 묶음 크기".');
+w('a32',['이미지도 문자처럼 똑같이 해요. W 2개 → W2, B 4개 → B4, W 2개 → W2.','뒤쪽 W2를 빼먹지 않게 끝까지 확인!'],
+['정답','뒤쪽 W2가 빠짐','떨어진 W를 합침','숫자가 앞에 옴','횟수가 이상함'],'떨어진 같은 색은 따로 쓰기.');
+w('a33',['반복 길이 압축은 "같은 것이 연속"될 때만 효과가 있어요.','모든 글자가 다르면 A1B1C1…처럼 오히려 길어져요.'],
+['같은 색이 이어지면 효과 큼','배경이 그대로면 효과 큼','연속 문자는 효과 큼','정답. 반복이 없으면 손해','두 색만 있으면 연속이 많음'],'연속 반복이 없으면 쓰지 말기.');
+w('a34',['압축률 = 압축 전 ÷ 압축 후.','코드에서 압축 전 = len(data), 압축 후 = len(encoded).','그러니 len(data) / len(encoded).'],
+['거꾸로 나눔','정답','빼기','곱하기','count는 반복 횟수 변수'],'코드로 써도 공식은 같다. 전 ÷ 후.');
+w('a35',['허프만 = "자주 나오는 글자는 짧게".','③, ④, ⑤는 다른 단원 설명을 가져온 함정이에요.'],
+['같은 길이는 아스키코드 방식','정답','반복 길이 압축','전치형 암호','카이사르 암호'],'허프만 = 빈도 높을수록 짧은 코드.');
+w('a36',['허프만의 첫 단계: 가장 작은 두 개를 합친다.','빈도수가 가장 작은 건 A5, 그다음 B9 → 둘을 합쳐 14.'],
+['정답','가장 큰 두 개','셋째·넷째로 작은 것','가장 작은 것 + 가장 큰 것','B는 맞지만 C는 셋째'],'항상 "제일 작은 두 개"부터.');
+w('a37',['첫 번째: A5 + B9 = 14. 이제 남은 건 C12, D13, 14, E16, F45.','이 중 가장 작은 두 개는? C12와 D13! (14가 아님)','그래서 두 번째 노드는 25.'],
+['첫 번째 노드','A5 + E16? 틀린 조합','정답. C12 + D13','14 + E16. 세 번째 노드','25 + 30. 다섯 번째 노드'],'합친 다음엔 다시 "남은 것 중 제일 작은 두 개".');
+w('a38',['빈도수가 높을수록 짧은 코드.','F가 45로 압도적이라 루트 바로 아래, 1비트를 받아요.'],
+['가장 드물어서 가장 긴 코드','두 번째로 드묾','3비트','3비트','정답. 1비트'],'제일 많이 나온 글자 = 제일 짧은 코드.');
+w('a39',['트리를 그리면 F 1비트, C·D·E 3비트, A·B 4비트.','F: 45 × 1 = 45 / C·D·E: (12 + 13 + 16) × 3 = 123 / A·B: (5 + 9) × 4 = 56.','합계 45 + 123 + 56 = 224비트.'],
+['전체 글자 수(100)','계산 실수','정답','모두 2비트+α로 셈','모두 3비트로 쓴 경우'],'전체 비트 = 빈도수 × 코드 길이의 합.');
+w('a40',['G5 + A4 = 9 → R10 + 9 = 19.','R은 루트 바로 아래라 1비트, G와 A는 2비트.','10×1 + 5×2 + 4×2 = 10 + 10 + 8 = 28비트.'],
+['글자 수','정답','모두 2비트로 셈','반복 길이 압축 결과','아스키 원본'],'같은 19글자: 원본 133 → 반복 길이 50 → 허프만 28.');
+w('a41',['코드를 앞에서부터 하나씩 끊어요.','1 → R. 다음 01 → A. 다음 000 → B. 다음 1 → R.','RABR. 어떤 코드도 다른 코드의 앞부분이 아니라서 끊는 방법은 딱 하나예요.'],
+['정답','000을 001로 잘못 읽음','처음을 잘못 끊음','첫 글자부터 틀림','마지막을 G로 읽음'],'허프만 해독 = 앞에서부터 코드표에 있는 것 찾기.');
+w('a42',['원본: 13글자 × 8비트 = 104비트.','빈도수 R6 A3 B2 G2 → R 1비트, A 2비트, B·G 3비트.','6×1 + 3×2 + 2×3 + 2×3 = 6 + 6 + 6 + 6 = 24비트.'],
+['정답','계산 실수','원본을 7비트로 계산','원본을 글자 수로 씀','압축 후를 글자 수로 씀'],'문제에 "8비트"라고 하면 8비트로!');
+w('a43',['허프만 코드 규칙: 어떤 코드도 다른 코드의 앞부분이면 안 돼요.','③ {0, 01, 11}: 0이 01의 앞부분이에요. 01을 받으면 "0 + 1"인지 "01"인지 헷갈려요.'],
+['겹치는 앞부분 없음','겹치는 앞부분 없음','정답. 0이 01의 앞부분','모두 2자리라 안 겹침','겹치는 앞부분 없음'],'코드끼리 앞부분이 겹치면 해독 불가.');
+w('a44',['ㄱ: 빈도 낮을수록 긴 코드 → O.','ㄴ: 작은 두 개씩 합쳐서 트리 → O.','ㄷ: 가지에 0과 1을 붙여 코드 → O. 셋 다 맞아요.'],
+['ㄴ, ㄷ도 맞음','ㄱ, ㄴ도 맞음','ㄷ도 맞음','ㄱ도 맞음','정답'],'허프만 3단계 = 세기 → 합치기 → 읽기.');
+w('a45',['원본: 9글자 × 8비트 = 72비트.','P·E는 2번씩 나와서 2비트, R·O·Y는 3비트, A·D는 4비트.','P·E: 2×2 + 2×2 = 8 / R·O·Y: 3×3 = 9 / A·D: 4×2 = 8 → 25비트.'],
+['정답','계산 실수','원본을 7비트로 계산','압축 후를 글자 수로 씀','원본을 잘못 셈'],'빈도수 같은 게 많아도 전체 비트 수는 25로 같다.');
+w('a46',['규칙을 바꾸면 트리 모양은 그대로, 가지 번호만 0 ↔ 1이 뒤집혀요.','코드 길이(몇 자리인지)는 안 바뀌니까 전체 비트 수도 그대로예요.'],
+['비트 수는 그대로','정답','코드 길이는 그대로','여전히 해독 가능','빈도수는 데이터 그대로'],'0·1 규칙은 코드 "내용"만 바꾸고 "길이"는 안 바꾼다.');
+/* ---------- 2회차 b ---------- */
+w('b01',['https의 s는 secure(안전한). 데이터를 암호화해서 보내요.','http는 엽서처럼 그대로 보내요.'],
+['그대로 보냄','정답','www는 사이트 이름 부분','.kr은 나라 주소','.html은 문서 형식'],'s 하나 = 암호화.');
+w('b02',['http는 내용이 그대로 노출돼요. 중간에서 누가 봐도 다 보여요.','그러니 들켜도 상관없는 건 괜찮지만, 비밀번호·카드 번호는 절대 안 돼요.'],
+['봐도 되는 정보','봐도 되는 정보','정답. 중요 정보 입력 금지','봐도 되는 정보','봐도 되는 정보'],'http에선 중요한 정보 입력 금지.');
+w('b03',['모든 암호는 경우의 수를 다 대입하면 언젠가 풀려요. "절대 못 푼다"는 없어요.','그래서 현대 암호는 푸는 데 몇백 년씩 걸리게 만들어서 지켜요.'],
+['절대 못 푸는 암호는 없음','정답. 시간이 곧 안전','암호문은 보내야 쓸모 있음','키 없는 암호는 없음','평문 길이와 무관'],'현대 암호의 무기 = 시간.');
+w('b04',['ㄱ: 이론상 경우의 수로 다 풀림 → O.','ㄴ: 그래서 오래 걸리게 설계 → O.','ㄷ: 양자 컴퓨터는 계산이 엄청 빨라 위협 → O.'],
+['ㄴ, ㄷ도 맞음','ㄱ, ㄴ도 맞음','ㄷ도 맞음','ㄱ도 맞음','정답'],'경우의 수 → 시간 → 양자 컴퓨터, 수업 흐름 그대로.');
+w('b05',['영화 "이미테이션 게임"의 주인공, 컴퓨터 과학의 아버지예요.','에니그마를 풀려고 봄브라는 기계를 만들었어요.'],
+['기계식 계산기의 아버지','정답','혼돈·확산 원칙을 제시','카이사르 암호','컴퓨터 구조를 만든 사람'],'에니그마 + 봄브 = 앨런 튜링.');
+w('b06',['암호화하기 전, 누구나 읽을 수 있는 원래 데이터 = 평문.'],
+['정답','암호화된 데이터','열쇠 역할 정보','해시 결과','절차'],'평문 = 편지 내용, 암호문 = 잠긴 상자.');
+w('b07',['"약속된 규칙 정보"라는 말이 나오면 키예요.','카이사르의 "3칸 이동", 전치형의 "453216"이 다 키예요.'],
+['암호화 전 데이터','암호화된 데이터','정답','동영상 장면','최소 단위'],'키 = 약속된 규칙 정보 = 열쇠.');
+w('b08',['구성 요소 4개: 평문, 암호문, 키, 암호화(복호화) 알고리즘.','압축률은 1회차 압축 단원 용어예요.'],
+['구성 요소','구성 요소','구성 요소','구성 요소','정답. 압축 용어'],'평·암·키·알 네 개.');
+w('b09',['섀넌의 원칙 두 개: 혼돈과 확산.','"키"와의 관계를 숨기는 건 혼돈, "평문"과의 관계를 숨기는 건 확산.'],
+['확산은 평문과의 관계','정답','치환은 암호 기법 종류','전치는 암호 기법 종류','해시는 암호 기법'],'혼돈은 키, 확산은 평문.');
+w('b10',['이번엔 "평문"과의 관계를 숨긴다고 했어요 → 확산.'],
+['혼돈은 키와의 관계','정답','정보 보호 원칙','정보 보호 원칙','인증은 암호화 기능'],'평문을 퍼뜨려 숨김 = 확산.');
+w('b11',['암호화 = 잠그기 = 평문 → 암호문.','복호화 = 열기 = 암호문 → 평문.'],
+['암호화 설명','정답','압축 설명','해시 설명','엉뚱한 설명'],'"복"원하는 게 "복"호화.');
+w('b12',['선생님이 제일 강조한 것: 키를 잘 관리해야 한다. 키가 새면 다 깨져요.'],
+['길이는 핵심 아님','정답','핵심 아님','핵심 아님','핵심 아님'],'암호의 생명 = 키 관리.');
+w('b13',['"변경"을 막는다 → 무결성. "결함 없이 온전하다"는 뜻이에요.','몰래 "보는" 걸 막는 건 기밀성이에요.'],
+['보는 걸 막음','정답','필요할 때 쓰는 것','규정 지키기','진짜 그 사람인지 확인'],'무결성 = 몰래 바꾸기 막기.');
+w('b14',['기밀성 = 허가된 사람만 본다. 무결성 = 허가된 사람만 고친다. 가용성 = 필요할 때 쓴다.','②와 ③은 설명을 서로 바꿔 놓은 함정이에요.'],
+['정답','가용성 설명','무결성 설명','무결성 설명','기밀성 설명'],'C 보기, I 고치기, A 쓰기.');
+w('b15',['"필요할 때 언제든 접근" = 쓸 수 있음 = 가용성.'],
+['허가된 사람만 봄','허가된 사람만 고침','정답','섀넌 원칙','섀넌 원칙'],'가용성 = 쓸 수 있는가.');
+w('b16',['암호화는 보안 기능을 줘요. 용량을 줄이는 건 압축의 기능!'],
+['암호화 기능','암호화 기능','암호화 기능','암호화 기능','정답. 압축 기능'],'용량 감소 = 압축, 암호화 아님.');
+w('b17',['치환형 = 글자를 다른 글자로 "바꿈". 옷 갈아입기.','전치형 = 자리를 "옮김". 자리 바꿔 앉기.'],
+['전치형 설명','정답','해시 설명','공개키 설명','반복 길이 압축 설명'],'치환 = 바꾸기, 전치 = 옮기기.');
+w('b18',['카이사르: a를 d로 "바꿈" → 치환형.','스키테일: 막대에 감아 글자 "위치"를 뒤섞음 → 전치형.'],
+['정답','반대로 분류','스키테일은 전치형','카이사르는 치환형','엉뚱한 분류'],'카이사르 = 치환, 스키테일 = 전치.');
+w('b19',['알파벳마다 오른쪽으로 3칸: i→l, n→q, f→i, o→r, r→u, m→p, a→d, t→w, i→l, c→f, s→v.','lqirupdwlfv. ⑤는 전치형 결과라 함정이에요.'],
+['정답','마지막 s를 4칸 이동','첫 글자를 왼쪽으로 이동','이동을 안 함','전치형 결과'],'카이사르는 한 글자씩 똑같이 밀기.');
+w('b20',['c→f, a→d, t→w → fdw.','각 선지가 몇 칸 이동인지 보면 함정이 보여요.'],
+['1칸 이동','정답','2칸 이동','마지막만 4칸','왼쪽 3칸'],'칸 수와 방향 둘 다 확인.');
+w('b21',['복호화는 반대로 왼쪽 3칸.','k→h, h→e, o→l, o→l, r→o → hello.'],
+['정답','엉뚱한 단어','복호화를 안 함','오른쪽 3칸 더 밀었음','왼쪽 4칸'],'복호화 = 반대 방향으로 같은 칸.');
+w('b22',['z 다음은 다시 a로 돌아가요. 원형 시계처럼!','x→a, y→b, z→c → abc.'],
+['정답','이동 안 함','왼쪽 3칸','1칸 이동','4칸 이동'],'알파벳 끝을 넘어가면 처음으로.');
+w('b23',['d→g: d(3) → g(6), 3칸.','o→r, g→j도 모두 3칸이니 키는 3.'],
+['1칸이면 e','2칸이면 f','정답','4칸이면 h','5칸이면 i'],'평문과 암호문 한 글자만 비교해도 키가 나와요.');
+w('b24',['오른쪽 5칸: p→u, r→w, o→t, g→l, r→w, a→f, m→r, m→r, i→n, n→s, g→l.','uwtlwfrrnsl.'],
+['정답','4칸 이동','6칸 이동','마지막만 틀림','전치형 결과'],'긴 단어도 한 글자씩 차근차근.');
+w('b25',['키 길이 6 → 6글자씩: inform / atics + :(빈칸 채우기).','키 453216 → 각 줄에서 4번, 5번, 3번, 2번, 1번, 6번 글자를 차례로 뽑아요.','inform → o r f n i m, atics: → c s i t a : → orfnimcsita:'],
+['정답','카이사르 결과','키 적용을 안 함','줄마다 거꾸로 씀','앞 글자 몇 개만 섞음'],'전치형 = 키 길이로 끊고, 키 순서로 열 뽑기.');
+w('b26',['키 길이 3 → abc / def.','키 312 → 3번, 1번, 2번 글자 순서: c a b / f d e.','cabfde.'],
+['정답','키 적용 안 함','231 순서로 뽑음','321 순서로 뽑음','132 순서로 뽑음'],'키 숫자 = "몇 번째 글자를 뽑을지".');
+w('b27',['전치형은 자리만 바꿔요. 글자 종류와 개수는 그대로.','그리고 키(열 순서)가 있어야 되돌릴 수 있어요.'],
+['치환형 설명','정답','되돌릴 수 있음. 그게 해시와의 차이','공개키와 무관','키가 필요함'],'전치형 = 재료는 그대로, 순서만 바뀜.');
+w('b28',['스키테일: 기원전 450년경 고대 그리스, 막대에 감아 쓰는 전치형.','같은 굵기 막대에 감아야 읽히니 막대 굵기가 키.'],
+['카이사르 설명','정답','카이사르 설명','현대 암호 아님','SHA 설명'],'스키테일 = 그리스 + 막대 + 전치형.');
+w('b29',['비밀키 = 같은 키 하나 = 대칭키.','①, ⑤는 공개키, ③은 해시, ④ RSA는 공개키 대표예요.'],
+['공개키 설명','정답','해시 설명','RSA는 공개키','공개키 설명'],'비밀키 = 대칭 = 같은 열쇠 복사.');
+w('b30',['비밀키는 같은 키를 상대에게 건네줘야 해요.','건네는 중에 새거나, 한 명이 잃어버리면 끝. 그래서 키 관리가 어려워요.','속도는 오히려 빠르고 구현도 쉬워요.'],
+['오히려 빠름','정답','키는 하나','복호화 가능','구현 쉬움'],'비밀키 단점 = 키 전달·관리.');
+w('b31',['세 짝을 묶어 외워요.','비밀키: DES·AES / 공개키: RSA·ECC / 해시: MD5·SHA.'],
+['공개키','정답','해시','RSA가 공개키','ECC가 공개키'],'D·A는 비밀, R·E는 공개, M·S는 해시.');
+w('b32',['B만 열 수 있게 해야 하니까, B의 공개키로 잠가요.','그럼 그 자물쇠를 여는 열쇠(B의 개인키)는 B만 갖고 있죠.'],
+['A의 공개키로 잠그면 A만 열 수 있음','A의 개인키는 잠금용 아님','정답','B의 개인키는 B만 가짐','비밀키 방식'],'"받는 사람의 공개키"로 잠근다.');
+w('b33',['B의 공개키로 잠근 건 B의 개인키로만 열려요.'],
+['A 것과 무관','A 것과 무관','공개키는 잠금용','정답','비밀키 방식'],'받는 사람의 개인키로 연다.');
+w('b34',['우체통 비유로 순서를 생각해요.','B가 우체통 만들기(나) → 우체통 설치(라) → A가 편지 넣기(가) → 배달(마) → B가 열쇠로 열기(다).'],
+['정답','키를 만들기 전에 공개할 수 없음','공개 전에 암호화할 수 없음','B의 공개키가 없는데 암호화','전송 전에 암호화해야 함'],'만들기 → 공개 → 잠그기 → 보내기 → 열기.');
+w('b35',['공개키 대표: RSA, ECC.'],
+['비밀키','정답','해시','AES는 비밀키','압축 형식'],'R·E = 공개키.');
+w('b36',['비밀키: 같은 키, 빠름, 키 전달 필요. 공개키: 다른 키 2개, 느림, 전달 불필요.'],
+['비밀키가 더 빠름','정답','비밀키는 전달 필요','공개키는 키가 다름','DES는 비밀키'],'비교표 한 장으로 끝.');
+w('b37',['ㄱ: 공개키는 원래 공개하는 키 → O.','ㄴ: 공개키는 비밀키보다 느려요 → X.','ㄷ: 비대칭키 → O.'],
+['ㄷ도 맞음','ㄱ도 맞음','정답. ㄱ, ㄷ','ㄴ이 틀림','ㄴ이 틀림'],'공개키 = 안전하지만 느리다.');
+w('b38',['누구나 쓸 수 있는 투입구 = 공개키.','우체부만 가진 열쇠 = 개인키.'],
+['우체부의 열쇠','정답','편지 내용(잠긴 것)','원래 편지','해시와 무관'],'누구나 = 공개키, 나만 = 개인키.');
+w('b39',['해시 = 길이가 제각각인 데이터를 고정된 길이 값으로.','같은 입력이면 항상 같은 값, 되돌리기는 불가.'],
+['복원 불가','정답','같은 입력이면 같은 값','키 2개는 공개키','전치형 설명'],'해시 = 고정 길이 + 단방향.');
+w('b40',['단방향 = 한쪽 길만 있음. 평문 → 해시값은 되고, 반대는 안 돼요.','키가 있어도 못 되돌려요.'],
+['정답','방향이 반대','양방향이면 일반 암호','평문 → 해시는 가능','키로도 못 되돌림'],'믹서기: 과일 → 주스만 가능.');
+w('b41',['해시는 되돌릴 수 없으니 "내용을 다시 읽어야 하는" 곳엔 못 써요.','메일 내용을 읽으려면 복호화해야 하니 비밀키·공개키 암호가 필요해요.'],
+['해시 활용','해시 활용','해시 활용','해시 활용','정답. 복호화가 필요함'],'해시 = 확인용, 읽기용 아님.');
+w('b42',['서버엔 해시값만 있고, 해시값은 되돌릴 수 없어요.','그래서 내가 입력한 비밀번호도 해시로 바꿔서 "같은지만" 비교해요.'],
+['서버엔 평문이 없음','해시는 복호화 불가','정답','공개키와 무관','관리자도 모름'],'로그인 = 해시끼리 비교.');
+w('b43',['해커가 가져가는 건 해시값뿐이에요.','해시값은 복호화가 안 되니 원래 비밀번호가 바로 드러나지 않아요.'],
+['평문 저장이면 위험','정답','개인키와 무관','압축과 무관','압축과 무관'],'해킹돼도 해시값만 털림.');
+w('b44',['SHA: 미국 국가안보국(NSA), 1993년, SHA-1·2·3으로 발전.'],
+['MD5는 다른 해시','정답','공개키','비밀키','공개키'],'1993 + NSA = SHA.');
+w('b45',['ㄱ: MD5는 취약점 → O. ㄴ: SHA는 1·2·3으로 발전 → O.','ㄷ: 해시값은 입력 길이와 상관없이 고정 길이 → X.'],
+['ㄴ도 맞음','ㄷ은 틀림','정답','ㄷ이 틀림','ㄷ이 틀림'],'해시값 길이는 항상 같다.');
+w('b46',['블록마다 앞 블록의 해시값을 들고 있어요.','하나를 바꾸면 해시값이 바뀌고, 뒤 블록들과 다 안 맞게 돼서 바로 들켜요.'],
+['중앙 기관이 없음','정답','공개키와 무관','압축과 무관','압축과 무관'],'블록체인 = 해시로 이어진 사슬.');
+w('b47',['같은 키 1개 → 비밀키. 다른 키 2개 → 공개키. 고정 길이 + 복호화 불가 → 해시.'],
+['정답','(가)(나)가 바뀜','완전히 섞임','(나)(다)가 바뀜','완전히 섞임'],'현대 암호 3형제 특징 한 줄씩.');
+w('b48',['①~④는 모두 암호 기법이에요.','허프만은 1회차 압축 기법. 단원을 섞어 묻는 문제예요.'],
+['치환형 암호','전치형 암호','비밀키 암호','공개키 암호','정답. 압축 기법'],'압축 vs 암호 구분.');
+/* ---------- 기출형 c ---------- */
+w('c01',['단위 사다리: Byte → KB → MB → GB → TB. 한 칸 = 1,024배.','1GB는 바로 아래 칸인 MB의 1,024배.'],
+['1KB','1MB','정답','1,024TB는 1PB','1,024bit는 128Byte'],'바로 아래 단위 × 1,024.');
+w('c02',['TB 위가 PB, 그 위가 EB.','1PB = 1,024TB. 1,000이 아니라 1,024!'],
+['1TB','1GB','정답','1,024EB는 더 큰 단위','1,000이 아니라 1,024'],'Byte KB MB GB TB PB EB, 순서 외우기.');
+w('c03',['키워드 찾기: "256색", "애니메이션" → GIF.','움짤(움직이는 짤)이 GIF라고 기억해요.'],
+['압축 안 한 비트맵','손실 압축','정답','트루 컬러','소리 파일'],'256색 + 애니메이션 = GIF.');
+w('c04',['키워드 찾기: "JPEG와 GIF의 장점", "트루 컬러" → PNG.','GIF는 256색까지라 트루 컬러가 안 돼요.'],
+['압축 안 함','손실 압축','256색까지만','정답','일반 압축 파일 형식'],'트루 컬러 + 비손실 = PNG.');
+w('c05',['키워드: "압축 기법이 적용되지 않으며", "윈도 기본 비트맵" → BMP.'],
+['정답','손실 압축','256색 비손실','JPEG+GIF 장점','동영상 형식'],'압축 안 한 기본 그림 = BMP.');
+w('c06',['ㄱ: JPEG = 손실 + 시각 특성 → O.','ㄴ: GIF = 비손실 + 애니메이션 → O.','ㄷ: PNG는 비손실 → X. 이미지 손실 압축은 JPEG뿐!'],
+['ㄴ도 맞음','ㄷ은 틀림','정답','ㄷ이 틀림','ㄷ이 틀림'],'이미지 손실 = JPEG 하나.');
+w('c07',['① 빈도수 세기: S 8번, K 3번, Y 1번.','② 작은 두 개 합치기: K3 + Y1 = 4 → S8 + 4 = 12.','③ 큰 쪽 왼쪽: S8이 왼쪽(0), 4가 오른쪽(1). 4 안에서 K3 왼쪽(10), Y1 오른쪽(11).'],
+['정답','왼쪽 1 규칙으로 읽음','K와 Y가 바뀜','S와 K가 바뀜','엉뚱하게 배정'],'규칙(큰 쪽 왼쪽, 왼쪽 0)을 문제에서 꼭 확인.');
+w('c08',['글자를 하나씩 코드로 바꿔 이어 붙여요. S=0, K=10, Y=11.','S K S S Y S K S S S K S → 0 / 10 / 0 / 0 / 11 / 0 / 10 / 0 / 0 / 0 / 10 / 0.','길이 먼저 세기: 8×1 + 3×2 + 1×2 = 16자리. 16자리가 아닌 선지는 바로 탈락!'],
+['정답','0과 1을 뒤집은 규칙','마지막 자리가 틀림','17자리라 탈락','중간이 틀림'],'비트열 문제는 "길이 세기"로 먼저 걸러요.');
+w('c09',['원본: 12글자 × 8비트 = 96비트.','압축 후: 16비트(앞 문제와 같음).','압축률 = 96 ÷ 16 = 6.'],
+['계산 실수','계산 실수','계산 실수','정답','계산 실수'],'압축률 = 원본 비트 ÷ 압축 비트.');
+w('c10',['빈도수 A2 B3 G6. A2 + B3 = 5 → G6 + 5 = 11.','G 1비트, A·B 2비트 → 6 + 6 + 4 = 16비트.','원본 11 × 8 = 88비트 → 88 ÷ 16 = 5.5. 작년 6번 정답과 같아요.'],
+['작년 오답 선지','작년 오답 선지','정답','작년 오답 선지','원본 비트 ÷ 글자 수'],'규칙이 달라도 압축률은 같다.');
+w('c11',['이번엔 왼쪽 1 · 오른쪽 0 규칙! G = 1, B = 01, A = 00.','A B B G G G A B G G G → 00 01 01 1 1 1 00 01 1 1 1.','0001011110001111. ①은 왼쪽 0 규칙 결과예요.'],
+['왼쪽 0 규칙 결과','정답','작년 오답(19자리)','작년 오답(20자리)','작년 오답(20자리)'],'0·1 규칙이 바뀌면 답이 바뀐다. 문제 조건 확인!');
+w('c12',['앞에서부터 코드표에 있는 걸 찾아요.','1 → 없음, 10 → K. 0 → S. 1 → 없음, 11 → Y. 0 → S. 0 → S.','KSYSS.'],
+['정답','S 하나가 빠짐','첫 글자를 잘못 끊음','순서가 틀림','첫 글자부터 틀림'],'0이면 바로 S, 1이면 한 자리 더 보기.');
+w('c13',['코드의 핵심 줄: idx = (idx + shift) % 26. shift가 3이니 오른쪽 3칸.','s(18)→21 v, t→w, u→x, d(3)→6 g, y(24)→27%26=1 b.','vwxgb. y에서 끝을 넘어 b로 돌아온 걸 놓치지 마요.'],
+['정답','왼쪽 3칸','4칸','1칸 + 순서 섞음','1칸'],'shift 양수 = 오른쪽, 끝 넘으면 % 26으로 처음.');
+w('c14',['plaintext.lower()로 KOREA → korea 먼저 소문자!','shift -3이니 왼쪽 3칸: k→h, o→l, r→o, e→b, a(0)→-3%26=23 x.','hlobx. 파이썬에서 음수 % 26은 0~25로 돌려 줘요.'],
+['오른쪽 3칸','정답','왼쪽 2칸','마지막 a를 w로','왼쪽 4칸'],'a에서 왼쪽으로 가면 z, y, x.');
+w('c15',['len(alphabet) = 26.','26으로 나눈 나머지는 항상 0~25 → 알파벳 범위를 벗어나지 않아요.','그래서 z 다음이 a, a 이전이 z로 돌아가요.'],
+['lower()의 역할','정답','not in alphabet의 역할','전치형','해시'],'% 26 = 알파벳 원형 시계.');
+w('c16',['암호화를 오른쪽 2칸으로 했으니, 평문은 왼쪽 2칸.','c→a, r→p, r→p, n→l, g→e → apple.'],
+['정답','오른쪽 2칸 더 감','왼쪽 1칸','변환 안 함','엉뚱함'],'거꾸로 찾기 = 반대 방향으로.');
+w('c17',['z(25) + 4 = 29 → 29 % 26 = 3 → d.','o(14) + 4 = 18 → s.','dss.'],
+['정답','변환 안 함','왼쪽 4칸','z를 c로(3칸)','o 하나만 5칸'],'끝 넘어가면 26을 빼서 처음으로.');
+w('c18',['키 길이 4 → comp / uter.','키 2413 → 각 줄에서 2번, 4번, 1번, 3번 글자.','comp → o p c m, uter → t r u e → opcmtrue.'],
+['정답','엉뚱한 섞기','1·2번 열만 바꿈','숫자를 끼움. 함정','거꾸로 씀'],'키 숫자 = 뽑을 열 번호.');
+w('c19',['키 길이 3 → hel / lo: (빈칸 하나 :로).','키 312 → 3번, 1번, 2번: l h e / : l o.','lhe:lo.'],
+['정답','키 적용 안 함','213 순서','첫 줄만 맞음','거꾸로'],'빈칸 :도 글자처럼 옮겨요.');
+w('c20',['키 길이 4 → secu / rity.','키 4132 → 4번, 1번, 3번, 2번: u s c e / y r t i.','usceyrti.'],
+['정답','엉뚱한 순서','변환 안 함','다른 순서','거꾸로'],'줄마다 같은 순서로 뽑기.');
+w('c21',['ㄱ 기밀성 보장 O, ㄷ 인증 및 식별 보장 O, ㅁ 규정 준수 O.','ㄴ "비인가자 접근 허용"은 "방지"를 뒤집은 함정. ㄹ "용량 감소"는 압축.'],
+['ㄴ이 틀림','ㅁ도 맞음','둘 다 틀림','정답','ㄹ이 틀림'],'말끝까지 읽기. 허용 ↔ 방지, 차단 ↔ 보장.');
+w('c22',['이번엔 "해당하지 않는 것"!','ㄴ "무단 변경 허용"은 무결성의 반대. ㅁ "인증 및 식별 차단"은 보장의 반대.','ㄱ, ㄷ, ㄹ은 교과서 그대로라 해당하는 것.'],
+['ㄱ은 해당함','ㄷ은 해당함','둘 다 해당함','정답','ㄱ, ㄹ은 해당함'],'"않는 것" 문제는 동그라미 쳐 두기.');
+w('c23',['해시값은 입력이 짧든 길든 항상 같은 길이예요.','그래서 ③이 틀렸어요. 나머지는 교과서 그대로.'],
+['맞음','맞음','정답. 길이는 고정','맞음','맞음'],'해시 = 고정 길이, 복호화 불가. 둘 다 단골.');
+w('c24',['해시는 복호화가 불가능해요. 작년 정답과 같은 포인트!'],
+['맞음','맞음','정답','맞음','맞음'],'"해시값을 복호화" = 무조건 틀림.');
+/* ---------- 심화 d ---------- */
+w('d01',['빈도수: A7 B4 C2 D1.','합치기: D1 + C2 = 3 → 3 + B4 = 7 → 7 + A7 = 14.','트리 깊이 = 코드 길이: A 1, B 2, C·D 3. 7 + 8 + 6 + 3 = 24비트.'],
+['계산 실수','정답','계산 실수','모두 2비트로 셈','모두 3비트로 셈'],'깊이 = 코드 길이, 빈도수 × 깊이를 더하기.');
+w('d02',['0 → A, 10 → B, 110 → C, 111 → D.','0101100111 → 0 | 10 | 110 | 0 | 111 → A B C A D.'],
+['정답','중간을 잘못 끊음','첫 부분을 잘못 끊음','뒤를 잘못 끊음','첫 글자부터 틀림'],'1이 나오면 끝날 때까지 한 자리씩 더 보기.');
+w('d03',['ㄱ: 제일 많이 나온 글자는 제일 짧거나 같은 길이 → O.','ㄴ: 받은 사람도 코드표가 있어야 해독 → O.','ㄷ: 빈도수가 다 같으면 코드 길이도 비슷해져 효과가 작음 → X.'],
+['ㄴ도 맞음','ㄷ은 틀림','정답','ㄷ이 틀림','ㄷ이 틀림'],'허프만은 빈도 차이가 클수록 강하다.');
+w('d04',['(가) A8B2 → 4글자. 10 ÷ 4 = 2.5.','(나) 글자가 2종류라 A=0, B=1, 각 1비트 → 10비트. 원본 80비트 ÷ 10 = 8.','같은 데이터라도 기준(글자 수 / 비트)이 다르니 조건을 꼭 읽어요.'],
+['(나)를 잘못 계산','정답','(가)를 잘못 계산','둘 다 틀림','둘 다 거꾸로 나눔'],'압축률은 항상 전 ÷ 후.');
+w('d05',['각 선지를 압축해서 글자 수가 그대로인 걸 찾아요.','AABBCC → A2B2C2 = 6글자 → 6 ÷ 6 = 1.'],
+['A4B2 = 4글자, 1.5','정답','A1B1… = 12글자, 0.5','A6 = 2글자, 3','A3B3 = 4글자, 1.5'],'압축률 1 = 줄지도 늘지도 않음.');
+w('d06',['W3B1W3 → W 3개 + B 1개 + W 3개 = WWWBWWW (7글자).','압축 결과는 6글자 → 7 ÷ 6 ≈ 1.17. 아주 조금만 줄었어요.'],
+['정답','거꾸로 나눔','B가 3개로 잘못 복원','W를 1개로 복원','압축률 계산 틀림'],'복원 먼저, 그다음 압축률.');
+w('d07',['a = 65 + 32 = 97.','97 = 64 + 32 + 1 → 64·32·1 자리가 1 → 1100001.','A(1000001)와 비교하면 32 자리 하나만 달라요.'],
+['대문자 A','정답','B(66)','엉뚱한 수','8비트 33'],'대문자 + 32 = 소문자.');
+w('d08',['픽셀 수 = 800 × 600 = 480,000개.','24비트 = 3바이트 → 480,000 × 3 = 1,440,000바이트.','③은 비트로 계산하고 바이트로 안 바꾼 값(× 24). 단위 함정!'],
+['1바이트로 계산','정답','비트 단위 값','엉뚱함','4바이트로 계산'],'비트 ÷ 8 = 바이트.');
+w('d09',['n비트로 표현할 수 있는 개수 = 2를 n번 곱한 수.','2 × 2 × 2 × 2 × 2 × 2 × 2 × 2 = 256 → 8비트.'],
+['16색','64색','정답','65,536색','너무 큼'],'256 = 2를 8번 → 8비트.');
+w('d10',['압축 후 = 압축 전 ÷ 압축률.','2MB = 2,048KB → 2,048 ÷ 4 = 512KB.'],
+['단위 실수','계산 실수','정답','곱해 버림','압축 전 그대로'],'압축률 공식 거꾸로 쓰기: 후 = 전 ÷ 압축률.');
+w('d11',['오른쪽 5칸을 되돌리려면 왼쪽 5칸(shift -5) → ㄱ O.','% 26 때문에 한 바퀴는 26칸. 오른쪽 21칸 = 오른쪽 5 + 21 = 26칸, 즉 제자리 → ㄴ O.','ㄷ은 5칸을 또 미는 것 → X.'],
+['ㄴ도 맞음','ㄱ도 맞음','ㄷ은 틀림','정답','ㄷ이 틀림'],'카이사르는 원형: −5 = +21.');
+w('d12',['쉼표, 공백, 느낌표는 alphabet에 없어요 → 그대로 붙음.','h→i, i→j, a→b, i→j → ij, bj!'],
+['정답','공백이 사라짐','대문자로 바뀜','변환 안 함','2칸 이동'],'알파벳이 아닌 건 그대로.');
+w('d13',['plaintext.lower()가 먼저 실행돼서 ABC → abc.','오른쪽 3칸 → def.'],
+['대문자 그대로 나온다는 함정','정답','변환 안 함','원래 입력','왼쪽 3칸'],'코드 첫 줄부터 차근차근.');
+w('d14',['이동 칸 수는 0~25칸뿐(26칸 = 한 바퀴 = 0칸).','0칸은 평문 그대로라 빼면 1~25칸 → 25가지.'],
+['너무 적음','너무 적음','정답','0칸 포함','26 × 26'],'카이사르는 25번만 시도하면 깨진다.');
+w('d15',['4자리 = 10 × 10 × 10 × 10 = 10,000가지.','6자리 = 1,000,000가지.','1,000,000 ÷ 10,000 = 100배.'],
+['틀림','틀림','한 자리 늘린 경우','정답','세 자리 늘린 경우'],'자리 하나 늘 때마다 × 10.');
+w('d16',['암호문을 키 길이 4로 끊기: cesi / c:ne.','키 2413 = 암호문 1번째 자리엔 원래 2번 열, 2번째엔 4번 열, 3번째엔 1번 열, 4번째엔 3번 열.','cesi → 원래 1번 열 s, 2번 열 c, 3번 열 i, 4번 열 e → scie. c:ne → n, c, e, : → nce: → science.'],
+['정답','중간이 섞임','암호문 그대로','앞부분이 섞임',': 위치 틀림'],'복호화 = 열을 원래 자리로 돌려놓기.');
+w('d17',['키 길이 4로 끊으면 4 + 4 + 2.','마지막 줄 빈칸 2개를 :로 채움 → 4 × 3 = 12글자.'],
+['키 길이','채우기 안 함','하나만 채움','정답','틀림'],'전치형 암호문 길이 = 키 길이의 배수.');
+w('d18',['이번엔 받는 사람이 A예요.','받는 사람(A)의 공개키로 잠그고, A가 자기 개인키로 열어요.'],
+['정답','A의 개인키는 A만 가짐','B의 공개키로 잠그면 B만 열 수 있음','개인키는 잠금용 아님','공개키 방식이 아님'],'누가 보내든 "받는 사람의 공개키".');
+w('d19',['(가) 비밀키: 두 사람마다 키 하나. 10명 중 2명 고르기 = 10 × 9 ÷ 2 = 45개.','(나) 공개키: 한 사람당 공개키·개인키 1쌍 → 10 × 2 = 20개.','사람이 늘수록 비밀키는 키 개수가 확 늘어나 관리가 어려워요.'],
+['(가) 틀림','정답','둘 다 틀림','(나) 틀림','바뀜'],'비밀키는 짝마다, 공개키는 사람마다.');
+w('d20',['(가) 빼냄 = 몰래 봄 → 기밀성.','(나) 고침 = 몰래 바꿈 → 무결성.','(다) 마비 = 못 씀 → 가용성.'],
+['정답','다 섞임','다 섞임','(나)(다)가 바뀜','(가)(다)가 바뀜'],'보기·고치기·쓰기 = C·I·A.');
+w('d21',['ㄱ: 같은 입력 → 같은 해시값 → O.','ㄴ: 한 글자만 달라도 해시값이 완전히 달라짐 → O.','ㄷ: 해시는 복호화 불가. 관리자도 못 알아내요 → X.'],
+['ㄴ도 맞음','ㄷ은 틀림','정답','ㄷ이 틀림','ㄷ이 틀림'],'"비밀번호 찾기"가 아니라 "재설정"인 이유.');
+w('d22',['블록 2가 바뀌면 블록 2의 해시값이 바뀌어요.','블록 3은 블록 2의 "옛날" 해시값을 갖고 있으니 안 맞게 돼요. 그래서 들켜요.','블록 1은 앞에 있으니 영향 없음.'],
+['영향이 있음','블록 1은 영향 없음','정답','해시는 복호화 불가','자동으로 바뀌지 않음'],'바뀐 블록 뒤쪽이 줄줄이 안 맞음.');
+w('d23',['규칙: 어떤 코드도 다른 코드의 앞부분이면 안 됨.','ㄱ {0, 10, 110, 111}: 겹치는 앞부분 없음 → O.','ㄴ {1, 10, …}: 1이 10의 앞부분 → X. ㄷ {00, 01, 10, 110, 111}: 겹침 없음 → O.'],
+['ㄷ도 됨','ㄴ은 안 됨','ㄴ이 안 됨','정답','ㄴ이 안 됨'],'앞부분 겹침 검사.');
+w('d24',['(가) 계약서: 한 글자도 바뀌면 안 됨 → 비손실.','(나) 스트리밍: 조금 흐려도 빨리 → 손실.','(다) 실행 파일: 1비트만 바뀌어도 고장 → 비손실.'],
+['(가)(다) 틀림','정답','(다) 틀림','(나) 틀림','(다) 틀림'],'바뀌면 큰일 = 비손실, 조금 흐려도 OK = 손실.');
+
+/* ---------- 추가 e ---------- */
+w('e01',['비트 하나 = 스위치 하나 = 켜짐(1) 또는 꺼짐(0).'],['너무 적음','정답','비트 2개','비트 3개','10진수'],'비트 = 2가지.');
+w('e02',['1Byte = 8bit. 7비트는 아스키 글자 크기라 헷갈리지 마요.'],['틀림','틀림','아스키 크기','정답','1KB의 바이트 수'],'8bit = 1Byte.');
+w('e03',['전원 꺼져도 남는 건 보조 기억 장치(책장): USB, 하드디스크.'],['주기억','정답','계산 장치','CPU 안의 작은 기억','RAM'],'USB = 보조 기억.');
+w('e04',['비손실 대표: ZIP. 손실: JPEG, MP3, MPEG4.'],['손실','손실','손실','정답','손실'],'ZIP = 비손실.');
+w('e05',['수업 필기: 용량이 커서 통신이 오래 걸림 → 압축. 필요성: 통신 속도, 메모리 용량.'],['정답','품질은 안 좋아짐','암호화와 무관','엉뚱함','엉뚱함'],'압축 = 속도 + 공간.');
+w('e06',['전 세계 문자 표준 = 유니코드(UTF-8, UTF-16).'],['영어 위주','정답','압축 코드','이미지 형식','해시'],'UTF = 유니코드.');
+w('e07',['"글자 + 연속 횟수" = 반복 길이 압축(run length encoding).'],['빈도수 압축','정답','방식 분류','암호','암호'],'RRRR → R4.');
+w('e08',['맨 위 = 루트(root). 루트 값 = 전체 글자 수.'],['맨 아래 글자들','정답','연결선','암호 용어','블록체인 용어'],'루트 = 꼭대기.');
+w('e09',['암호화 = 허락 안 된 사람이 못 보게 바꾸기.'],['압축','정답','정렬','문자 코드','보조 기억'],'암호화 = 잠그기.');
+w('e10',['평문 → 암호문 = 암호화, 암호문 → 평문 = 복호화.'],['정답','바뀜','압축 용어','압축 용어','엉뚱함'],'암호 용어와 압축 용어 구분.');
+w('e11',['같은 키 = 대칭. 비밀키 = 대칭키.'],['공개키','정답','해시','고전 암호','엉뚱함'],'비밀 = 대칭.');
+w('e12',['다른 키 두 개 = 공개키 = 비대칭키.'],['같은 키','같은 키','정답','고전 암호','압축'],'공개 = 비대칭.');
+w('e13',['해시: MD5, SHA. 비밀키: DES, AES. 공개키: RSA, ECC.'],['비밀키','공개키','정답','비밀키','공개키'],'M·S = 해시.');
+w('e14',['율리우스 카이사르 = 고대 로마.'],['스키테일','정답','에니그마','SHA','엉뚱함'],'로마 = 카이사르, 그리스 = 스키테일.');
+w('e15',['https = 암호화해서 전송.'],['http','정답','엉뚱함','오히려 안심하고 입력','해시는 복호화 불가'],'s = secure.');
+w('e16',['0과 1로 적기 = 부호화.'],['값 뽑기','계단 맞추기','정답','암호 용어','압축 용어'],'표·양·부의 "부".');
+w('e17',['300 ÷ 60 = 5.'],['거꾸로','틀림','정답','뺄셈','덧셈'],'전 ÷ 후.');
+w('e18',['압축률 0.8 = 전 ÷ 후 < 1 → 후가 더 큼.','즉 압축했는데 오히려 커졌어요.'],['줄어든 게 아님','줄어든 게 아님','정답','최악','같으면 1'],'1보다 작으면 손해.');
+w('e19',['B 6개 → B6, W 4개 → W4, B 2개 → B2. 떨어진 B는 따로!','B6W4B2 = 6글자 → 12 ÷ 6 = 2.'],['정답','B를 합침','거꾸로 나눔','B2 빠짐','숫자가 앞'],'연속된 것만.');
+w('e20',['A 2개, B 3개, C 1개 → AABBBC(6글자).','압축 결과도 6글자 → 압축률 1.'],['정답','거꾸로','A 1개','C 2개','B 2개'],'복원 후 글자 수 비교.');
+w('e21',['가장 작은 두 개: Q3 + R2 = 5.'],['정답','P + R','P + Q','전체','R만'],'제일 작은 두 개부터.');
+w('e22',['W1 + Z2 = 3 → Y3 + 3 = 6 → X4 + 6 = 10.','X 1비트, Y 2비트, Z·W 3비트 → 4 + 6 + 6 + 3 = 19.'],['글자 수','계산 실수','정답','모두 2비트','계산 실수'],'빈도수 × 깊이의 합.');
+w('e23',['C = 67 = 64 + 2 + 1 → 1000011.'],['A','B','정답','D','소문자 c'],'자리값으로 쪼개기.');
+w('e24',['왼쪽 1칸: i→h, b→a, m→l → hal.'],['정답','오른쪽 1칸','b를 그대로 둠','i를 그대로 둠','왼쪽 2칸'],'방향 확인.');
+w('e25',['data / base → 3·1·4·2번: t d a a / s b e a.'],['정답','엉뚱한 섞기','다른 순서','두 번째 줄 틀림','거꾸로'],'키 순서대로 뽑기.');
+w('e26',['alg / ori / thm → 3·1·2번: g a l / i o r / m t h.'],['정답','다른 순서','변환 안 함','섞임','거꾸로'],'3글자씩 끊고 3·1·2.');
+w('e27',['비밀키 장점 = 빠르고 구현이 쉬움.'],['공개키 장점','정답','공개키 특징','해시','공개키 특징'],'비밀키 = 빠름.');
+w('e28',['공개키 단점 = 느림. 키 전달 문제는 비밀키 단점.'],['비밀키 단점','정답','틀림','해시','DES는 비밀키'],'공개키 = 느림.');
+w('e29',['허락받은 사람만 "볼" 수 있게 = 기밀성.'],['정답','고치기','쓰기','섀넌','섀넌'],'보기 = 기밀성.');
+w('e30',['상대가 내용을 읽어야 하는 편지는 복호화가 필요해요. 해시는 복호화가 안 되니 못 씀.'],['해시 활용','해시 활용','해시 활용','정답','해시 활용'],'해시는 확인용.');
+w('e31',['빈도수 A3 N2 B1. B1 + N2 = 3 → A3 + 3 = 6.','A 1비트, N·B 2비트 → 3 + 4 + 2 = 9비트.'],['글자 수','계산 실수','정답','모두 2비트','모두 3비트'],'BANANA = 9비트.');
+w('e32',['원본 6 × 8 = 48비트, 압축 후 9비트.','48 ÷ 9 = 5.33… ≈ 5.3.'],['틀림','틀림','정답','틀림','틀림'],'나누어떨어지지 않으면 가장 가까운 값.');
+w('e33',['ㄱ: 반복 길이는 "연속"이 핵심 → O.','ㄴ: 허프만은 순서와 상관없이 빈도수만 봄 → O.','ㄷ: 둘 다 원본 그대로 복원 → 비손실 → O.'],['ㄴ, ㄷ도 맞음','ㄱ, ㄴ도 맞음','ㄷ도 맞음','ㄱ도 맞음','정답'],'반복 길이 = 연속, 허프만 = 빈도.');
+w('e34',['27 % 26 = 1 → 오른쪽 1칸과 같음.','z→a, e→f, b→c, r→s, a→b → afcsb.'],['정답','27을 0으로 착각','2칸','엉뚱함','r 틀림'],'26칸 = 한 바퀴.');
+w('e35',['gal / ior / mth. 키 312 = 각 줄 1번째 자리엔 원래 3번 열, 2번째엔 1번 열, 3번째엔 2번 열.','gal → a l g, ior → o r i, mth → t h m → algorithm.'],['정답','엉뚱한 단어','암호문 그대로','끝이 틀림','순서 틀림'],'열을 원래 자리로.');
+w('e36',['ㄱ: 공개키는 원래 공개용. 개인키가 없으면 못 열어요 → O.','ㄴ: 개인키는 B만 → O.','ㄷ: 개인키를 공개하면 누구나 열 수 있음 → X.'],['ㄴ도 맞음','ㄱ도 맞음','정답','ㄷ 틀림','ㄷ 틀림'],'공개키는 새도 OK, 개인키는 절대 비밀.');
+w('e37',['(가) 가는 길 보호 = https 암호화.','(나) 저장할 때 관리자도 모르게 = 해시.'],['바뀜','정답','압축 아님','압축 아님','고전 암호 아님'],'전송은 암호화, 저장은 해시.');
+w('e38',['2MB = 2,048KB → 2,048 ÷ 400 = 5.12.','1MB를 1,000KB로 하면 5가 나오는 함정.'],['거꾸로','1,000으로 계산','정답','뺄셈','거꾸로'],'MB → KB는 × 1,024.');
+w('e39',['자리마다 26가지 → 26 × 26 × 26 × 26 = 456,976.'],['더하기','숫자 4자리','정답','1자리','26 × 25'],'경우의 수 = 곱하기.');
+w('e40',['5 + 5 = 10, 5 + 5 = 10, 10 + 10 = 20.','네 글자 모두 깊이 2 → 2비트씩 → 20 × 2 = 40비트.'],['모두 같음','정답','1비트로는 4개 구분 불가','40비트','만들 수 있음'],'빈도가 다 같으면 허프만도 고정 길이처럼.');
+
+QS.forEach(q=>{const x=W[q.id];if(x){q.ws=x.s;q.r=x.r;q.k=x.k}});
+/* 정답 위치 고르게: 선지 번호를 언급하지 않는 개념 문제만 선지를 돌려서 배치 */
+(function(){const cnt=[0,0,0,0,0,0];QS.forEach(q=>{q.fix=q.tg==='보기'||q.tg==='계산'||q.tg==='순서'||/[①②③④⑤]/.test(q.e)||q.o.some(o=>/^\(가\)|^ㄱ/.test(o));if(q.fix)cnt[q.a]++});
+ QS.filter(q=>!q.fix).forEach(q=>{let t=1;for(let k=2;k<=5;k++)if(cnt[k]<cnt[t])t=k;const sh=(t-q.a+5)%5;q.o=q.o.map((_,i)=>q.o[(i-sh+5)%5]);if(q.r){const r=q.r;q.r=r.map((_,i)=>r[(i-sh+5)%5])}q.a=t;cnt[t]++})})();
+const app=document.getElementById('app'),tabbar=document.getElementById('tabbar');
+const KEY='bitnote:v1';
+let S;try{S=JSON.parse(localStorage.getItem(KEY))||{}}catch(e){S={}}
+S.wrong=S.wrong||[];S.log=S.log||{};S.seen=S.seen||{};S.theme=S.theme||'auto';S.fs=S.fs||'m';S.sel=S.sel||[1,2];S.cnt=S.cnt||20;S.ord=S.ord||'mix';
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
+const esc=t=>String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+const NUM=['①','②','③','④','⑤'];
+const ICON={home:'<path d="M4 11l8-7 8 7v8.5a1.5 1.5 0 0 1-1.5 1.5H15v-6H9v6H5.5A1.5 1.5 0 0 1 4 19.5z"/>',note:'<path d="M6 3.5h9l4 4V20a.5.5 0 0 1-.5.5h-12A.5.5 0 0 1 6 20z"/><path d="M15 3.5V8h4M9 12h7M9 16h5"/>',
+quiz:'<path d="M4.5 19.5l1-4.5L16 4.5a2.1 2.1 0 0 1 3 3L8.5 18z"/><path d="M14 7l3 3"/>',wrong:'<path d="M5 4.5h14v15l-7-4-7 4z"/>',gear:'<circle cx="12" cy="12" r="3"/><path d="M12 2.5v3M12 18.5v3M4.4 4.4l2.1 2.1M17.5 17.5l2.1 2.1M2.5 12h3M18.5 12h3M4.4 19.6l2.1-2.1M17.5 6.5l2.1-2.1"/>',
+back:'<path d="M15 5l-7 7 7 7"/>',check:'<path d="M5 12.5l4.5 4.5L19 7.5"/>',book:'<path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z"/><path d="M4 20.5A2.5 2.5 0 0 1 6.5 18H20v3H6.5"/>',chev:'<path d="M9 5l7 7-7 7"/>',pen:'<path d="M12 20h8"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/>'};
+const ic=(n,s=22)=>`<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICON[n]}</svg>`;
+const ALLSEC=LESSONS.flatMap(l=>l.secs.map(s=>({...s,L:l})));
+const secOf=id=>ALLSEC.find(s=>s.id===id);
+let V={v:'home',arg:null},P=null;
+
+function applyTheme(){const r=document.documentElement;if(S.theme==='auto')r.removeAttribute('data-theme');else r.setAttribute('data-theme',S.theme);if(S.fs==='m')r.removeAttribute('data-fs');else r.setAttribute('data-fs',S.fs)}
+function fade(){app.classList.remove('fade');void app.offsetWidth;app.classList.add('fade')}
+function go(v,arg,anc){document.getElementById('pf')?.remove();if(v==='sec'){const x=secOf(arg);v='lesson';anc=arg;arg=x?x.L.id:1}V={v,arg,anc};P=null;document.body.classList.remove('playing');render();fade();if(anc){setTimeout(()=>{const e=document.getElementById('p'+anc);if(e)window.scrollTo(0,e.getBoundingClientRect().top+scrollY-70)},60)}else window.scrollTo(0,0)}
+function header(){const n=Object.keys(S.log).length;document.getElementById('solved').textContent=n}
+function tabs(){const T=[['home','홈','home'],['notes','노트','note'],['setup','문제','quiz'],['wrong','오답','wrong']];
+ const cur=V.v==='lesson'?'notes':V.v==='past'?'home':V.v;tabbar.innerHTML=`<div class="in">${T.map(([k,n,i])=>`<button class="${cur===k?'on':''}" onclick="go('${k}')">${ic(i)}<span>${n}</span></button>`).join('')}</div>`}
+function render(){header();tabs();({home:vHome,past:vPast,notes:vNotes,lesson:vLesson,setup:vSetup,wrong:vWrong,set:vSet,result:vResult}[V.v]||vHome)()}
+
+/* ---------- 홈 ---------- */
+function stats(){const ids=Object.keys(S.log);const ok=ids.filter(i=>S.log[i].last).length;return{n:ids.length,ok,acc:ids.length?Math.round(ok/ids.length*100):0}}
+function lrow(l){const n=QS.filter(q=>q.l===l.id).length;
+ return`<button class="urow" onclick="go('lesson',${l.id})"><span class="sq">${String(l.id).padStart(2,'0')}</span><span class="mid"><b>${l.title}</b><small>${l.date} 수업 · ${l.pages} · 문제 ${n}개</small>${S.seen['L'+l.id]?'<small class="rd">읽음</small>':''}</span><span class="ch">${ic('chev',18)}</span></button>`}
+function vHome(){const st=stats(),w=S.wrong.length,last=S.lastL&&LESSONS.find(l=>l.id===S.lastL);
+ app.innerHTML=`<h1 class="t">정보 기말 대비</h1><p class="st">수업 노트 ${LESSONS.length}회차 · 예상 문제 ${QS.length}개</p>
+ <button class="hero" style="display:block;width:100%;text-align:left;color:#fff" onclick="${w?'playWrong()':"go('setup')"}"><small>${w?'다시 풀 오답':'예상 문제'}</small><div class="big">${w?w+'개':QS.length+'문제'}</div><p>${w?'누르면 바로 다시 풀어요':'누르면 문제 풀기로 가요'}</p></button>
+ ${last?`<div class="sec">이어서 공부하기</div>${lrow(last)}`:''}
+ <button class="pcard" onclick="go('past')"><span><small>김포고 2025 1학기 2차 정보</small><b>작년 기출 난이도 분석</b></span>${ic('chev',18)}</button>
+ <div class="sec">기록</div><div class="rec"><span>푼 문제</span><b>${st.n} / ${QS.length}</b></div><div class="rec"><span>마지막 풀이 정답률</span><b>${st.acc}%</b></div><div class="rec" style="border:0"><span>쌓인 오답</span><b>${w}개</b></div>
+ <div class="sec">수업 목차</div>${LESSONS.map(lrow).join('')}<div style="height:30px"></div>`}
+
+/* ---------- 노트 목차 ---------- */
+function vNotes(){app.innerHTML=`<h1 class="t">수업 노트</h1><p class="st">회차를 누르면 그날 수업이 한 페이지로 나와요.</p>${LESSONS.map(lrow).join('')}<div style="height:30px"></div>`}
+
+/* ---------- 회차 노트 (한 페이지) ---------- */
+function vLesson(){const L=LESSONS.find(l=>l.id===V.arg)||LESSONS[0];S.seen['L'+L.id]=1;S.lastL=L.id;save();
+ const i=LESSONS.indexOf(L),pv=LESSONS[i-1],nx=LESSONS[i+1],n=QS.filter(q=>q.l===L.id).length;
+ app.innerHTML=`<button class="crumb" onclick="go('notes')">수업 노트 ›</button><h1 class="t">${L.id}회차 ${L.title}</h1><p class="st">${L.date} 수업 · ${L.pages}</p>
+ <div class="one top1"><b>오늘 수업 한 줄 요약</b>${L.one}</div>
+ <div class="toc">${L.secs.map((s,k)=>`<button onclick="jump('${s.id}')"><i>${k+1}</i>${s.t}</button>`).join('')}</div>
+ <div class="note">${L.secs.map((s,k)=>`<section id="p${s.id}"><div class="nh"><i>${k+1}</i><h2>${s.t}</h2></div>${s.h}</section>`).join('')}</div>
+ <div class="nh"><i>✓</i><h2>1분 총정리</h2></div><div class="card sumc">${L.sum.map(t=>`<div>${ic('check',16)}<span>${t}</span></div>`).join('')}</div>
+ <button class="gbtn" style="margin-top:22px" onclick="playL(${L.id})">${L.id}회차 문제 풀기 · ${n}문제</button>
+ <div class="pn">${pv?`<button class="obtn" onclick="go('lesson',${pv.id})">‹ ${pv.id}회차</button>`:'<span></span>'}${nx?`<button class="obtn" onclick="go('lesson',${nx.id})">${nx.id}회차 ›</button>`:'<span></span>'}</div><div style="height:30px"></div>`}
+function jump(id){const e=document.getElementById('p'+id);if(e)window.scrollTo({top:e.getBoundingClientRect().top+scrollY-70,behavior:'smooth'})}
+function playL(id){const L=LESSONS.find(l=>l.id===id);play(QS.filter(q=>q.l===id),`${id}회차 ${L.title}`)}
+
+/* ---------- 문제 설정 ---------- */
+function pool(){return QS.filter(q=>S.sel.includes(q.l)&&(!S.ex||(S.ex===1?q.x:q.z))&&(!S.lv||q.d===S.lv))}
+function vSetup(){const p=pool(),cnt=S.cnt==='all'?p.length:Math.min(S.cnt,p.length);
+ const types=[...new Set(p.map(q=>q.tg))];
+ app.innerHTML=`<h1 class="t">예상 문제</h1><p class="st">수업 노트와 교과서를 바탕으로 만든 문제예요.</p>
+ <div class="card w"><div class="lab">범위</div><div class="chips">${LESSONS.map(l=>`<button class="chip ${S.sel.includes(l.id)?'on':''}" onclick="togL(${l.id})">${l.id}회차 ${l.title}</button>`).join('')}</div>
+ <div class="lab">문제 종류</div><div class="seg p"><button class="${!S.ex?'on':''}" onclick="S.ex=0;save();render()">전체</button><button class="${S.ex===1?'on':''}" onclick="S.ex=1;save();render()">기출형 ${QS.filter(q=>q.x).length}</button><button class="${S.ex===2?'on':''}" onclick="S.ex=2;save();render()">심화 ${QS.filter(q=>q.z).length}</button></div>
+ <div class="lab">난이도</div><div class="seg p">${[['','전체'],['하','하'],['중','중'],['상','상']].map(([k,n])=>`<button class="${(S.lv||'')===k?'on':''}" onclick="S.lv='${k}';save();render()">${n}${k?' '+QS.filter(q=>S.sel.includes(q.l)&&(!S.ex||(S.ex===1?q.x:q.z))&&q.d===k).length:''}</button>`).join('')}</div>
+ <div class="lab">문항 수</div><div class="chips">${[10,20,30,'all'].map(c=>`<button class="chip ${S.cnt===c?'on':''}" onclick="S.cnt=${c==='all'?"'all'":c};save();render()">${c==='all'?'전체':c+'문제'}</button>`).join('')}</div>
+ <div class="lab">순서</div><div class="seg p"><button class="${S.ord==='mix'?'on':''}" onclick="S.ord='mix';save();render()">섞어서</button><button class="${S.ord==='seq'?'on':''}" onclick="S.ord='seq';save();render()">수업 순서대로</button></div>
+ <div class="est"><span>풀 문제</span><b>${cnt}개</b></div><button class="gbtn" ${cnt?'':'disabled'} onclick="startSet()">문제 풀기 시작</button></div>
+ <div class="sec">회차별로 풀기</div>${LESSONS.map(L=>{const qs=QS.filter(q=>q.l===L.id),d=qs.filter(q=>S.log[q.id]&&S.log[q.id].last).length;return`<button class="urow" onclick="playL(${L.id})"><span class="sq">${String(L.id).padStart(2,'0')}</span><span class="mid"><b>${L.title}</b><small>${qs.length}문제 · ${d}개 맞힘</small><span class="pb" style="display:block"><i style="width:${Math.round(d/qs.length*100)}%"></i></span></span><span class="ch">${ic('chev',18)}</span></button>`}).join('')}<div style="height:30px"></div>`}
+function togL(id){S.sel=S.sel.includes(id)?S.sel.filter(x=>x!==id):[...S.sel,id].sort();save();render()}
+function shuffle(a){a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function startSet(){let p=pool();if(S.ord==='mix')p=shuffle(p);const c=S.cnt==='all'?p.length:Math.min(S.cnt,p.length);play(p.slice(0,c),'예상 문제')}
+function playSec(id){const s=secOf(id);play(QS.filter(q=>q.s===id),`${s.id} ${s.t}`)}
+function playWrong(){const l=QS.filter(q=>S.wrong.includes(q.id));if(l.length)play(shuffle(l),'오답 다시 풀기',true)}
+function playOne(id){play([QS.find(q=>q.id===id)],'오답 다시 풀기',true)}
+
+/* ---------- 풀이 ---------- */
+function play(list,title,retry){P={list,title,retry,i:0,sel:0,done:false,ok:0,bad:[]};V={v:'play'};document.body.classList.add('playing');drawPlay();window.scrollTo(0,0)}
+function drawPlay(){const q=P.list[P.i],s=secOf(q.s);header();
+ app.innerHTML=`<div class="ptop"><div class="in"><div class="r"><button class="ib" onclick="quit()" aria-label="나가기">${ic('back',20)}</button><div><b>${esc(P.title)}</b><small>${P.i+1} / ${P.list.length}</small></div></div><div class="pbar"><i style="width:${(P.i+(P.done?1:0))/P.list.length*100}%"></i></div></div></div>
+ <div style="padding-top:18px"><div class="qhead"><span class="no">${P.i+1}</span><span class="lv l${q.d}">${q.d}</span><span class="tg ${q.x?'tx':q.z?'tz':''}">${q.tg}</span><span class="fr">${s.id} ${s.t}</span></div>
+ <div class="qt">${esc(q.q)}</div>${q.g?`<div class="given">${q.g.includes('ㄱ.')?'<div class="gt">보기</div>':''}${q.g}</div>`:''}
+ <div class="opts">${q.o.map((o,k)=>{let c='opt';if(P.done){if(k+1===q.a)c+=' ok';else if(k+1===P.sel)c+=' no'}else if(k+1===P.sel)c+=' sel';return`<button class="${c}" ${P.done?'disabled':''} onclick="pick(${k+1})"><span class="c">${NUM[k]}</span><span class="tx">${esc(o)}</span></button>`}).join('')}</div>
+ ${P.done?`<div class="exp"><div class="res ${P.sel===q.a?'ok':'no'}">${P.sel===q.a?'정답이에요':'아쉬워요, 정답은 '+NUM[q.a-1]}</div>${xpl(q)}<button class="link" onclick="go('sec','${q.s}')">노트에서 '${s.t}' 다시 보기 ›</button></div>`:''}</div>
+ <div style="height:90px"></div>`;
+ document.getElementById('pf')?.remove();const f=document.createElement('div');f.id='pf';f.className='pfoot';
+ f.innerHTML=`<div class="in"><button class="obtn" onclick="quit()">그만 풀기</button>${P.done?`<button class="gbtn" onclick="next()">${P.i+1<P.list.length?'다음 문제':'결과 보기'}</button>`:`<button class="gbtn" ${P.sel?'':'disabled'} onclick="check()">확인</button>`}</div>`;document.body.appendChild(f)}
+function pick(k){P.sel=k;drawPlay()}
+function check(){const q=P.list[P.i],ok=P.sel===q.a;P.done=true;const L=S.log[q.id]||{n:0,c:0};L.n++;if(ok)L.c++;L.last=ok;S.log[q.id]=L;
+ if(ok){P.ok++;if(P.retry)S.wrong=S.wrong.filter(x=>x!==q.id)}else{P.bad.push(q.id);if(!S.wrong.includes(q.id))S.wrong.push(q.id)}save();drawPlay();
+ setTimeout(()=>document.querySelector('.exp')?.scrollIntoView({behavior:'smooth',block:'nearest'}),50)}
+function next(){if(P.i+1<P.list.length){P.i++;P.sel=0;P.done=false;drawPlay();window.scrollTo(0,0)}else{const r={n:P.list.length,ok:P.ok,bad:P.bad,title:P.title};document.getElementById('pf')?.remove();go('result',r)}}
+function quit(){document.getElementById('pf')?.remove();const answered=P&&(P.i>0||P.done);if(answered&&P.i>0){go('result',{n:P.i+(P.done?1:0),ok:P.ok,bad:P.bad,title:P.title})}else go(P&&P.retry?'wrong':'setup')}
+function vResult(){const r=V.arg,pc=r.n?Math.round(r.ok/r.n*100):0;
+ app.innerHTML=`<p class="st" style="text-align:center;margin:10px 0 0">${esc(r.title)}</p><div class="score">${r.ok} / ${r.n}</div><p class="st" style="text-align:center">정답률 ${pc}%</p>
+ ${r.bad.length?`<div class="sec">이번에 틀린 문제</div>${r.bad.map(id=>{const q=QS.find(x=>x.id===id);return`<button class="prow" onclick="playOne('${id}')"><b>${esc(q.q)}</b><div class="m">${q.s} ${secOf(q.s).t} · ${q.tg}</div></button>`}).join('')}<button class="gbtn" style="margin-top:14px" onclick="playWrong()">오답 다시 풀기</button>`:`<div class="empty2"><span class="ico">${ic('check',30)}</span><b>다 맞혔어요</b><p>다른 범위도 풀어 볼까요?</p></div>`}
+ <button class="obtn" style="margin-top:10px" onclick="go('setup')">문제 설정으로</button><div style="height:30px"></div>`}
+
+/* ---------- 오답 ---------- */
+function vWrong(){const l=QS.filter(q=>S.wrong.includes(q.id));
+ if(!l.length){app.innerHTML=`<h1 class="t">오답 노트</h1><p class="st">틀린 문제가 여기에 모여요.</p><div class="empty2"><span class="ico">${ic('pen',30)}</span><b>아직 오답이 없어요</b><p>문제를 풀다 틀리면 자동으로 저장돼요.</p><div class="row"><button class="gbtn sm" onclick="go('setup')">문제 풀러 가기</button><button class="obtn sm" onclick="go('notes')">노트 공부하기</button></div></div>`;return}
+ app.innerHTML=`<h1 class="t">오답 노트</h1><p class="st">다시 풀어서 맞히면 목록에서 빠져요.</p><button class="gbtn" onclick="playWrong()">오답 ${l.length}개 다시 풀기</button>
+ ${LESSONS.map(L=>{const g=l.filter(q=>q.l===L.id);return g.length?`<div class="sec">${L.id}회차 ${L.title} · ${g.length}개</div>`+g.map(q=>`<button class="prow" onclick="playOne('${q.id}')"><b>${esc(q.q)}</b><div class="m">${q.s} ${secOf(q.s).t} · ${q.tg}</div></button>`).join(''):''}).join('')}<div style="height:30px"></div>`}
+
+/* ---------- 설정 ---------- */
+function vSet(){app.innerHTML=`<h1 class="t">설정</h1><p class="st">화면과 기록을 관리해요.</p>
+ <div class="lab">화면 테마</div><div class="seg p">${[['auto','기기 설정'],['light','라이트'],['dark','다크']].map(([k,n])=>`<button class="${S.theme===k?'on':''}" onclick="S.theme='${k}';save();applyTheme();render()">${n}</button>`).join('')}</div>
+ <div class="lab">글자 크기</div><div class="seg p">${[['m','보통'],['l','크게'],['xl','아주 크게']].map(([k,n])=>`<button class="${S.fs===k?'on':''}" onclick="S.fs='${k}';save();applyTheme();render()">${n}</button>`).join('')}</div>
+ <div class="lab">기록</div><div class="setc"><b>풀이 기록 초기화</b><small>푼 문제, 오답, 읽음 표시가 모두 지워져요.</small><button class="obtn" onclick="if(confirm('기록을 모두 지울까요?')){S.log={};S.wrong=[];S.seen={};S.lastL=null;save();toast('기록을 지웠어요');render()}">초기화</button></div>
+ <p class="foot">bitnote · 정보 수업 노트와 예상 문제</p>`}
+function toast(m){const t=document.createElement('div');t.className='toast';t.textContent=m;document.body.appendChild(t);requestAnimationFrame(()=>t.classList.add('on'));setTimeout(()=>{t.classList.remove('on');setTimeout(()=>t.remove(),300)},1600)}
+
+/* ---------- 시작 ---------- */
+applyTheme();render();
+(function(){const s=document.createElement('div');s.className='splash';s.style.setProperty('--d','.7s');s.innerHTML='<div class="lg">bitnote</div><div class="lb"><i></i></div><small>불러오는 중…</small>';document.body.appendChild(s);requestAnimationFrame(()=>s.classList.add('in'));setTimeout(()=>{s.classList.add('out');setTimeout(()=>s.remove(),400);fade()},800)})();
+
+/* ---------- 작년 기출 분석 ---------- */
+const PAST=[
+[1,'압축 원리: 공간적·시간적 중복성','3.7','하','교과서 문장 그대로. (가) 이미지 → 공간적, (나) 동영상 → 시간적','1-4'],
+[2,'용량 단위: 1TB = ?','3.7','하','1TB = 1,024GB. 단위 한 칸 = 1,024배','1-1'],
+[3,'이미지 압축 기법 고르기','3.7','하','손실 + 인터넷 + 시각 특성 + 압축률 높음 = JPEG. 오답에 MP3','1-3'],
+[4,'허프만 트리 고르기 (내림차순)','3.7','중','가지 번호(0·1) 방향이 다른 트리가 함께 나옴','1-7'],
+[5,'허프만 압축 결과 비트열','3.8','상','11글자를 하나씩 코드로 바꿔야 함. 0·1 규칙이 반대인 답도 선지에 있음','1-7'],
+[6,'허프만 압축률','3.9','중','88비트 ÷ 16비트 = 5.5. 8비트 기준인지 확인','1-7'],
+[7,'암호화 기능 <보기> 고르기','3.8','중','"차단", "허용"처럼 말끝을 뒤집은 함정','2-5'],
+[8,'카이사르 파이썬 코드 실행 결과','3.9','상','shift -5, % 26으로 a 앞에서 z로 돌아감. 글자 순서만 돌린 오답','2-6'],
+[9,'전치형 암호 (키 3241)','4.0','중','4글자씩 끊고 키 순서대로 열 배치, 빈칸 : 포함','2-6'],
+[10,'해시 설명 중 옳지 않은 것','4.0','하','"복호화가 가능하다"가 틀린 선지','2-9']];
+const LATER=[['정렬','퀵 정렬 첫 분할, 선택 정렬 교환 횟수·방식','11~13번','중~상'],['탐색','이진 탐색 설명·탐색 횟수','14~15번','중'],['파이썬 리스트','3중 반복 출력, 2차원 리스트 인덱스, sort·reverse, pop·append','16·18~20번','하~중'],['파일 입출력','open 모드 고르기(추가 = "a")','17번','중'],['조건문 프로그램','충전 프로그램 실행 결과·빈칸 채우기','21~23번','중~상'],['재귀 함수','피보나치·최대공약수(gcd)','24~25번','상']];
+function vPast(){const c={하:0,중:0,상:0};PAST.forEach(p=>c[p[3]]++);
+ app.innerHTML=`<button class="crumb" onclick="go('home')">홈 ›</button><h1 class="t">작년 기출 난이도 분석</h1><p class="st">김포고 2025학년도 1학기 2차 지필평가 1학년 정보 · 객관식 25문항</p>
+ <div class="one top1"><b>한 줄 평</b>외우면 맞히는 문제보다 <b>직접 손으로 계산하고 코드를 따라가는 문제</b>가 더 까다로워요. 압축·암호화 문제 배점은 3.7~4.0점이고, 뒤 번호로 갈수록 조금씩 높아요.</div>
+ <div class="sec">우리 범위(압축·암호화) 1~10번</div>
+ <div class="lvbar">${['하','중','상'].map(k=>`<div class="l${k}" style="flex:${c[k]}"><b>${k}</b>${c[k]}문제</div>`).join('')}</div>
+ ${PAST.map(([n,t,pt,d,tip,sec])=>`<button class="prow pp" onclick="go('sec','${sec}')"><span class="pn2">${n}</span><span class="mid"><b>${t}</b><div class="m"><span class="lv l${d}">${d}</span> ${pt}점 · ${tip}</div></span></button>`).join('')}
+ <div class="sec">유형별로 보면</div>
+ <div class="tw"><table><tr><th>유형</th><th>문항</th><th>느낌</th></tr>
+ <tr><td>교과서 문장 암기</td><td>1, 2, 3, 10</td><td>노트의 ★ 시험 포인트만 외우면 맞혀요.</td></tr>
+ <tr><td>함정 찾기</td><td>4, 7</td><td>말끝 뒤집기, 0·1 방향 바꾸기. 꼼꼼함 싸움이에요.</td></tr>
+ <tr><td>직접 계산</td><td>5, 6, 9</td><td>손으로 한 번이라도 풀어 봤으면 쉬워요. 시간은 걸려요.</td></tr>
+ <tr><td>코드 따라가기</td><td>8</td><td>% 26 같은 연산을 이해해야 해요. 가장 어려웠던 축이에요.</td></tr></table></div>
+ <div class="sec">나머지 11~25번 (아직 안 배운 범위)</div>
+ <div class="tw"><table><tr><th>단원</th><th>나온 내용</th><th>난이도</th></tr>${LATER.map(([a,b,n,d])=>`<tr><td>${a}<br><small style="color:var(--sub)">${n}</small></td><td>${b}</td><td>${d}</td></tr>`).join('')}</table></div>
+ <p class="kol">작년 1학기 2차 시험 범위라 올해 우리 시험 범위와 다를 수 있어요. 수업에서 나가면 그때 노트와 문제를 추가할게요.</p>
+ <div class="sec">이렇게 대비하면 돼요</div>
+ <div class="card sumc">${['하 문제: 노트 ★ 시험 포인트와 1분 총정리 반복','중 문제: 허프만·전치형은 직접 손으로 한 번씩 풀기','상 문제: 카이사르 코드를 한 줄씩 따라가며 % 26 이해하기','허프만 가지 번호 규칙(왼쪽 0? 오른쪽 0?)은 선생님께 꼭 확인','문제 탭에서 "기출형"과 "상" 난이도만 골라 풀어 보기'].map(t=>`<div>${ic('check',16)}<span>${t}</span></div>`).join('')}</div>
+ <button class="gbtn" style="margin-top:18px" onclick="S.ex=1;S.lv='';save();go('setup')">기출형 문제 풀러 가기</button><div style="height:30px"></div>`}
+
+function xpl(q){const step=q.ws||[];return `<div class="xd">
+ <div class="xblk"><div class="xh">${ic('book',16)} 이 문제의 핵심 개념</div><p>${CONCEPT[q.s]||''}</p></div>
+ ${step.length?`<div class="xblk"><div class="xh">${ic('pen',16)} 이렇게 푸는 거예요</div><ol class="xst">${step.map(t=>`<li>${esc(t)}</li>`).join('')}</ol></div>`:''}
+ ${q.r?`<div class="xblk"><div class="xh">${ic('check',16)} 선지 하나씩 뜯어보기</div>${q.o.map((o,k)=>`<div class="xop ${k+1===q.a?'ok':''} ${k+1===P.sel&&k+1!==q.a?'my':''}"><span class="xn">${NUM[k]}</span><div><div class="xot">${esc(o)}</div><div class="xr">${esc(q.r[k])}${k+1===P.sel&&k+1!==q.a?' ← 내가 고른 답':''}</div></div></div>`).join('')}</div>`:''}
+ <div class="xblk tipb"><div class="xh">선생님 한마디</div><p>${esc(q.e)}</p></div>
+ ${q.k?`<div class="xone"><b>딱 한 줄</b>${esc(q.k)}</div>`:''}</div>`}
+
+
+/* ===== 로그인·동기화 (VOCAP과 같은 Firebase 프로젝트, 구글 로그인) ===== */
+const FB_CONFIG={apiKey:"AIzaSyBX63hV8FnrkrtAuh9644yw4BSV2GTUPv4",authDomain:"vocap-e3e9e.firebaseapp.com",projectId:"vocap-e3e9e",storageBucket:"vocap-e3e9e.firebasestorage.app",messagingSenderId:"322645613396",appId:"1:322645613396:web:9b73e58558018c972fc6c1"};
+const SY={user:null,busy:false,err:null,timer:null,last:null};
+try{SY.last=localStorage.getItem('bitnote:synced')}catch(e){}
+function fbOK(){return !!(window.firebase&&firebase.initializeApp)}
+function canLogin(){return location.protocol==='https:'&&!/claude\.ai|claudeusercontent/.test(location.hostname)}
+function localAt(){try{return +(localStorage.getItem('bitnote:localAt')||0)}catch(e){return 0}}
+const _save=save;save=function(){_save();try{localStorage.setItem('bitnote:localAt',String(Date.now()))}catch(e){}queuePush()};
+function queuePush(){if(!SY.user)return;clearTimeout(SY.timer);SY.timer=setTimeout(pushNow,1500)}
+function fdoc(){return firebase.firestore().doc('data/users/'+SY.user.uid+'/bitnote')}
+function pack(){const {theme,fs,...rest}=S;return JSON.stringify(rest)}
+async function pushNow(){if(!SY.user)return;SY.busy=true;try{const at=Date.now();await fdoc().set({data:pack(),updatedAt:at});SY.last=String(at);localStorage.setItem('bitnote:synced',SY.last);SY.err=null}catch(e){SY.err='올리기 실패: '+(e.code||e.message)}SY.busy=false;refreshAcct()}
+function mergeIn(r){
+ const L=S.log;Object.entries(r.log||{}).forEach(([k,v])=>{if(!L[k]||(v.n||0)>(L[k].n||0))L[k]=v});
+ S.wrong=[...new Set([...(S.wrong||[]),...(r.wrong||[])])].filter(id=>!(S.log[id]&&S.log[id].last));
+ S.seen={...(r.seen||{}),...S.seen};
+ if(!S.lastL&&r.lastL)S.lastL=r.lastL;}
+async function pullNow(){if(!SY.user)return;SY.busy=true;refreshAcct();try{const d=await fdoc().get();
+ if(d.exists){const r=JSON.parse(d.data().data||'{}');mergeIn(r);_save();if(V.v!=='play')render()}
+ await pushNow();toast('기록을 맞췄어요')}catch(e){SY.err='불러오기 실패: '+(e.code||e.message)}SY.busy=false;refreshAcct()}
+async function login(){if(!fbOK()){toast('인터넷 연결을 확인해 주세요');return}
+ if(!canLogin()){toast('설치한 앱(GitHub 주소)에서 로그인할 수 있어요');return}
+ const pv=new firebase.auth.GoogleAuthProvider();
+ try{await firebase.auth().signInWithPopup(pv)}catch(e){if(['auth/popup-blocked','auth/operation-not-supported-in-this-environment','auth/cancelled-popup-request'].includes(e.code))firebase.auth().signInWithRedirect(pv);else if(e.code!=='auth/popup-closed-by-user'){SY.err='로그인 실패: '+(e.code||e.message);refreshAcct()}}}
+async function logout(){if(!confirm('로그아웃할까요? 이 기기 기록은 그대로 남아요.'))return;await firebase.auth().signOut();SY.user=null;refreshAcct()}
+function ago(t){if(!t)return'아직 안 함';const s=Math.round((Date.now()-+t)/1000);return s<60?'방금':s<3600?Math.floor(s/60)+'분 전':s<86400?Math.floor(s/3600)+'시간 전':Math.floor(s/86400)+'일 전'}
+function refreshAcct(){if(V.v==='set')render();const a=document.getElementById('acct');if(a)a.innerHTML=acctMini()}
+function acctMini(){const u=SY.user;return u&&u.photoURL?`<img src="${esc(u.photoURL)}" alt="">`:`<span>${u?esc((u.displayName||'민')[0]):ic('user',20)}</span>`}
+ICON.user='<circle cx="12" cy="8.5" r="3.5"/><path d="M5 20c1.2-3.6 4-5.5 7-5.5s5.8 1.9 7 5.5"/>';
+ICON.dl='<path d="M12 4v11M7 10l5 5 5-5M5 20h14"/>';
+ICON.cloud='<path d="M7 18h10a4 4 0 0 0 .6-7.95A6 6 0 0 0 6.1 9.5 4.3 4.3 0 0 0 7 18z"/>';
+function acctCard(){const u=SY.user;
+ if(!u)return`<div class="acc"><div class="av">${ic('user',22)}</div><div class="mid"><b>로그인하면 폰·패드 동기화</b><small>${canLogin()?'VOCAP·finale와 같은 구글 계정으로 들어가요':'설치한 앱에서 로그인할 수 있어요'}</small></div><button class="gbtn sm" onclick="login()">구글 로그인</button></div>${SY.err?`<p class="kol" style="color:var(--bad)">${esc(SY.err)}</p>`:''}`;
+ return`<div class="acc">${u.photoURL?`<img class="av" src="${esc(u.photoURL)}" alt="">`:`<div class="av">${esc((u.displayName||'민')[0])}</div>`}<div class="mid"><b>${esc(u.displayName||'민서')}</b><small>${SY.busy?'맞추는 중…':'동기화 켜짐 · '+ago(SY.last)}</small></div></div>
+ <div class="row" style="margin-top:10px"><button class="obtn" onclick="pullNow()">${ic('cloud',18)} 지금 맞추기</button><button class="obtn" onclick="logout()">로그아웃</button></div>${SY.err?`<p class="kol" style="color:var(--bad)">${esc(SY.err)}</p>`:''}`}
+let INSTALL=null;addEventListener('beforeinstallprompt',ev=>{ev.preventDefault();INSTALL=ev;if(V.v==='set')render()});
+addEventListener('appinstalled',()=>{INSTALL=null;toast('앱으로 설치됐어요');if(V.v==='set')render()});
+const standalone=()=>matchMedia('(display-mode: standalone)').matches||navigator.standalone;
+function installCard(){if(standalone())return`<div class="acc"><img class="av sq" src="icon-192.png" alt=""><div class="mid"><b>앱으로 쓰는 중이에요</b><small>홈 화면 bitnote 아이콘으로 열면 돼요</small></div></div>`;
+ if(INSTALL)return`<button class="acc" style="width:100%;text-align:left" onclick="INSTALL.prompt();INSTALL.userChoice.then(()=>{INSTALL=null;render()})"><img class="av sq" src="icon-192.png" alt=""><span class="mid"><b>앱으로 설치하기</b><small>홈 화면에 bitnote 아이콘이 생겨요</small></span><span class="pill">설치</span></button>`;
+ return`<div class="acc"><div class="av">${ic('dl',22)}</div><div class="mid"><b>앱 설치</b><small>${canLogin()?'크롬 메뉴(⋮) → "앱 설치" 또는 "홈 화면에 추가"':'GitHub 주소로 열면 설치 버튼이 생겨요'}</small></div></div>`}
+const _vSet=vSet;vSet=function(){_vSet();const h=app.querySelector('h1.t').nextElementSibling;h.insertAdjacentHTML('afterend',`<div class="lab">계정</div>${acctCard()}<div class="lab">앱</div>${installCard()}`)};
+function initSync(){if(!fbOK())return;try{firebase.initializeApp(FB_CONFIG);firebase.auth().getRedirectResult().catch(e=>{SY.err='로그인 실패: '+(e.code||e.message)});
+ firebase.auth().onAuthStateChanged(u=>{SY.user=u;refreshAcct();if(u)pullNow()})}catch(e){SY.err=String(e.message||e)}}
+initSync();
+if('serviceWorker' in navigator&&canLogin()){navigator.serviceWorker.register('sw.js',{scope:'./'}).then(r=>r.update()).catch(()=>{})}
+/* 헤더 계정 버튼 */
+(function(){const b=document.querySelector('.hb');if(b){b.insertAdjacentHTML('beforebegin',`<button class="hb av2" id="acct" onclick="go('set')" aria-label="계정">${acctMini()}</button>`)}})();
+
+</script>
+</body>
+</html>
