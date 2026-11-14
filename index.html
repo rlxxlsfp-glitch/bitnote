@@ -1940,15 +1940,19 @@ function canLogin(){return location.protocol==='https:'&&!/claude\.ai|claudeuser
 function localAt(){try{return +(localStorage.getItem('bitnote:localAt')||0)}catch(e){return 0}}
 const _save=save;save=function(){_save();try{localStorage.setItem('bitnote:localAt',String(Date.now()))}catch(e){}queuePush()};
 function queuePush(){if(!SY.user)return;clearTimeout(SY.timer);SY.timer=setTimeout(pushNow,1500)}
-function fdoc(){return firebase.firestore().doc('data/users/'+SY.user.uid+'/bitnote')}
+/* 규칙을 안 바꿔도 되게: VOCAP이 이미 허락받은 users/내아이디 아래 자리를 차례로 시도 */
+const PATHS=[u=>'users/'+u+'/apps/bitnote',u=>'users/'+u+'/push/bitnote'];
+try{SY.pi=+(localStorage.getItem('bitnote:pathIdx')||0)}catch(e){SY.pi=0}
+function fdoc(){return firebase.firestore().doc(PATHS[Math.min(SY.pi,PATHS.length-1)](SY.user.uid))}
+async function tryPaths(fn){for(;;){try{return await fn()}catch(e){if(e.code==='permission-denied'&&SY.pi<PATHS.length-1){SY.pi++;try{localStorage.setItem('bitnote:pathIdx',String(SY.pi))}catch(_){}continue}throw e}}}
 function pack(){const {theme,fs,...rest}=S;return JSON.stringify(rest)}
-async function pushNow(){if(!SY.user)return;SY.busy=true;try{const at=Date.now();await fdoc().set({data:pack(),updatedAt:at});SY.last=String(at);localStorage.setItem('bitnote:synced',SY.last);SY.err=null}catch(e){SY.err='올리기 실패: '+(e.code||e.message)}SY.busy=false;refreshAcct()}
+async function pushNow(){if(!SY.user)return;SY.busy=true;try{const at=Date.now();await tryPaths(()=>fdoc().set({app:'bitnote',data:pack(),updatedAt:at}));SY.last=String(at);localStorage.setItem('bitnote:synced',SY.last);SY.err=null}catch(e){SY.err='올리기 실패: '+(e.code||e.message)}SY.busy=false;refreshAcct()}
 function mergeIn(r){
  const L=S.log;Object.entries(r.log||{}).forEach(([k,v])=>{if(!L[k]||(v.n||0)>(L[k].n||0))L[k]=v});
  S.wrong=[...new Set([...(S.wrong||[]),...(r.wrong||[])])].filter(id=>!(S.log[id]&&S.log[id].last));
  S.seen={...(r.seen||{}),...S.seen};
  if(!S.lastL&&r.lastL)S.lastL=r.lastL;}
-async function pullNow(){if(!SY.user)return;SY.busy=true;refreshAcct();try{const d=await fdoc().get();
+async function pullNow(){if(!SY.user)return;SY.busy=true;refreshAcct();try{const d=await tryPaths(()=>fdoc().get());
  if(d.exists){const r=JSON.parse(d.data().data||'{}');mergeIn(r);_save();if(V.v!=='play')render()}
  await pushNow();toast('기록을 맞췄어요')}catch(e){SY.err='불러오기 실패: '+(e.code||e.message)}SY.busy=false;refreshAcct()}
 async function login(){if(!fbOK()){toast('인터넷 연결을 확인해 주세요');return}
