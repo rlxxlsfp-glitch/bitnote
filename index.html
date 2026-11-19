@@ -434,7 +434,7 @@ b,strong{font-weight:600}
 .ico{display:inline-block;vertical-align:-3px;color:var(--ink)}
 .tabbar button{position:relative}
 .tabbar button.on::before{content:"";position:absolute;top:-1px;left:50%;width:28px;height:3px;border-radius:0 0 3px 3px;background:var(--pri);transform:translateX(-50%)}
-.hero{background:linear-gradient(120deg,#3F6DB5 0%,#5F9E72 45%,#86A9E3 62%,#5F9E72 80%);box-shadow:0 14px 30px -14px rgba(63,109,181,.6)}
+.hero{background:linear-gradient(120deg,#3F6DB5 0%,#4A7BC8 45%,#86A9E3 62%,#4A7BC8 80%);box-shadow:0 14px 30px -14px rgba(63,109,181,.6)}
 .qcard{background:var(--soft);border-radius:18px;padding:16px 18px;margin-top:12px;display:block;width:100%;text-align:left}
 .qcard .tp{display:flex;justify-content:space-between;font-weight:600}
 .qcard .tp b{color:var(--pri)}
@@ -719,16 +719,95 @@ table.tt{min-width:0}table.tt td,table.tt th{text-align:center;padding:9px 6px}
 .acc .mid{flex:1;min-width:0}.acc b{display:block;font-weight:600}.acc small{color:var(--sub);font-size:.82rem;line-height:1.45;display:block}
 .acc .gbtn.sm{padding:9px 14px!important;font-size:.88rem}
 .row .obtn{display:flex;align-items:center;justify-content:center;gap:6px}
+.dg .dot{fill:var(--pri)}
+.scat{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:14px 0}
+.scat div{display:flex;flex-direction:column;align-items:center;gap:2px;background:var(--soft);border-radius:12px;padding:8px 2px}
+.scat svg .ln{stroke:var(--sub);stroke-width:1.2}.scat svg .sp{fill:var(--pri);opacity:.75}
+.scat b{font-size:.78rem}.scat small{font-size:.72rem;color:var(--sub)}
+.note .cb{display:flex;flex-direction:column;align-items:stretch;gap:3px;margin:12px 0 4px}
+.note .cb>div{display:flex!important;width:100%;box-sizing:border-box;margin:0;text-align:left}
+.cb div{display:flex;justify-content:space-between;align-items:center;border-radius:10px;padding:9px 14px;font-size:.92rem}
+.cb span{font-variant-numeric:tabular-nums;color:var(--ink)}.cb b{font-weight:600}
+.cb .c5{background:color-mix(in srgb,var(--pri) 55%,var(--bg))}.cb .c4{background:color-mix(in srgb,var(--pri) 40%,var(--bg))}
+.cb .c3{background:color-mix(in srgb,var(--pri) 26%,var(--bg))}.cb .c2{background:color-mix(in srgb,var(--pri) 14%,var(--bg))}.cb .c1{background:var(--soft)}
+table.dt{min-width:0;font-size:.85rem}table.dt td,table.dt th{padding:6px 8px;text-align:center;white-space:nowrap}
+/* finale식 난이도 태그 */
+.lv.l하,.lvbar .l하{background:var(--soft);color:var(--sub)}
+.lv.l중,.lvbar .l중{background:var(--soft2);color:var(--pri)}
+.lv.l상,.lvbar .l상{background:var(--pri);color:#fff}
+/* 리포트 약한 단원 카드 (finale .pc) */
+.pc2{border:1px solid var(--line);border-radius:16px;padding:15px 16px;margin-bottom:10px}
+.pc2 .h{display:flex;gap:10px;align-items:flex-start;font-weight:600;margin-bottom:6px}
+.pc2 .h i{font-style:normal;flex:none;min-width:22px;height:22px;border-radius:6px;background:var(--soft2);color:var(--pri);font-size:.78rem;display:grid;place-items:center;margin-top:1px}
+/* ===== 큐노트 참고 ===== */
+.tabbar button.on::before{display:none}
+.rec{border-bottom:0!important;padding:8px 0}
+.lab{font-weight:500;color:var(--ink)}
+.fgrid{display:grid;grid-template-columns:1fr;gap:10px}
+@media (min-width:700px){.fgrid{grid-template-columns:1fr 1fr;gap:12px}}
+.fcard{display:flex;align-items:center;gap:12px;width:100%;text-align:left;background:var(--soft);border-radius:16px;padding:16px 18px}
+.fcard .mid{flex:1;min-width:0;display:flex;flex-direction:column}
+.fcard .tg{color:var(--pri);font-weight:600;font-size:.8rem}
+.fcard b{font-size:1.02rem;font-weight:600;margin:2px 0}
+.fcard small{color:var(--sub);font-size:.82rem}
+.fcard .ch{color:var(--sub);font-size:1.1rem}
+.pair2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+.pair2 button{border:1px solid var(--line);border-radius:999px;padding:11px 8px;background:var(--bg);font-weight:500;color:var(--ink);transition:background-color .15s,color .15s,box-shadow .15s}
+.pair2 button.on{border-color:transparent;color:#fff;background:linear-gradient(90deg,#3F6DB5,#5F8ED6 60%,#86A9E3);box-shadow:0 10px 24px -10px rgba(63,109,181,.55)}
+.prof .av.ico2{background:var(--pri);color:#fff;display:grid;place-items:center}
+.prof .av.ico2 svg{width:26px;height:26px}
+.prof .pill{display:flex;align-items:center;gap:5px;background:var(--bg)}
+.dline{height:1px;background:var(--line);margin:14px -18px 8px}
+/* 뚱뚱한 칸 → 큐노트 칩처럼 가볍게 */
+.seg.p{display:flex;flex-wrap:wrap;gap:8px;background:none!important;border:0!important;box-shadow:none!important;padding:0;border-radius:0;margin-bottom:14px}
+.seg.p button{flex:none;background:var(--chip);color:var(--chipt);border-radius:999px;padding:6px 13px;font-size:.85rem;font-weight:500!important;box-shadow:none!important;transition:background-color .15s,color .15s}
+.seg.p button.on{background:var(--soft2);color:var(--pri);box-shadow:none!important}
+.pair2 button{padding:9px 8px;font-size:.92rem}
+.given pre.code{font-size:.8rem;overflow-x:auto}
+/* 꼼꼼 정리 */
+.deep{margin-top:20px;padding-top:16px;border-top:1px dashed var(--line)}
+.deep .dh{display:inline-flex;align-items:center;gap:6px;background:var(--soft2);color:var(--pri);font-weight:700;font-size:.82rem;border-radius:999px;padding:4px 12px;margin-bottom:6px}
+.deep p{line-height:1.7}
+.deep .xst{margin:6px 0 10px}
+.ox2{display:flex;flex-direction:column;gap:8px;margin:14px 0 4px}
+.ox2>div{display:flex;gap:10px;align-items:flex-start;background:var(--soft);border-radius:12px;padding:10px 12px}
+.ox2 span{flex:none;width:24px;height:24px;border-radius:50%;display:grid;place-items:center;font-weight:700;font-size:.8rem;color:#fff}
+.ox2 span.o{background:var(--good)}.ox2 span.x{background:var(--bad)}
+.ox2 p{margin:0;font-size:.93rem;line-height:1.55}
+.ox2 small{display:block;color:var(--sub);font-size:.82rem;margin-top:2px}
+.deep s{color:var(--bad)}
+/* 3줄 요약 · 실습 */
+.s3{background:var(--soft2);border-radius:14px;padding:12px 14px 10px;margin:4px 0 14px}
+.s3 b{display:block;color:var(--pri);font-size:.8rem;font-weight:700;margin-bottom:4px}
+.s3 ol{margin:0;padding-left:18px}.s3 li{font-size:.93rem;line-height:1.6;font-weight:500}
+.stp{border:1px solid var(--line);border-radius:16px;padding:14px 14px 6px;margin:14px 0}
+.stp .sh{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.stp .sh i{font-style:normal;flex:none;width:24px;height:24px;border-radius:50%;background:var(--pri);color:#fff;display:grid;place-items:center;font-weight:700;font-size:.8rem}
+.stp .sh b{font-size:1rem}
+.mpath{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:8px 0}
+.mpath span{background:var(--soft);border:1px solid var(--line);border-radius:8px;padding:4px 10px;font-size:.85rem;font-weight:500}
+.mpath i{font-style:normal;color:var(--sub)}
+.dg .xh{fill:var(--soft);stroke:var(--line);stroke-width:1}
+.dg .xc{fill:var(--bg);stroke:var(--line);stroke-width:1}
+.dg .xk{fill:var(--soft2);stroke:var(--line);stroke-width:1}
+.dg .xs{fill:none;stroke:var(--good);stroke-width:2}
+.dg .xf{fill:var(--good)}
+.dg .xg{stroke:var(--line);stroke-width:1}
+.dg .se1{fill:none;stroke:var(--pri);stroke-width:2}.dg .se1d,.dg .se1f{fill:var(--pri)}
+.dg .se2{fill:none;stroke:var(--warnbar);stroke-width:2}.dg .se2d,.dg .se2f{fill:var(--warnbar)}
+.dg .px0{fill:var(--bg);stroke:var(--line)}.dg .px1{fill:var(--ink);stroke:var(--line)}
+.stp .dgw{overflow:visible}.stp .dgw svg{width:100%;height:auto;max-width:100%}
 </style>
 
 
 
 </head>
 <body>
-<header class="top"><div class="bar"><button class="logo" onclick="go('home')">bitnote</button><div class="row"><span class="pill" aria-label="푼 문제 수"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span id="solved">0</span></span><button class="hb" onclick="go('set')" aria-label="설정"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M12 2.5v3M12 18.5v3M4.4 4.4l2.1 2.1M17.5 17.5l2.1 2.1M2.5 12h3M18.5 12h3M4.4 19.6l2.1-2.1M17.5 6.5l2.1-2.1"/></svg></button></div></div></header>
+<header class="top"><div class="bar"><button class="logo" onclick="go('home')">bitnote</button><div class="row"><button class="pill" onclick="go('quest')" aria-label="기말고사까지 남은 날"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="4" y="5" width="16" height="15" rx="2.5"/><path d="M4 10h16M9 3v4M15 3v4"/></svg><span id="dday"></span></button></div></div></header>
 <main id="app"></main>
 <nav class="tabbar" id="tabbar"></nav>
 <script>
+
 /* ===== 도식 헬퍼 ===== */
 const AR='<defs><marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" class="mk2"/></marker></defs>';
 function svgW(w,h,inner,label){return `<div class="dgw"><svg class="dg" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" role="img" aria-label="${label||''}">${AR}${inner}</svg></div>`}
@@ -928,7 +1007,7 @@ ${tree({v:'11',c:['G6',{v:'5',c:['B3','A2'],e:['0','1']}],e:['0','1']},'ABBGGGAB
 <p class="cap">A B B G G G A B G G G를 하나씩 바꾸면 (왼쪽 0 규칙)</p>${cells('1110100001110000',()=>'c1')}
 <ul class="sum"><li>합계: 6×1 + 3×2 + 2×2 = <b>16비트</b></li><li>원본: 11글자 × 8비트 = 88비트</li></ul>
 <p class="fl">압축률 = ${frac(88,16)} = <b>5.5</b></p>
-<div class="warn"><b>진짜 함정</b> 작년 시험엔 "왼쪽 1 · 오른쪽 0" 트리(<code>0001011110001111</code>)와 "왼쪽 0 · 오른쪽 1" 트리(<code>1110100001110000</code>)가 <b>둘 다 선지에</b> 있었어요. 올해 수업 필기는 "오른쪽 0, 왼쪽 1"이에요. 규칙에 따라 정답이 갈리니까 시험 전에 선생님께 꼭 확인하세요! 압축률(5.5)은 규칙과 상관없이 같아요.</div>
+<div class="warn"><b>진짜 함정</b> 작년 시험엔 "왼쪽 1 · 오른쪽 0" 트리(<code>0001011110001111</code>)와 "왼쪽 0 · 오른쪽 1" 트리(<code>1110100001110000</code>)가 <b>둘 다 선지에</b> 있었어요. 작년 2학기 기출 정답은 "빈도가 큰 쪽 = 0" 규칙이었어요(아래 꼼꼼 정리 참고). 이 규칙이면 ③ 1110100001110000이에요. 압축률(5.5)은 규칙과 상관없이 같아요.</div>
 <div class="sumh">도전: A5 B9 C12 D13 E16 F45</div>
 ${hSteps([['A5','B9','C12','D13','E16','F45'],['C12','D13','[14]','E16','F45'],['[14]','E16','[25]','F45'],['[25]','[30]','F45'],['F45','[55]'],['[100]']])}
 <div class="warn"><b>여기서 많이 틀려요</b> 14를 만든 다음, 14+E16이 아니라 <b>C12+D13</b>을 먼저 합쳐요. 매번 "지금 남은 것 중 제일 작은 두 개"예요.</div>
@@ -1059,6 +1138,548 @@ ${star('해시 = <b>고정 길이 + 복호화 불가(단방향)</b>. "해시값�
 ],
 sum:['http는 그대로, https는 암호화해서 전송','모든 암호는 경우의 수로 깰 수 있다 → 현대 암호는 시간으로 지킨다','구성 요소: 평문, 암호문, 키, 암호화(복호화) 알고리즘','암호화 = 평문 → 암호문, 복호화 = 암호문 → 평문, 핵심은 키 관리','CIA: 기밀성(보기) · 무결성(고치기) · 가용성(언제든 쓰기)','치환형 = 글자를 바꿈(카이사르), 전치형 = 자리를 바꿈(스키테일)','비밀키 = 같은 키 1개, 빠르지만 키 관리 어려움 (DES, AES)','공개키 = 받는 사람의 공개키로 잠그고 개인키로 엶, 느림 (RSA, ECC)','해시 = 고정 길이, 복호화 불가, 일치 여부 확인 (MD5, SHA)']}
 ];
+
+/* ===== 3회차: 빅데이터의 분석과 활용 ===== */
+/* 독립 변수 → 종속 변수 그림 */
+function varPic(a,b){let s=bx(2,24,148,58,'독립 변수','원인 · 영향을 줌','bp')+bx(200,24,148,58,'종속 변수','결과 · 영향을 받음','bw');
+ s+=`<line x1="154" y1="53" x2="196" y2="53" class="ln" marker-end="url(#ah)"/>`+txt(175,14,'영향','s');
+ s+=bx(2,96,148,44,a,'','bx')+bx(200,96,148,44,b,'','bx');
+ return svgW(350,148,s,'독립 변수와 종속 변수')}
+/* 정규화 수직선: 원래 값 28~40 → 0~1 */
+function normPic(){const X=v=>24+(v-28)/12*300;let s='';
+ s+=txt(2,12,'원래 값 (㎍/㎥)','s','start')+txt(2,118,'정규화 값','s','start');
+ s+=`<line x1="24" y1="44" x2="324" y2="44" class="ln"/><line x1="24" y1="92" x2="324" y2="92" class="ln"/>`;
+ [[28,'0','최솟값'],[31,'0.25','울산'],[38,'0.83','서울'],[40,'1','최댓값']].forEach(([v,n,lab])=>{const x=X(v);
+  s+=`<line x1="${x}" y1="50" x2="${x}" y2="86" class="lnb" style="stroke:var(--pri)"/>`+`<circle cx="${x}" cy="44" r="5" class="dot"/><circle cx="${x}" cy="92" r="5" class="dot"/>`;
+  s+=txt(x,30,String(v),'tb')+txt(x,106,n,'lb')+txt(x,134,lab,'s')});
+ return svgW(350,142,s,'정규화 수직선')}
+/* 산점도 4개 */
+function scatPic(){let seed=7;const R=()=>{seed=(seed*9301+49297)%233280;return seed/233280};
+ const box=(r,title,sub)=>{let p='';for(let i=0;i<34;i++){const x=R();const n=(R()+R()+R()-1.5)*(1-Math.abs(r))*0.9;let y=r>=0?x:1-x;y=Math.abs(r)<0.1?R():y*Math.abs(r)+(1-Math.abs(r))*0.5+n;y=Math.max(0,Math.min(1,y));p+=`<circle cx="${8+x*64}" cy="${74-y*64}" r="2.6" class="sp"/>`}
+  return `<div><svg width="80" height="82" viewBox="0 0 80 82"><path d="M4 4V78H78" class="ln" fill="none"/>${p}</svg><b>${title}</b><small>${sub}</small></div>`};
+ return `<div class="scat">${box(.95,'강한 양(+)','약 0.9')}${box(.55,'약한 양(+)','약 0.3')}${box(-.95,'강한 음(−)','약 −0.9')}${box(0,'거의 없음','0 근처')}</div>`}
+/* 상관계수 정도 막대 */
+function corrBar(){const rows=[['0.9 ~ 1','매우 강함',5],['0.7 ~ 0.9','강함',4],['0.4 ~ 0.7','상관관계가 있음',3],['0.2 ~ 0.4','약함',2],['0 ~ 0.2','매우 약함',1]];
+ return `<div class="cb">${rows.map(([r,t,k])=>`<div class="c${k}"><span>${r}</span><b>${t}</b></div>`).join('')}</div><p class="cap" style="text-align:center">음수(−)도 숫자 크기로 똑같이 봐요. −0.8도 "강함"이에요.</p>`}
+
+LESSONS.push({id:3,date:'11/17',title:'빅데이터의 분석과 활용',pages:'교과서 p.70~79',
+one:'빅데이터 분석은 <b>문제 정의 → 데이터 수집 → 전처리와 분석 → 문제 해결</b> 4단계예요. 시험엔 <b>세 문제</b> 나온대요!',
+secs:[
+{id:'3-1',t:'빅데이터 분석 과정 4단계',h:`
+<p>교육부, 통계청, 보건복지부… 정부 부처마다 정보 시스템이 있고, 거기 쌓이는 데이터만 해도 어마어마해요. 우리는 어쩌면 데이터 속에서 살고 있는 거예요.</p>
+<p>지금의 인공지능이 나올 수 있었던 것도 <b>빅데이터</b> 덕분이에요. 엄청난 데이터를 학습하면서 사람 신경 회로처럼 추론할 수 있게 됐거든요. 민간에서는 마케팅에 제일 많이 써요. 요즘 사람들이 뭐에 관심 있는지, 여가를 어떻게 보내는지 분석해서 결정을 내려요.</p>
+<div class="warn"><b>시험 범위</b> 빅데이터 개념, 활용 분야, 활용 사례는 시험 비중이 크지 않다고 넘어갔어요. <b>"2. 빅데이터의 분석과 활용"부터</b>가 진짜 범위예요. 정기 시험에 <b>세 문제</b> 나온대요.</div>
+<div class="sumh">분석 과정 4단계</div>
+<div class="flow"><div class="node"><small>1. 문제 정의</small>무엇을 알고 싶은지 정하고, 어떤 데이터를 모을지 정해요.</div><div class="arr"></div><div class="node"><small>2. 데이터 수집</small>직접 모으거나, 공개된 데이터를 가져와요.</div><div class="arr"></div><div class="node"><small>3. 데이터 전처리와 분석</small>분석하기 좋게 다듬고(전처리), 시각화·통계로 분석해요.</div><div class="arr"></div><div class="node k"><small>4. 문제 해결</small>문제 요인을 해석하고 해결 방안을 제시해요.</div></div>
+<div class="tip"><b>비유</b> 요리랑 똑같아요. 뭘 만들지 정하고(문제 정의) → 장 보고(수집) → 씻고 다듬어서 요리하고(전처리·분석) → 상에 낸다(문제 해결).</div>
+${star('순서 문제가 제일 나오기 쉬워요. "정·수·전·해" (정의 → 수집 → 전처리·분석 → 해결)로 외우세요.')}`},
+{id:'3-2',t:'문제 정의: 독립 변수와 종속 변수',h:`
+<p>문제 정의는 해결하려는 문제를 구체적으로 정하고, 분석의 목적과 방향을 잡는 단계예요. 이때 <mark>변수 두 개</mark>를 정해야 해요.</p>
+${varPic('미세 먼지 대기 오염도','호흡기 질환 환자 수')}
+<div class="tw"><table><tr><th></th><th>독립 변수</th><th>종속 변수</th></tr>
+<tr><td>뜻</td><td><b>영향을 주는 것</b></td><td><b>영향을 받는 것</b></td></tr>
+<tr><td>역할</td><td>원인</td><td>원인에 따른 결과</td></tr>
+<tr><td>예</td><td>미세 먼지 대기 오염도</td><td>호흡기 질환 환자 수</td></tr></table></div>
+<p>독립 변수가 바뀌면 종속 변수가 따라 바뀌는 관계, 즉 <b>인과관계</b>를 생각하는 거예요.</p>
+<div class="tip"><b>찾는 법</b> 문제를 "<b>A</b>는 <b>B</b>에 어떤 영향을 미칠까?" 꼴로 바꿔 보세요. 영향을 <b>주는</b> A가 독립 변수, 영향을 <b>받는</b> B가 종속 변수예요.</div>
+<div class="card"><b>문제</b> 미세 먼지 대기 오염도는 호흡기 질환에 어떤 영향을 미칠까?<br><b>가설</b> 미세 먼지 대기 오염도가 높으면 호흡기 질환 환자 수가 많을 것이다.</div>
+<p>가설은 "독립 변수가 이러면 종속 변수가 이럴 것이다"처럼 두 변수의 관계를 미리 예상해 보는 문장이에요. 그다음 <b>데이터를 기반으로</b> 맞는지 확인해요.</p>
+<div class="tip"><b>연습</b> "공부 시간이 성적에 미치는 영향" → 독립 변수 <b>공부 시간</b>, 종속 변수 <b>성적</b>. "기온에 따른 아이스크림 판매량" → 독립 변수 <b>기온</b>, 종속 변수 <b>판매량</b>.</div>
+<p>문제를 어떻게 정하느냐에 따라 모을 데이터, 분석 방법, 해석이 다 달라져요. 그래서 <b>구체적으로</b> 정해야 해요.</p>
+${star('"독립 = 원인 = 영향을 준다", "종속 = 결과 = 영향을 받는다". 문장 속에서 둘을 바꿔 놓는 함정이 단골이에요.')}`},
+{id:'3-3',t:'데이터 수집',h:`
+<p>문제 해결에 필요한 데이터를 모으는 단계예요. 방법은 두 가지예요.</p>
+<div class="vs2"><div><b>① 직접 수집</b><span>센서, 스마트 기기, 설문 조사</span><small>예: 교실·교무실·공원에 미세 먼지 측정기 놓고 재기, 호흡기 질환 설문 돌리기</small></div><div><b>② 공개 데이터 활용</b><span>데이터 공개 포털에서 내려받기</span><small>직접 모으는 시간·노력을 아끼고, 양이 많아요</small></div></div>
+<div class="sumh">대표적인 데이터 공개 포털</div>
+<div class="tw"><table><tr><td>공공 데이터 포털</td><td>국가 통계 포털(KOSIS)</td></tr><tr><td>환경 통계 포털</td><td>보건 복지 데이터 포털</td></tr><tr><td>서울 열린 데이터 광장</td><td>한국은행 경제 통계 시스템</td></tr><tr><td>기상 자료 개방 포털</td><td>HIRA 빅데이터 개방 포털</td></tr><tr><td>캐글(Kaggle)</td><td>구글 데이터셋 검색</td></tr></table></div>
+<p>교과서에서는 국가 통계 포털(KOSIS)에서 "미세 먼지(PM10) 월별 도시별 대기 오염도"를 찾아 <b>CSV 파일</b>로 내려받았어요. CSV는 여러 프로그램에서 열 수 있는 표 형식이라 분석하기 편해요.</p>
+<div class="warn"><b>선생님 강조</b> 공개 데이터는 아무거나 쓰면 안 돼요. <mark>신뢰성 있는 데이터</mark>여야 해요. 출처가 확실한 공공기관 데이터를 쓰는 이유예요.</div>
+<div class="sumh">좋은 데이터의 조건 (교과서 날개)</div>
+<ul class="sum"><li>목적에 맞는 데이터</li><li>편향되지 않은 데이터</li><li>정확한 데이터</li><li>충분한 양의 데이터</li></ul>
+${star('데이터 수집 = 직접 수집(센서·설문) + 공개 데이터(포털). 공개 데이터의 핵심 조건은 <b>신뢰성</b>.')}`},
+{id:'3-4',t:'데이터 전처리: 결측값·이상치·정규화',h:`
+<p>모은 데이터는 바로 쓸 수 없어요. 빈칸도 있고, 이상한 값도 있고, 단위도 제각각이거든요. 그래서 분석하기 좋은 형태로 다듬는 과정이 필요해요. 이게 <mark>데이터 전처리</mark>예요.</p>
+<div class="tip"><b>비유</b> 요리 전에 채소 씻고, 상한 부분 도려내고, 크기를 맞춰 써는 것과 같아요.</div>
+<div class="sumh">선생님이 정리하라고 한 용어 4개</div>
+<div class="kit"><div><b>결측값</b><span>비어 있는 값</span><small>데이터가 비어 있는 상태. 제거, 대체, 보완 등이 필요</small></div><div><b>이상치</b><span>튀는 값</span><small>일반적인 패턴에서 크게 벗어난 값. 분석에 영향을 줄 수 있어 제거하거나 변환</small></div><div><b>스케일링</b><span>크기 맞추기</span><small>데이터의 크기를 특정 범위로 조정하는 작업</small></div><div class="k"><b>정규화</b><span>0~1로 바꾸기</span><small>데이터 범위를 [0, 1] 사이로 바꿔 값의 크기 차이를 줄이는 작업</small></div></div>
+<div class="tip"><b>예로 구분하기</b> 설문지에 나이를 안 적었다 → <b>결측값</b>. 키가 1,700cm로 입력됐다 → <b>이상치</b>. 0~100점과 0~10점을 0~1로 맞췄다 → <b>정규화</b>.</div>
+<p>교과서 날개에는 표준화(평균 0, 표준편차 1로), 필터링(조건에 안 맞는 데이터 제거), 데이터 샘플링(일부만 뽑아 쓰기)도 있어요. 선생님은 위의 네 개까지만 잘 알면 된다고 하셨어요.</p>
+<div class="sumh">정규화는 왜 할까?</div>
+<p>미세 먼지는 <b>㎍/㎥</b> 단위로 30~40 정도인데, 호흡기 질환 환자 수는 <b>명</b> 단위로 수십만~수백만이에요. 단위도 크기도 달라서 그대로는 비교할 수가 없어요. 그래서 둘 다 <mark>0과 1 사이</mark>로 바꿔서 같은 기준으로 비교하는 거예요.</p>
+<div class="sumh">정규화 공식 (최소-최대 정규화)</div>
+<p class="fl">정규화된 값 = ${frac('기존값 − 최솟값','최댓값 − 최솟값')}</p>
+<ul class="sum"><li>최솟값은 항상 <b>0</b>, 최댓값은 항상 <b>1</b>이 돼요.</li><li>나머지는 그 사이 어디쯤인지 비율로 나와요.</li></ul>
+<div class="sumh">교과서 예: 미세 먼지 (최솟값 28, 최댓값 40)</div>
+${normPic()}
+<div class="card"><b>서울 38</b> → ${frac('38 − 28','40 − 28')} = ${frac(10,12)} ≈ <b>0.83</b><br><b>울산 31</b> → ${frac('31 − 28','40 − 28')} = ${frac(3,12)} = <b>0.25</b></div>
+<div class="sumh">수업 실습 데이터 (기준일 2025.1, 17개 시도)</div>
+<p>수업에서는 최신 데이터로 똑같이 해 봤어요. 정규화 값은 소수 둘째 자리까지 줄여 적었어요.</p>
+<div class="card"><b>미세 먼지</b> 최솟값 27(전남), 최댓값 42(서울) → 범위 15<br><b>호흡기 질환 환자 수</b> 최솟값 94,892(세종), 최댓값 2,957,470(경기)</div>
+<div class="tw"><table class="dt"><tr><th>시도</th><th>미세 먼지</th><th>환자 수</th><th>미세 먼지<br>정규화</th><th>환자 수<br>정규화</th></tr><tr><td>강원</td><td>34</td><td>299,191</td><td>0.47</td><td>0.07</td></tr><tr><td>경기</td><td>41</td><td>2,957,470</td><td>0.93</td><td>1</td></tr><tr><td>경남</td><td>29</td><td>682,086</td><td>0.13</td><td>0.21</td></tr><tr><td>경북</td><td>37</td><td>499,023</td><td>0.67</td><td>0.14</td></tr><tr><td>광주</td><td>30</td><td>308,216</td><td>0.2</td><td>0.07</td></tr><tr><td>대구</td><td>35</td><td>490,277</td><td>0.53</td><td>0.14</td></tr><tr><td>대전</td><td>36</td><td>317,843</td><td>0.6</td><td>0.08</td></tr><tr><td>부산</td><td>33</td><td>691,806</td><td>0.4</td><td>0.21</td></tr><tr><td>서울</td><td>42</td><td>2,001,224</td><td>1</td><td>0.67</td></tr><tr><td>세종</td><td>39</td><td>94,892</td><td>0.8</td><td>0</td></tr><tr><td>울산</td><td>34</td><td>256,520</td><td>0.47</td><td>0.06</td></tr><tr><td>인천</td><td>39</td><td>615,920</td><td>0.8</td><td>0.18</td></tr><tr><td>전남</td><td>27</td><td>366,349</td><td>0</td><td>0.09</td></tr><tr><td>전북</td><td>35</td><td>353,688</td><td>0.53</td><td>0.09</td></tr><tr><td>제주</td><td>32</td><td>147,325</td><td>0.33</td><td>0.02</td></tr><tr><td>충남</td><td>37</td><td>452,292</td><td>0.67</td><td>0.12</td></tr><tr><td>충북</td><td>41</td><td>350,803</td><td>0.93</td><td>0.09</td></tr></table></div>
+<div class="card"><b>강원 34</b> → ${frac('34 − 27','42 − 27')} = ${frac(7,15)} ≈ <b>0.47</b><br><b>서울 42</b>는 최댓값이라 <b>1</b>, <b>전남 27</b>은 최솟값이라 <b>0</b><br><b>서울 환자 수</b> → ${frac('2,001,224 − 94,892','2,957,470 − 94,892')} ≈ <b>0.67</b></div>
+<div class="tip"><b>눈여겨볼 점</b> 미세 먼지는 서울이 1인데, 환자 수는 경기가 1이에요. 각 변수마다 <b>자기 최솟값·최댓값</b>으로 따로 정규화하기 때문이에요.</div>
+<div class="sumh">엑셀에서 정규화하기</div>
+<pre class="code">=(B2-MIN($B$2:$B$18))/(MAX($B$2:$B$18)-MIN($B$2:$B$18))</pre>
+<ul class="sum"><li><code>MIN</code>은 범위에서 최솟값, <code>MAX</code>는 최댓값을 찾는 함수예요.</li><li><b>F4</b>를 누르면 <code>$</code>가 붙어서 범위가 <b>고정</b>돼요(절대 참조).</li><li>그래서 자동 채우기로 아래 칸에 복사해도 <code>B2</code>만 B3, B4…로 바뀌고 최솟값·최댓값 범위는 그대로예요.</li></ul>
+${star('① 용어 4개 뜻 구분(특히 결측값 vs 이상치) ② 정규화 범위 [0, 1] ③ 정규화 이유 = 단위가 달라 비교하려고 ④ 공식 계산. 이 네 개가 핵심이에요.')}`},
+{id:'3-5',t:'데이터 분석: 시각화와 상관계수',h:`
+<p>전처리한 데이터에서 의미 있는 정보를 찾는 단계예요. 크게 두 가지 방법을 써요.</p>
+<ul class="sum"><li><b>데이터 시각화</b>: 데이터를 한눈에 보이게 그림으로 표현해요. 교과서에서는 정규화한 두 값을 꺾은선 차트로 그렸어요.</li><li><b>통계적 분석</b>: 통계 원리로 데이터에서 의미 있는 정보를 뽑아내요. 대표가 <b>상관 분석</b>이에요.</li></ul>
+<div class="sumh">시각화 방법 5가지 (교과서 더 알아보기)</div>
+<div class="tw"><table><tr><th>방법</th><th>언제</th><th>예</th></tr>
+<tr><td>시간 시각화</td><td>시간에 따른 변화</td><td>막대, 누적 막대, 선</td></tr>
+<tr><td>분포 시각화</td><td>전체에서 차지하는 비율</td><td>파이, 도넛, 트리맵</td></tr>
+<tr><td>관계 시각화</td><td>변수 사이 상관관계</td><td>산점도, 버블, 히스토그램</td></tr>
+<tr><td>비교 시각화</td><td>여러 변수의 차이·유사성</td><td>히트맵, 스타형, 평행 좌표</td></tr>
+<tr><td>공간 시각화</td><td>장소·지역</td><td>지도 위 버블맵, 지도 매핑</td></tr></table></div>
+<div class="sumh">상관계수</div>
+<p>두 변수가 얼마나 같이 움직이는지를 숫자로 나타낸 게 <b>상관계수</b>예요. 범위는 <mark>−1부터 1까지</mark>예요.</p>
+${scatPic()}
+<ul class="sum"><li><b>양(+)의 상관관계</b>: X가 커지면 Y도 커져요. 예) 공부 시간 ↑ → 성적 ↑</li><li><b>음(−)의 상관관계</b>: X가 커지면 Y는 작아져요. 예) 여름에 기온 ↑ → 보일러 사용 횟수 ↓</li><li><b>0에 가까우면</b> 거의 관계가 없어요.</li></ul>
+<div class="sumh">상관계수 해석 표 (교과서 79쪽)</div>
+${corrBar()}
+<div class="card"><b>교과서 분석 결과</b><br>미세 먼지 대기 오염도와 호흡기 질환 환자 수의 상관계수 = <b>0.2996…</b><br>→ 양수이고 0.2~0.4 사이 → <b>약한 양(+)의 상관관계</b>가 있다.</div>
+<div class="card"><b>수업 실습 결과 (2025.1 데이터)</b><br>상관계수 = <b>0.4762…</b><br>→ 양수이고 0.4~0.7 사이 → <b>양(+)의 상관관계가 있다</b> (교과서 표의 "상관관계가 있음")<br>교과서(0.2996, 약함)와 결과가 다른 건 <b>데이터 기준일과 지역 수가 달라서</b>예요.</div>
+<div class="tip"><b>헷갈림 주의</b> 부호(+, −)는 <b>방향</b>, 숫자 크기는 <b>세기</b>예요. −0.8은 0.3보다 관계가 <b>더 강해요</b>. 음수라고 약한 게 아니에요.</div>
+<div class="warn"><b>상관관계 ≠ 인과관계</b> 상관계수가 크다고 해서 꼭 "원인 → 결과"라고 단정할 수는 없어요. 다른 요인이 숨어 있을 수도 있거든요.</div>
+<p>엑셀에서는 [데이터] → [데이터 분석] → [상관 분석]으로 상관계수를 구해요. (분석 도구는 [파일] → [옵션] → [추가 기능]에서 켜요.)</p>
+${star('① 상관계수 범위 −1 ~ 1 ② 양(+)은 같이 증가, 음(−)은 반대로 ③ 0.2996 → 약한 양의 상관관계 ④ 세기는 숫자 크기로. 해석 문제가 나오기 좋아요.')}`},
+{id:'3-6',t:'문제 해결',h:`
+<p>분석 결과를 바탕으로 <b>문제 요인을 해석</b>하고, <b>해결 방안을 제시</b>하는 마지막 단계예요.</p>
+<div class="card"><b>예</b> 미세 먼지 오염도와 호흡기 질환 환자 수 사이에 약한 양의 상관관계가 있다.<br>→ <b>해석</b>: 미세 먼지가 호흡기 질환에 어느 정도 영향을 준다고 볼 수 있다.<br>→ <b>방안</b>: 미세 먼지가 심한 날 마스크 착용 안내, 실내 공기 정화 등</div>
+<p>관계가 약하게 나왔다면 다른 요인(인구 수, 흡연, 계절 등)도 있을 수 있다고 해석하고, 추가로 분석할 변수를 찾아볼 수도 있어요.</p>
+${star('문제 해결 = 해석 + 방안 제시. 분석에서 끝나는 게 아니라 "그래서 어떻게 할까"까지 가야 해요.')}`}
+],
+sum:['분석 과정: 문제 정의 → 데이터 수집 → 데이터 전처리와 분석 → 문제 해결','독립 변수 = 원인(영향을 줌), 종속 변수 = 결과(영향을 받음)','수집: 직접(센서·설문) / 공개 데이터(포털), 신뢰성 있는 데이터','결측값 = 빈 값, 이상치 = 크게 벗어난 값, 스케일링 = 크기 조정, 정규화 = [0, 1]로','정규화 이유: 단위가 달라 비교하려고','정규화된 값 = (기존값 − 최솟값) ÷ (최댓값 − 최솟값)','엑셀 F4 → $ 붙어 범위 고정(절대 참조)','상관계수 −1 ~ 1, 양(+)은 같이 증가, 음(−)은 반대','교과서 0.2996 → 약한 양, 수업 0.476 → 양의 상관관계가 있음','상관관계가 곧 인과관계는 아님']});
+
+/* ===== 꼼꼼 정리: 섹션마다 시험 문장·함정·기출까지 빠짐없이 ===== */
+const deepBox=t=>`<div class="deep"><div class="dh">꼼꼼 정리</div>${t}</div>`;
+const OX=a=>`<div class="ox2">${a.map(([q,o,why])=>`<div><span class="${o?'o':'x'}">${o?'O':'X'}</span><p>${q}<small>${why}</small></p></div>`).join('')}</div>`;
+const P2=(h,t)=>`<div class="past"><b>${h}</b>${t}</div>`;
+
+const DEEP={
+'1-1':`<div class="sumh">시험에 나오는 문장 그대로</div>
+<ul class="sum"><li><b>디지털 데이터</b>: 0과 1, 두 가지 상태를 조합해서 표현한 데이터. 숫자, 문자, 그림, 소리, 동영상, 신호가 다 디지털 데이터예요.</li>
+<li><b>비트(bit)</b>: 0이나 1을 저장하는 전기적 신호. 디지털 데이터를 표현하는 <mark>가장 작은 단위</mark>.</li>
+<li><b>아날로그</b>: 끊기지 않고 연속적으로 변하는 값. 디지털은 끊어진(이산적인) 값.</li></ul>
+<div class="sumh">비트 개수와 표현할 수 있는 가짓수</div>
+<p>스위치 1개는 2가지, 2개는 4가지(00, 01, 10, 11), 3개는 8가지… 하나 늘 때마다 2배예요. 그래서 7비트면 128가지, 8비트면 256가지 글자를 구분할 수 있어요. 아스키코드가 7비트인 이유가 이거예요.</p>
+<div class="tw"><table><tr><th>비트 수</th><th>1</th><th>2</th><th>3</th><th>7</th><th>8</th></tr><tr><td>가짓수</td><td>2</td><td>4</td><td>8</td><td>128</td><td>256</td></tr></table></div>
+<div class="sumh">용량 단위 전부</div>
+<div class="tw"><table><tr><th>단위</th><th>크기</th><th>감 잡기</th></tr>
+<tr><td>bit (b)</td><td>0 또는 1</td><td>스위치 1개</td></tr>
+<tr><td>Byte (B)</td><td>8bit</td><td>영문자 1개</td></tr>
+<tr><td>KB</td><td>1,024Byte</td><td>짧은 글</td></tr>
+<tr><td>MB</td><td>1,024KB</td><td>사진 1장, 노래 1곡</td></tr>
+<tr><td>GB</td><td>1,024MB</td><td>영화 1편</td></tr>
+<tr><td>TB</td><td>1,024GB</td><td>외장 하드 1개</td></tr>
+<tr><td>PB</td><td>1,024TB</td><td>데이터 센터급</td></tr>
+<tr><td>EB</td><td>1,024PB</td><td>PB 위 단위</td></tr></table></div>
+<div class="tip"><b>외우는 법</b> 작은 것부터 "<b>킬·메·기·테·페·엑</b>" (KB → MB → GB → TB → PB → EB). 한 칸 = 1,024배, 두 칸 = 1,024 × 1,024배.</div>
+<div class="warn"><b>함정 3개</b> ① 1KB = 1,000Byte가 아니라 <b>1,024</b>Byte. ② 소문자 b는 비트, 대문자 B는 바이트. ③ TB와 PB 순서를 바꾼 선지 (PB가 더 커요).</div>
+<div class="sumh">디지털화 3단계 자세히</div>
+<div class="tw"><table><tr><th>단계</th><th>하는 일</th><th>비유</th></tr>
+<tr><td>표본화</td><td>연속된 신호를 일정한 시간 간격으로 잘라 값을 뽑음</td><td>1초마다 사진 찍기</td></tr>
+<tr><td>양자화</td><td>뽑은 값을 정해진 단계(눈금) 중 가장 가까운 값으로 맞춤</td><td>키를 cm 단위로 반올림</td></tr>
+<tr><td>부호화</td><td>맞춘 값을 0과 1(2진수)로 바꿈</td><td>숫자를 2진수로 적기</td></tr></table></div>
+${P2('작년 2학기 기출 2번 (3.6점)','"용량을 작은 단위에서 큰 단위로 올바르게 나열한 것은?" → <b>KB &lt; MB &lt; GB &lt; TB &lt; PB</b>. 오답은 전부 순서를 한두 개씩 섞은 것.')}
+${P2('작년 1학기 기출','"1TB = ?" → 1,024GB. 단위 한 칸 = 1,024배.')}
+${OX([['1Byte는 8bit이다.',1,'맞아요.'],['1MB는 1,000KB이다.',0,'1,024KB.'],['PB는 TB보다 작은 단위이다.',0,'PB가 1,024배 더 커요.'],['디지털화 순서는 표본화 → 양자화 → 부호화이다.',1,'"표·양·부".'],['8비트로는 128가지를 표현할 수 있다.',0,'8비트는 256가지, 7비트가 128가지.']])}`,
+
+'1-2':`<div class="sumh">주기억 vs 보조 기억 한 번에 비교</div>
+<div class="tw"><table><tr><th></th><th>주기억 장치</th><th>보조 기억 장치</th></tr>
+<tr><td>예</td><td>RAM(램)</td><td>하드 디스크, SSD, USB</td></tr>
+<tr><td>하는 일</td><td>지금 작업 중인 내용을 기억</td><td>데이터를 오래 저장</td></tr>
+<tr><td>전원을 끄면</td><td>내용이 <b>사라짐</b></td><td>내용이 <b>남아 있음</b></td></tr>
+<tr><td>속도</td><td>빠름</td><td>상대적으로 느림</td></tr>
+<tr><td>비유</td><td>책상, 사람의 뇌(기억 세포)</td><td>책장</td></tr></table></div>
+<div class="sumh">이게 압축이랑 무슨 상관?</div>
+<ul class="sum"><li>주기억은 꺼지면 잊어버리니까 → 남길 건 보조 기억에 <b>저장</b>해야 해요.</li>
+<li>그런데 데이터가 너무 많으면 보조 기억도 모자라요 → 그래서 <b>압축</b>.</li>
+<li>압축이 필요한 이유 두 가지: <mark>저장 공간(메모리 용량) 절약</mark>, <mark>통신 속도 향상</mark>(용량이 크면 보낼 때 시간이 오래 걸리니까).</li></ul>
+${OX([['RAM은 전원을 꺼도 내용이 남아 있다.',0,'RAM은 꺼지면 사라져요.'],['USB는 보조 기억 장치이다.',1,'맞아요.'],['압축하면 통신할 때 걸리는 시간이 줄어든다.',1,'크기가 작아지니까요.']])}`,
+
+'1-3':`<div class="sumh">용어 정확히</div>
+<ul class="sum"><li><b>압축 = 인코딩</b>: 데이터를 더 작은 크기로 변환하는 것.</li>
+<li><b>복원 = 디코딩</b>: 압축된 데이터를 원래 형태로 되돌리는 것.</li>
+<li>흐름: 원본 데이터 → (압축·인코딩) → 압축 데이터 → (복원·디코딩) → 복원 데이터</li></ul>
+<div class="warn"><b>제일 많이 나오는 함정</b> 인코딩과 디코딩을 <b>서로 바꿔 쓴</b> 선지. "작게 = 인코딩", "되돌리기 = 디코딩". 헷갈리면 "<b>디</b>코딩 = <b>되</b>돌리기"로 외워요.</div>
+<div class="sumh">손실 vs 비손실 자세히</div>
+<div class="tw"><table><tr><th></th><th>손실 압축</th><th>비손실 압축</th></tr>
+<tr><td>정의</td><td>압축 과정에서 데이터 일부가 삭제되어 복원해도 원본과 같지 않음</td><td>손실이 없어 복원하면 원본과 똑같음</td></tr>
+<tr><td>압축률</td><td>보통 더 높음(많이 줄어듦)</td><td>상대적으로 낮음</td></tr>
+<tr><td>예</td><td>JPEG, MP3, MPEG4</td><td>ZIP, PNG, GIF</td></tr>
+<tr><td>쓰는 곳</td><td>사진·음악·영상 (조금 버려도 티가 안 남)</td><td>문서·프로그램 (한 글자도 바뀌면 안 됨)</td></tr></table></div>
+<div class="sumh">압축의 좋은 점 (선지에 그대로 나와요)</div>
+<ul class="sum"><li>저장 공간 절약 — 같은 공간에 더 많이 저장</li><li>전송 속도 향상 — 같은 시간에 더 많이 전송</li><li>에너지 사용·전자 폐기물 <b>감소</b> → 환경 보호</li><li>클라우드, 동영상 스트리밍, 초고속 통신망을 가능하게 해서 생활을 편리하게</li></ul>
+<div class="sumh">이미지 압축 기법 비교표</div>
+<div class="tw"><table><tr><th></th><th>손실?</th><th>색</th><th>투명</th><th>애니메이션</th><th>키워드</th></tr>
+<tr><td>BMP</td><td>압축 안 함</td><td>-</td><td>-</td><td>-</td><td>윈도 기본 비트맵</td></tr>
+<tr><td>JPEG</td><td><b>손실</b></td><td>트루 컬러</td><td>X</td><td>X</td><td>시각적 특성, 압축률 높음, 인터넷</td></tr>
+<tr><td>GIF</td><td>비손실</td><td>최대 256색</td><td>O</td><td><b>O</b></td><td>전송 시간 최소화, 움짤</td></tr>
+<tr><td>PNG</td><td>비손실</td><td>트루 컬러</td><td>O</td><td>X</td><td>JPEG + GIF 장점, 품질 저하 없음</td></tr></table></div>
+<div class="sumh">동영상 압축 기법 (작년 2학기 기출에 나온 것)</div>
+<p>"압축률이 높아 <b>웹 스트리밍·모바일</b>에서 널리 사용, <b>호환성</b>이 뛰어나 다양한 장치에서 재생, 인터넷 공유·전송에 적합" → <mark>MP4</mark>. 같이 나온 오답: AVI, WMV, MKV(다른 동영상 형식), MP3(이건 <b>소리</b> 파일).</p>
+${P2('작년 2학기 기출 1번 (3.8점)','"압축에 대한 설명으로 옳은 것은?" 정답: <b>클라우드, 스트리밍 서비스 등을 통해 생활을 편리하게 해 준다</b>. 오답 4개가 전부 말 뒤집기였어요.<br>· 중복성 <s>확대</s> → 제거<br>· 인코딩은 원래 형태로 변환 → 그건 디코딩<br>· 전자 폐기물·환경 오염 <s>야기</s> → 줄임<br>· 작게 바꾸는 걸 디코딩 → 그건 인코딩')}
+${P2('작년 2학기 기출 6번 (3.6점)','동영상 압축 기법 → <b>MP4</b>')}
+${P2('작년 1학기 기출','"손실 압축, 인터넷, 인간의 시각적 특성, 압축률 높음" → <b>JPEG</b>')}
+${OX([['압축된 데이터를 원래 형태로 되돌리는 것을 인코딩이라고 한다.',0,'디코딩이에요.'],['손실 압축은 복원해도 원본과 같지 않다.',1,'일부가 삭제되니까요.'],['PNG는 손실 압축이다.',0,'비손실이에요. 손실은 JPEG.'],['GIF는 애니메이션을 지원한다.',1,'움짤 = GIF.'],['데이터 압축은 전자 폐기물을 늘린다.',0,'줄여요.']])}`,
+
+'1-4':`<div class="sumh">중복성 두 종류, 구분하는 법</div>
+<div class="tw"><table><tr><th></th><th>공간적 중복성</th><th>시간적 중복성</th></tr>
+<tr><td>어디서</td><td>이미지 한 장 안</td><td>동영상의 프레임과 프레임 사이</td></tr>
+<tr><td>뭐가 반복?</td><td>옆 칸에 같은 색이 이어짐</td><td>배경이 장면마다 그대로</td></tr>
+<tr><td>줄이는 법</td><td>색 정보는 한 번, 위치만 저장</td><td>배경은 한 번, 바뀐 부분만 저장</td></tr></table></div>
+<p>비트맵 이미지는 점 하나하나의 색(RGB 값)을 전부 저장해서 크기가 커요. 그래서 반복되는 색 정보를 한 번만 저장하는 거예요. 동영상은 1초에 사진을 여러 장 보여 주는 건데, 움직이는 대상 말고 배경은 거의 같으니까 배경을 한 번만 저장해요.</p>
+<div class="sumh">압축률 완벽 정리</div>
+<ul class="sum"><li>압축률 = 압축 전 크기 ÷ 압축 후 크기</li><li><b>1보다 크면</b> 줄어든 것 (클수록 많이 줄어듦)</li><li><b>1이면</b> 그대로, <b>1보다 작으면</b> 오히려 늘어남</li><li>단위를 꼭 맞추고 나눠요. 2MB와 400KB면 2MB = 2,048KB로 바꾼 다음 2,048 ÷ 400 = 5.12.</li></ul>
+<div class="warn"><b>나누는 순서 함정</b> 압축 후 ÷ 압축 전으로 거꾸로 나눈 값(예: 0.4)이 꼭 오답 선지에 있어요. 압축률은 "원래가 몇 배 컸나"예요.</div>
+<p>압축이 잘 됐는지는 <b>용량이 얼마나 줄었는지</b>와 <b>품질이 얼마나 유지됐는지</b> 두 가지로 판단해요.</p>
+${OX([['압축의 원리는 중복성을 줄이는 것이다.',1,'중복성 제거.'],['동영상에서 배경이 반복되는 것은 공간적 중복성이다.',0,'프레임 사이 반복 = 시간적 중복성.'],['압축률이 1보다 작으면 데이터가 늘어난 것이다.',1,'예: 반복 길이 압축에 반복이 없을 때.']])}`,
+
+'1-5':`<div class="sumh">핵심 문장</div>
+<ul class="sum"><li>모든 문자는 <b>코드(번호)</b>가 정해져 있고, 그 코드값으로 저장돼요.</li>
+<li><b>아스키코드</b>: 영문자·숫자·기호를 <b>7비트</b>로 표현. 대문자 A = 10진수 65 = 2진수 1000001.</li>
+<li><b>유니코드</b>(UTF-8, UTF-16): 전 세계 문자를 하나로 모은 <b>국제 표준</b>. 어느 나라 컴퓨터에서든 똑같이 보여요.</li>
+<li>파일 글자가 깨지면 → "코드 체계가 다르구나".</li></ul>
+<div class="sumh">65를 2진수로 바꾸는 법</div>
+<p>2로 계속 나누면서 나머지를 적고, 아래에서 위로 읽어요.</p>
+<div class="tw"><table><tr><th>나누기</th><th>몫</th><th>나머지</th></tr>
+<tr><td>65 ÷ 2</td><td>32</td><td>1</td></tr><tr><td>32 ÷ 2</td><td>16</td><td>0</td></tr><tr><td>16 ÷ 2</td><td>8</td><td>0</td></tr><tr><td>8 ÷ 2</td><td>4</td><td>0</td></tr><tr><td>4 ÷ 2</td><td>2</td><td>0</td></tr><tr><td>2 ÷ 2</td><td>1</td><td>0</td></tr><tr><td>1 ÷ 2</td><td>0</td><td>1</td></tr></table></div>
+<p>아래부터 읽으면 <b>1000001</b>. 자릿값으로 확인하면 64 + 1 = 65. 빠른 방법: A = 64 + 1이니까 B = 64 + 2 = 1000010, C = 64 + 3 = 1000011.</p>
+<div class="sumh">왜 압축이랑 연결돼?</div>
+<p>글자 하나에 7비트씩 쓰니까 19글자면 19 × 7 = 133비트가 필요해요. 반복되는 문자 패턴을 줄이면 이걸 확 줄일 수 있어요. 다음 섹션이 그 방법이에요.</p>`,
+
+'1-6':`<div class="sumh">규칙 3줄 요약</div>
+<ul class="sum"><li>같은 글자가 <b>연속</b>되면 "글자 + 반복 횟수"로 적는다.</li><li>떨어져 있으면 따로 적는다 (RRRRRAAAAGGGRRRRR → R5A4G3<b>R5</b>, R10 아님).</li><li>반복이 없으면 글자마다 1이 붙어서 <b>2배로 늘어난다</b>.</li></ul>
+<div class="sumh">파이썬 코드 한 줄씩 해부 (작년 2학기 기출 4~5번 코드)</div>
+<pre class="code">data = 'OOOOOHHHHH'
+encoded = ''
+count = 1
+for i in range(1, len(data)):
+    if data[i] == data[i-1]:
+        count = count + 1
+    else:
+        encoded += data[i-1] + str(count)
+        count = 1
+    if i == len(data) - 1:
+        encoded += data[i] + str(count)
+print(encoded)
+print("%.1f" %(len(data)/len(encoded)))</pre>
+<div class="tw"><table><tr><th>코드</th><th>뜻</th></tr>
+<tr><td>encoded = ''</td><td>결과를 담을 빈 문자열</td></tr>
+<tr><td>count = 1</td><td>첫 글자는 이미 1개 센 상태로 시작</td></tr>
+<tr><td>range(1, len(data))</td><td>i = 1부터 마지막 번호까지 (0번은 비교 대상이라 건너뜀)</td></tr>
+<tr><td>data[i] == data[i-1]</td><td>지금 글자가 바로 앞 글자와 같은지</td></tr>
+<tr><td>encoded += data[i-1] + str(count)</td><td>글자가 바뀌면 "앞 글자 + 개수"를 붙임 (str은 숫자를 글자로)</td></tr>
+<tr><td>if i == len(data) - 1</td><td>마지막 글자면 남은 글자 + 개수를 붙여 마무리</td></tr>
+<tr><td>"%.1f"</td><td>소수 첫째 자리까지 출력</td></tr></table></div>
+<div class="sumh">한 줄씩 따라가기 (data = 'OOOOOHHHHH')</div>
+<div class="tw"><table><tr><th>i</th><th>data[i-1]</th><th>data[i]</th><th>같다?</th><th>count</th><th>encoded</th></tr>
+<tr><td>1</td><td>O</td><td>O</td><td>O</td><td>2</td><td></td></tr>
+<tr><td>2</td><td>O</td><td>O</td><td>O</td><td>3</td><td></td></tr>
+<tr><td>3</td><td>O</td><td>O</td><td>O</td><td>4</td><td></td></tr>
+<tr><td>4</td><td>O</td><td>O</td><td>O</td><td>5</td><td></td></tr>
+<tr><td>5</td><td>O</td><td>H</td><td>X</td><td>1</td><td>O5</td></tr>
+<tr><td>6</td><td>H</td><td>H</td><td>O</td><td>2</td><td>O5</td></tr>
+<tr><td>7</td><td>H</td><td>H</td><td>O</td><td>3</td><td>O5</td></tr>
+<tr><td>8</td><td>H</td><td>H</td><td>O</td><td>4</td><td>O5</td></tr>
+<tr><td>9 (마지막)</td><td>H</td><td>H</td><td>O</td><td>5</td><td><b>O5H5</b></td></tr></table></div>
+<p>(가) = <b>O5H5</b>. (나) = len(data) ÷ len(encoded) = 10 ÷ 4 = <b>2.5</b>.</p>
+<div class="warn"><b>함정</b> ① 4 ÷ 10 = 0.4 (거꾸로 나눔) ② 글자만 쓴 OH ③ 마지막 if문을 빼먹어서 H5가 안 붙은 결과. 마지막 글자 처리는 꼭 따로 해요.</div>
+${P2('작년 2학기 기출 4~5번 (4.0점, 3.8점)','위 코드 그대로 → (가) <b>O5H5</b>, (나) <b>2.5</b>. 데이터만 바꿔서 또 나올 수 있으니 표처럼 따라가는 연습!')}
+${OX([['AAABBA를 반복 길이 압축하면 A4B2이다.',0,'연속된 것만 → A3B2A1.'],['반복 길이 압축은 반복이 많을수록 압축률이 높다.',1,'맞아요.'],['코드에서 str(count)는 숫자를 문자로 바꾼다.',1,'문자열끼리만 + 로 붙일 수 있어요.']])}`,
+
+'1-7':`<div class="sumh">허프만 만드는 순서, 빠짐없이</div>
+<ol class="xst"><li>글자마다 <b>빈도수</b>를 센다.</li><li>빈도수로 정렬한다 (내림차순).</li><li>빈도수가 <b>가장 작은 두 개</b>를 합쳐 새 마디를 만든다.</li><li>다시 정렬하고, 또 가장 작은 두 개를 합친다. 하나(루트)가 남을 때까지.</li><li>루트에서 각 글자까지 내려가며 가지 번호(0, 1)를 읽으면 그게 코드.</li></ol>
+<div class="tip"><b>0과 1 방향, 이제 정리됐어요</b> 작년 2학기 기출 정답은 <b>빈도가 큰 쪽 가지 = 0, 작은 쪽 = 1</b>이었어요. (큰 걸 왼쪽에 두고 왼쪽 0 · 오른쪽 1.) 수업 예제 R10 G5 A4도 R = 0, G = 10, A = 11이라 같은 결과고, 1학기 기출 선지에도 이 규칙으로 만든 답(1110100001110000)이 있었어요. 헷갈리면 "<b>많이 나온 쪽이 0</b>"만 기억하세요.</div>
+<div class="sumh">작년 2학기 기출 7~8번 풀이 (4.0점 + 4.2점)</div>
+<p>압축 전: ABEC EEC EA EC ECA C (띄어쓰기는 빼고 셈)</p>
+<div class="tw"><table><tr><th>글자</th><th>E</th><th>C</th><th>A</th><th>B</th></tr><tr><td>빈도수</td><td>6</td><td>5</td><td>3</td><td>1</td></tr></table></div>
+<p>① 가장 작은 B1 + A3 = 4 ② 남은 것 E6, C5, 4 중 가장 작은 4 + C5 = 9 ③ 9 + E6 = 15 (루트)</p>
+${tree({v:'15',c:[{v:'9',c:['C5',{v:'4',c:['A3','B1'],e:['0','1']}],e:['0','1']},'E6'],e:['0','1']},'작년 2학기 기출 허프만 트리')}
+<div class="tw"><table><tr><th>글자</th><th>코드</th><th>비트</th></tr><tr><td>E (6번)</td><td>1</td><td>6 × 1 = 6</td></tr><tr><td>C (5번)</td><td>00</td><td>5 × 2 = 10</td></tr><tr><td>A (3번)</td><td>010</td><td>3 × 3 = 9</td></tr><tr><td>B (1번)</td><td>011</td><td>1 × 3 = 3</td></tr><tr><td colspan="2">합계</td><td><b>28비트</b></td></tr></table></div>
+<p>A B E C E E C E A E C E C A C를 하나씩 바꾸면 → <b>010 011 1 00 1 1 00 1 010 1 00 1 00 010 00</b> = 0100111001100101010010001000 (8번 정답 ②)</p>
+<div class="warn"><b>8번 선지 5개가 전부 28비트</b>였어요. 길이로는 못 걸러요. 맨 앞 몇 글자만 바꿔 봐도 돼요: A(010) B(011)로 시작하니까 0100111…로 시작하는 걸 고르면 끝.</div>
+<div class="sumh">허프만 문제 유형 4가지</div>
+<ul class="sum"><li>트리 고르기 — 합치는 순서와 0·1 방향 확인</li><li>압축 결과 비트열 — 앞에서부터 몇 글자만 바꿔서 비교</li><li>전체 비트 수 — 빈도수 × 코드 길이의 합</li><li>압축률 — (글자 수 × 8비트 또는 7비트) ÷ 허프만 비트 수. 몇 비트 기준인지 문제를 꼭 봐요.</li></ul>
+${OX([['허프만 압축은 빈도수가 높은 글자에 짧은 코드를 준다.',1,'핵심 원리.'],['허프만 트리는 빈도수가 가장 큰 두 개부터 합친다.',0,'가장 작은 두 개.'],['허프만 코드는 어떤 코드도 다른 코드의 앞부분이 되지 않는다.',1,'그래서 붙여 써도 한 가지로만 읽혀요.'],['빈도수가 같은 글자가 많으면 트리 모양은 달라도 전체 비트 수는 같다.',1,'맞아요.']])}`,
+
+'2-1':`<div class="sumh">비교표</div>
+<div class="tw"><table><tr><th></th><th>http</th><th>https</th></tr><tr><td>전송 방식</td><td>데이터를 그대로 보냄</td><td>데이터를 <b>암호화</b>해서 보냄</td></tr><tr><td>중간에 가로채면</td><td>내용이 다 보임</td><td>알아볼 수 없음</td></tr><tr><td>비유</td><td>엽서</td><td>봉인된 편지</td></tr><tr><td>개인 정보 입력</td><td>위험</td><td>상대적으로 안전</td></tr></table></div>
+<p>https의 s는 secure(안전한)의 s라고 기억하면 쉬워요. 로그인 때 비밀번호가 서버로 가는 길을 지켜 주는 게 https, 서버에 저장할 때 지켜 주는 게 해시예요.</p>`,
+
+'2-2':`<div class="sumh">핵심 논리 3단계</div>
+<ol class="xst"><li>모든 암호는 경우의 수를 하나씩 다 넣어 보면(무차별 대입) 언젠가는 풀린다.</li><li>그래서 현대 암호는 "못 풀게"가 아니라 "<b>푸는 데 엄청 오래 걸리게</b>" 만든다.</li><li>비밀번호가 길고, 쓰는 문자 종류가 많을수록 경우의 수가 폭발한다.</li></ol>
+<div class="sumh">경우의 수 계산법</div>
+<p>자리마다 쓸 수 있는 문자 수를 자릿수만큼 곱해요.</p>
+<div class="tw"><table><tr><th>비밀번호</th><th>계산</th><th>경우의 수</th></tr><tr><td>숫자 4자리</td><td>10 × 10 × 10 × 10</td><td>10,000</td></tr><tr><td>숫자 8자리</td><td>10을 8번 곱함</td><td>1억</td></tr><tr><td>소문자 4자리</td><td>26 × 26 × 26 × 26</td><td>456,976</td></tr><tr><td>대소문자+숫자 8자리</td><td>62를 8번 곱함</td><td>약 218조</td></tr></table></div>
+<ul class="sum"><li><b>양자 컴퓨터</b>: 경우의 수를 엄청 빨리 계산 → 지금 암호가 깨질 수 있음.</li><li><b>에니그마</b>: 제2차 세계 대전 독일군 암호, 24시간마다 규칙이 바뀜. <b>앨런 튜링</b>이 <b>봄브</b>로 해독.</li></ul>`,
+
+'2-3':`<div class="sumh">구성 요소 4개, 정의 문장</div>
+<div class="tw"><table><tr><th>요소</th><th>정의</th><th>자물쇠 비유</th></tr><tr><td>평문</td><td>암호화하기 전의 원래 데이터</td><td>편지 내용</td></tr><tr><td>암호문</td><td>평문을 키와 알고리즘으로 바꾼 데이터</td><td>잠긴 상자</td></tr><tr><td>키</td><td>암호화·복호화에 쓰는 약속된 규칙 정보</td><td>열쇠</td></tr><tr><td>암호화(복호화) 알고리즘</td><td>암호화·복호화하는 절차</td><td>자물쇠 작동 방식</td></tr></table></div>
+<div class="sumh">섀넌의 원칙 구분</div>
+<ul class="sum"><li><b>혼돈</b>: 암호문만 보고 <b>키</b>를 짐작 못 하게.</li><li><b>확산</b>: 암호문만 보고 <b>평문</b>을 짐작 못 하게 (평문 한 글자가 암호문 여러 곳에 퍼지게).</li></ul>
+<div class="tip"><b>외우기</b> "혼키, 확평". 혼돈 = 키, 확산 = 평문.</div>`,
+
+'2-4':`<ul class="sum"><li><b>암호화</b>: 평문 → 암호문 (키로 잠그기)</li><li><b>복호화</b>: 암호문 → 평문 (키로 열기)</li><li>알고리즘이 공개돼 있어도 <b>키</b>만 안전하면 암호는 안전해요. 그래서 핵심은 <mark>키 관리</mark>.</li><li>키를 어떻게 다루느냐로 나눈 게 다음에 나오는 <b>비밀키(같은 키)</b>와 <b>공개키(다른 키 두 개)</b>예요.</li></ul>
+<div class="warn"><b>헷갈림 주의</b> 압축의 인코딩·디코딩과 섞지 마세요. 압축은 크기를 줄이는 것, 암호화는 못 알아보게 바꾸는 것이에요.</div>`,
+
+'2-5':`<div class="sumh">기능 7개를 "막는 것 / 지키는 것"으로 나누기</div>
+<div class="tw"><table><tr><th>기능</th><th>무엇을</th><th>예</th></tr><tr><td>기밀성 보장</td><td>몰래 <b>보는</b> 것을 막음</td><td>와이파이 도청해도 내용을 못 봄</td></tr><tr><td>무결성 유지</td><td>몰래 <b>바꾸는</b> 것을 막음</td><td>송금액 위조 확인</td></tr><tr><td>인증 및 식별 보장</td><td>진짜 그 사람인지 <b>확인</b></td><td>로그인</td></tr><tr><td>비인가 접근 방지</td><td>허락 안 받은 접근 <b>차단</b></td><td>남의 계정 접근 차단</td></tr><tr><td>보안 통신 보장</td><td>주고받는 길을 보호</td><td>https</td></tr><tr><td>보안 공격으로부터 보호</td><td>뚫려도 내용을 못 알아봄</td><td>해킹당해도 암호문</td></tr><tr><td>규정 준수</td><td>개인 정보 보호 규정을 지킴</td><td>법·규정</td></tr></table></div>
+<div class="warn"><b>&lt;보기&gt; 함정 공식</b> 끝말을 반대로 바꿔요. 보장 ↔ <s>차단</s>, 방지 ↔ <s>허용</s>, 유지 ↔ <s>변경 허용</s>. 선지 끝 두 글자까지 꼭 읽어요.</div>
+<div class="sumh">제로 트러스트 (작년 2학기 기출 3번)</div>
+<p>"아무도 믿지 말고 <b>항상 검증</b>하라"는 보안 전략이에요. 사용자나 기기가 어디 있든 모든 접근 요청을 매번 확인해요.</p>
+<ul class="sum"><li>모든 사용자·장치는 기본적으로 <b>신뢰하지 않는다</b></li><li>사용자·기기 활동에서 <b>이상 징후를 탐지</b>한다</li><li>필요한 <b>최소한의 권한</b>만 준다</li><li>두 가지 이상의 <b>인증 절차</b>(다중 인증)를 거친다</li></ul>
+${P2('작년 2학기 기출 3번 (3.8점)','제로 트러스트 원칙에 해당하지 <b>않는</b> 것 → "전체 시스템에 접근하기 쉽도록 네트워크를 <b>단일화</b>한다". 쉽게 접근하게 하는 건 "항상 검증"과 정반대예요.')}
+${P2('작년 1학기 기출','&lt;보기&gt;에서 옳은 기능 고르기 → 무결성 유지, 기밀성 보장, 보안 공격으로부터 보호. "인증 및 식별 차단", "비인가자 접근 허용"은 함정.')}`,
+
+'2-6':`<div class="sumh">치환형 vs 전치형, 한 줄로</div>
+<div class="tw"><table><tr><th></th><th>치환형</th><th>전치형</th></tr><tr><td>바뀌는 것</td><td>글자 자체 (a → d)</td><td>글자의 <b>위치</b></td></tr><tr><td>글자 종류</td><td>바뀜</td><td>그대로 (재배열만)</td></tr><tr><td>예</td><td>카이사르 암호</td><td>스키테일 암호, 키 숫자 전치</td></tr><tr><td>키</td><td>몇 칸 밀었나</td><td>열 순서 / 막대 굵기</td></tr></table></div>
+<div class="tip"><b>바로 구별하는 법</b> 암호문에 평문 글자가 그대로 다 들어 있으면 → 전치형. 처음 보는 글자로 바뀌었으면 → 치환형.</div>
+<div class="sumh">전치형 푸는 순서 (시험용)</div>
+<ol class="xst"><li>키 자릿수만큼 평문을 끊는다 (빈칸·띄어쓰기도 한 글자로 센다).</li><li>모자란 칸은 <b>:</b> 로 채운다.</li><li>줄마다 키에 적힌 순서대로 열을 뽑아 이어 쓴다.</li></ol>
+<div class="sumh">작년 2학기 기출 9번 (4.0점): 평문 you can do it!, 키 4213</div>
+<p>띄어쓰기를 _ 로 보이게 적으면: y o u _ / c a n _ / d o _ i / t ! : :</p>
+<div class="tw"><table><tr><th>열</th><th>1</th><th>2</th><th>3</th><th>4</th><th>→ 키 4·2·1·3 순서</th></tr><tr><td>1줄</td><td>y</td><td>o</td><td>u</td><td>_</td><td>_ o y u</td></tr><tr><td>2줄</td><td>c</td><td>a</td><td>n</td><td>_</td><td>_ a c n</td></tr><tr><td>3줄</td><td>d</td><td>o</td><td>_</td><td>i</td><td>i o d _</td></tr><tr><td>4줄</td><td>t</td><td>!</td><td>:</td><td>:</td><td>: ! t :</td></tr></table></div>
+<p>이어 쓰면 " oyu acniod :!t:" → 정답 <b>③</b>. 오답은 띄어쓰기를 빼고 단어 순서만 바꾼 것, 통째로 뒤집은 것, 세로로 읽은 것이었어요.</p>
+<div class="warn"><b>함정</b> ① 띄어쓰기도 한 칸이에요. 빼먹으면 줄이 다 밀려요. ② 키 숫자를 "보낼 자리"로 쓰면 틀려요. 키는 "뽑을 순서"예요. ③ 채운 : 도 암호문에 그대로 들어가요.</div>
+<div class="sumh">카이사르 계산 공식</div>
+<p>새 번호 = (원래 번호 + 이동 칸 수) % 26. a = 0, b = 1, …, z = 25. 끝을 넘어가면 % 26이 처음으로 돌려줘요(x + 3 → a).</p>
+${OX([['카이사르 암호는 전치형 암호이다.',0,'글자를 바꾸니까 치환형.'],['전치형 암호는 평문의 글자 종류가 그대로 유지된다.',1,'자리만 바뀌어요.'],['스키테일 암호에서는 막대의 굵기가 키 역할을 한다.',1,'같은 굵기여야 읽혀요.']])}`,
+
+'2-7':`<div class="sumh">비밀키 암호 정리</div>
+<ul class="sum"><li>암호화할 때와 복호화할 때 <b>같은 키 하나</b>를 써요 → 대칭키.</li><li>보내는 사람과 받는 사람이 같은 키를 미리 나눠 가져야 해요.</li><li>장점: 암호화·복호화가 <b>빠르고</b>, 만들기 쉬움.</li><li>단점: 키를 상대에게 <b>안전하게 전달</b>하기 어렵고, 사람이 많아지면 관리할 키가 많아짐.</li><li>예: <b>DES</b>(옛 표준), <b>AES</b>(지금 많이 씀).</li></ul>
+${OX([['비밀키 암호는 암호화와 복호화에 서로 다른 키를 사용한다.',0,'같은 키예요.'],['비밀키 암호는 공개키 암호보다 속도가 빠르다.',1,'맞아요.'],['AES는 비밀키 암호이다.',1,'DES, AES = 비밀키.']])}`,
+
+'2-8':`<div class="sumh">공개키 암호에서 "누구의 무슨 키"가 제일 중요해요</div>
+<div class="tw"><table><tr><th>단계</th><th>쓰는 키</th></tr><tr><td>A가 B에게 보낼 때 잠그기</td><td><b>B의 공개키</b></td></tr><tr><td>B가 받아서 열기</td><td><b>B의 개인키</b></td></tr></table></div>
+<ul class="sum"><li>공개키는 누구나 가져가도 괜찮아요. 잠그는 것만 되니까.</li><li>개인키는 받는 사람만 가지고 있어야 해요. 개인키가 새면 끝.</li><li>장점: 키를 전달할 필요가 없음, 해독이 어려움. 단점: 계산이 복잡해서 <b>느림</b>.</li><li>예: <b>RSA</b>, <b>ECC</b>.</li></ul>
+<div class="warn"><b>함정</b> "A의 공개키로 잠근다", "B의 공개키로 연다" 같은 선지. 잠그는 건 <b>받는 사람의 공개키</b>, 여는 건 <b>받는 사람의 개인키</b>예요.</div>
+${OX([['공개키 암호는 키 두 개를 사용한다.',1,'공개키 + 개인키.'],['B에게 보낼 암호문은 B의 개인키로 암호화한다.',0,'B의 공개키로 잠가요.'],['RSA는 공개키 암호이다.',1,'RSA, ECC = 공개키.']])}`,
+
+'2-9':`<div class="sumh">해시 특징 5개 (선지 그대로)</div>
+<ul class="sum"><li><b>단방향</b>: 해시값을 원래 데이터로 되돌릴 수 없다 (복호화 불가).</li><li>입력 길이와 상관없이 <b>고정된 길이</b>의 해시값이 나온다.</li><li>같은 입력 → 항상 같은 해시값.</li><li>입력이 조금만 달라도 해시값이 완전히 달라진다.</li><li>쓰임: 비밀번호 저장, 인증 번호·일회용 비밀번호 확인, 위조·변조 확인, 블록체인.</li></ul>
+<div class="sumh">블록체인 (작년 2학기 기출 10번)</div>
+<p>분산된 네트워크에서 참여자들이 거래 정보를 <b>공동으로 기록하고 관리</b>하는 기술이에요. 블록마다 앞 블록의 해시값이 들어 있어서 하나를 고치면 뒤가 다 안 맞아요. 그래서 데이터의 신뢰성과 안전성을 보장해요. 대표 활용: 암호 화폐(비트코인, 이더리움).</p>
+${P2('작년 2학기 기출 10번 (3.8점)','"암호 화폐를 비롯해 분산된 네트워크에서 거래 정보를 공동으로 기록·관리" → <b>블록 체인</b>. 오답: 압축, 해싱, 방화벽, 제로 트러스트.')}
+${P2('작년 1학기 기출','해시 설명으로 옳지 않은 것 → "평문을 암호화하고 암호문을 <b>복호화하는 것이 가능</b>하다".')}
+${OX([['해시는 입력 데이터가 길수록 해시값도 길어진다.',0,'항상 고정 길이.'],['MD5는 취약점이 발견되어 보안용으로 권장되지 않는다.',1,'맞아요.'],['SHA는 미국 국가안보국(NSA)이 설계했다.',1,'1993년.']])}`,
+
+'3-1':`<div class="sumh">4단계와 단계별 키워드</div>
+<div class="tw"><table><tr><th>단계</th><th>하는 일</th><th>이 단어가 보이면</th></tr><tr><td>① 문제 정의</td><td>해결할 문제를 구체화, 분석 목적·방향 설정, 독립·종속 변수 정하기, 가설 세우기</td><td>변수, 가설, 목적</td></tr><tr><td>② 데이터 수집</td><td>센서·설문으로 직접 / 공개 데이터 포털에서 내려받기</td><td>센서, 설문, 포털, CSV</td></tr><tr><td>③ 전처리와 분석</td><td>결측값·이상치 처리, 정규화 → 시각화, 상관 분석</td><td>결측값, 정규화, 상관계수, 차트</td></tr><tr><td>④ 문제 해결</td><td>분석 결과로 문제 요인 해석, 해결 방안 제시</td><td>해석, 방안, 제안</td></tr></table></div>
+<div class="tip"><b>외우기</b> "정·수·전·해" (정의 → 수집 → 전처리·분석 → 해결)</div>
+<div class="warn"><b>순서 함정</b> "수집 → 정의" 처럼 앞 두 단계를 바꾼 선지가 제일 많아요. 뭘 알고 싶은지 정해야 뭘 모을지 알죠.</div>`,
+
+'3-2':`<div class="sumh">변수 찾기 3초 공식</div>
+<p>문장을 "<b>A</b>는 <b>B</b>에 어떤 영향을 미칠까?"로 바꿔요. A = 독립 변수(원인), B = 종속 변수(결과).</p>
+<div class="tw"><table><tr><th>문제</th><th>독립 변수</th><th>종속 변수</th></tr><tr><td>미세 먼지는 호흡기 질환에 어떤 영향?</td><td>미세 먼지 대기 오염도</td><td>호흡기 질환 환자 수</td></tr><tr><td>공부 시간이 성적에 미치는 영향</td><td>공부 시간</td><td>성적</td></tr><tr><td>기온에 따른 아이스크림 판매량</td><td>기온</td><td>판매량</td></tr><tr><td>수면 시간이 집중력에 미치는 영향</td><td>수면 시간</td><td>집중력</td></tr></table></div>
+<div class="sumh">가설 쓰는 법</div>
+<p>"독립 변수가 ~하면, 종속 변수가 ~할 것이다." 원인이 앞, 결과가 뒤예요. "환자 수가 많으면 미세 먼지가 높아질 것이다"처럼 방향을 뒤집은 선지는 틀려요.</p>`,
+
+'3-3':`<div class="sumh">수집 방법 비교</div>
+<div class="tw"><table><tr><th></th><th>직접 수집</th><th>공개 데이터 활용</th></tr><tr><td>방법</td><td>센서, 스마트 기기, 설문 조사</td><td>데이터 공개 포털에서 내려받기</td></tr><tr><td>장점</td><td>원하는 데이터를 딱 맞게</td><td>시간·노력 절약, 양이 많음</td></tr><tr><td>주의</td><td>시간과 노력이 많이 듦</td><td><b>신뢰성</b> 있는 출처인지 확인</td></tr></table></div>
+<div class="sumh">좋은 데이터의 조건 4가지</div>
+<ul class="sum"><li>목적에 맞는 데이터</li><li>편향되지 않은 데이터</li><li>정확한 데이터</li><li>충분한 양의 데이터</li></ul>
+<p>CSV 파일: 쉼표로 값을 구분한 표 형식이라 엑셀 등 여러 프로그램에서 열 수 있어요.</p>`,
+
+'3-4':`<div class="sumh">용어 4개, 예시로 구분하기</div>
+<div class="tw"><table><tr><th>용어</th><th>정의</th><th>예</th><th>처리</th></tr><tr><td>결측값</td><td>데이터가 비어 있는 상태</td><td>설문에 나이를 안 적음</td><td>제거, 대체, 보완</td></tr><tr><td>이상치</td><td>일반적인 패턴에서 크게 벗어난 값</td><td>키 1,700cm</td><td>제거, 변환</td></tr><tr><td>스케일링</td><td>데이터 크기를 특정 범위로 조정</td><td>단위 맞추기</td><td>-</td></tr><tr><td>정규화</td><td>데이터 범위를 [0, 1]로 바꿔 크기 차이를 줄임</td><td>최솟값 0, 최댓값 1</td><td>공식 사용</td></tr></table></div>
+<div class="sumh">정규화 계산 순서 (실수 안 하는 법)</div>
+<ol class="xst"><li>그 변수의 최솟값, 최댓값을 찾는다.</li><li>분모 = 최댓값 − 최솟값 (범위)를 먼저 구해 둔다.</li><li>분자 = 기존값 − 최솟값.</li><li>분자 ÷ 분모. 답은 항상 0 이상 1 이하.</li></ol>
+<p>예) 미세 먼지 최솟값 27, 최댓값 42 → 분모 15. 대구 35 → (35 − 27) ÷ 15 = 8 ÷ 15 ≈ 0.53.</p>
+<div class="warn"><b>함정</b> ① 분모를 최댓값으로만 나눔 ② 최솟값을 안 빼고 나눔 ③ 다른 변수의 최솟값·최댓값을 섞어 씀. 변수마다 따로 계산해요.</div>
+<div class="sumh">엑셀 수식 읽기</div>
+<p>=(B2-MIN($B$2:$B$18))/(MAX($B$2:$B$18)-MIN($B$2:$B$18)) — B2만 칸마다 바뀌고, $가 붙은 범위는 고정(절대 참조). $는 <b>F4</b>로 붙여요.</p>`,
+
+'3-5':`<div class="sumh">상관계수 읽는 법 2단계</div>
+<ol class="xst"><li><b>부호</b>로 방향: + 는 같이 증가, − 는 하나가 늘면 하나는 줄어듦.</li><li><b>절댓값 크기</b>로 세기: 아래 표.</li></ol>
+<div class="tw"><table><tr><th>상관계수 크기</th><th>해석</th></tr><tr><td>0.9 ~ 1</td><td>매우 강함</td></tr><tr><td>0.7 ~ 0.9</td><td>강함</td></tr><tr><td>0.4 ~ 0.7</td><td>상관관계가 있음</td></tr><tr><td>0.2 ~ 0.4</td><td>약함</td></tr><tr><td>0 ~ 0.2</td><td>매우 약함(거의 없음)</td></tr></table></div>
+<p>예) −0.8 → 강한 음의 상관관계, 0.3 → 약한 양의 상관관계. −0.8이 0.3보다 <b>더 강해요</b>.</p>
+<div class="sumh">시각화 방법 고르기</div>
+<ul class="sum"><li>시간에 따른 변화 → 막대, 선(꺾은선)</li><li>전체 중 비율 → 파이, 도넛, 트리맵</li><li>두 변수 관계 → <b>산점도</b>, 버블</li><li>여러 변수 비교 → 히트맵, 스타형</li><li>지역 → 지도 매핑</li></ul>
+<div class="warn"><b>상관관계 ≠ 인과관계</b> 같이 움직인다고 꼭 원인과 결과는 아니에요. 다른 숨은 요인이 있을 수 있어요.</div>`,
+
+'3-6':`<ul class="sum"><li>문제 해결 = 분석 결과를 근거로 <b>문제 요인을 해석</b>하고 <b>해결 방안을 제시</b>하는 단계.</li><li>결과가 약하게 나오면 다른 요인을 추가로 분석해 볼 수도 있어요.</li><li>"변수를 처음 정한다", "데이터를 모은다"는 문제 해결 단계가 아니에요(각각 문제 정의, 데이터 수집).</li></ul>`
+};
+LESSONS.forEach(L=>L.secs.forEach(s=>{if(DEEP[s.id])s.h+=deepBox(DEEP[s.id])}));
+
+/* 3회차 맨 앞: 빅데이터의 개념과 특징 (작년 2학기 기출 11번) */
+(function(){const L=LESSONS.find(l=>l.id===3);if(!L)return;
+L.secs.unshift({id:'3-0',t:'빅데이터의 개념과 특징 (5V)',h:`
+<p>수업에서는 가볍게 넘어갔지만 <b>작년 2학기 기말에 11번(3.6점)으로 나왔어요</b>. 외울 건 딱 5개라 금방 끝나요.</p>
+<div class="sumh">빅데이터란?</div>
+<p>기존 방식으로는 저장·관리·분석하기 어려울 만큼 <b>규모가 크고, 빠르게 만들어지고, 형태가 다양한</b> 데이터예요. 스마트폰, SNS, 센서(사물 인터넷)에서 매 순간 엄청난 데이터가 쏟아지죠.</p>
+<div class="sumh">빅데이터의 특징 5V</div>
+<div class="tw"><table><tr><th>특징</th><th>뜻</th><th>예</th></tr>
+<tr><td><b>Volume</b> (규모)</td><td>데이터의 양이 엄청나게 많다</td><td>TB, PB 단위로 쌓이는 데이터</td></tr>
+<tr><td><b>Velocity</b> (속도)</td><td>데이터가 매우 빠르게 생성되고 처리된다</td><td>실시간 검색어, 교통 정보</td></tr>
+<tr><td><b>Variety</b> (다양성)</td><td>데이터의 형태가 다양하다</td><td>숫자·표뿐 아니라 글, 사진, 영상, 소리, 센서 값</td></tr>
+<tr><td><b>Veracity</b> (정확성)</td><td>데이터를 믿을 수 있어야 한다</td><td>잘못된 값, 가짜 정보 거르기</td></tr>
+<tr><td><b>Value</b> (가치)</td><td>분석해서 쓸모 있는 가치를 만들어 낸다</td><td>마케팅, 정책 결정</td></tr></table></div>
+<div class="tip"><b>외우는 법</b> 처음 3개 "<b>규·속·다</b>" (Volume, Velocity, Variety)가 기본이고, 정확성(Veracity)과 가치(Value)를 더해 5V. 전부 <b>V로 시작</b>해요.</div>
+<div class="warn"><b>작년 함정</b> Visibility(가시성)도 V로 시작하지만 빅데이터 특징이 <b>아니에요</b>. V로 시작한다고 다 정답 아님! 이 5개만 정답이에요.</div>
+<div class="sumh">빅데이터가 쓰이는 곳</div>
+<ul class="sum"><li>인공지능 학습: 엄청난 데이터를 학습해서 사람처럼 추론</li><li>마케팅: 사람들의 관심사, 여가 생활 분석</li><li>공공 분야: 교육부·통계청·보건복지부 같은 정부 부처의 정보 시스템 데이터</li></ul>
+${P2('작년 2학기 기출 11번 (3.6점)','"빅데이터의 특징에 해당하지 않는 것은?" → <b>Visibility(가시성)</b>. 나머지 Volume(규모), Value(가치), Velocity(속도), Variety(다양성)는 특징.')}
+${OX([['Volume은 데이터의 양이 많다는 특징이다.',1,'규모.'],['Velocity는 데이터 형태가 다양하다는 특징이다.',0,'Velocity는 속도, 다양성은 Variety.'],['Visibility는 빅데이터의 특징이다.',0,'작년 기출 오답.'],['Veracity는 데이터의 정확성(신뢰성)을 뜻한다.',1,'맞아요.']])}`});
+L.sum.unshift('빅데이터 5V: Volume(규모)·Velocity(속도)·Variety(다양성)·Veracity(정확성)·Value(가치), Visibility는 아님');
+})();
+
+/* ===== 섹션 맨 위 3줄 요약 + 회차별 실습 따라하기 ===== */
+/* 엑셀 화면 그림: cw = 열 너비들, rows = 칸 글자(첫 줄은 1행), o.fx = 수식 입력줄, o.sel = [행,열] 선택 칸, o.hl = ['행,열'] 강조 칸 */
+function xl(cw,rows,o={}){const RH=24,NW=26,FH=o.fx?34:0,L='ABCDEFGH';const W=NW+cw.reduce((a,b)=>a+b,0)+2;let s='';
+ if(o.fx){s+=`<rect x="1" y="1" width="${W-2}" height="26" rx="6" class="bx"/><text x="12" y="14" dominant-baseline="central" class="lb" font-style="italic">fx</text><text x="34" y="14" dominant-baseline="central" class="s" style="font-size:8.6px;fill:var(--ink)">${o.fx}</text>`}
+ const y0=FH;let x=NW;s+=`<rect x="1" y="${y0}" width="${NW-1}" height="${RH}" class="xh"/>`;
+ cw.forEach((w,c)=>{s+=`<rect x="${x}" y="${y0}" width="${w}" height="${RH}" class="xh"/><text x="${x+w/2}" y="${y0+RH/2}" text-anchor="middle" dominant-baseline="central" class="s">${L[c]}</text>`;x+=w});
+ rows.forEach((r,i)=>{const y=y0+RH*(i+1);s+=`<rect x="1" y="${y}" width="${NW-1}" height="${RH}" class="xh"/><text x="${NW/2}" y="${y+RH/2}" text-anchor="middle" dominant-baseline="central" class="s">${o.r0?o.r0+i:i+1}</text>`;let x=NW;
+  cw.forEach((w,c)=>{const k=(o.hl||[]).includes(i+','+c),sel=o.sel&&o.sel[0]===i&&o.sel[1]===c;s+=`<rect x="${x}" y="${y}" width="${w}" height="${RH}" class="${k?'xk':'xc'}"/>`;if(sel)s+=`<rect x="${x+1}" y="${y+1}" width="${w-2}" height="${RH-2}" class="xs"/>`;
+   const v=r[c]==null?'':String(r[c]);if(v)s+=`<text x="${isNaN(v.replace(/,/g,''))?x+6:x+w-6}" y="${y+RH/2}" text-anchor="${isNaN(v.replace(/,/g,''))?'start':'end'}" dominant-baseline="central" class="${i===0&&!o.r0?'tb':''}" style="font-size:11.5px">${v}</text>`;x+=w})});
+ if(o.fill){const[r,c]=o.fill;let x=NW;for(let k=0;k<c;k++)x+=cw[k];x+=cw[c];const y=y0+RH*(r+2);s+=`<rect x="${x-5}" y="${y-5}" width="8" height="8" class="xf"/>`}
+ return svgW(W,y0+RH*(rows.length+1)+2,s,o.cap||'엑셀 화면')}
+/* 메뉴 경로: ['데이터','데이터 분석','상관 분석'] */
+const path=a=>`<div class="mpath">${a.map(t=>`<span>${t}</span>`).join('<i>›</i>')}</div>`;
+/* 실습 단계 상자 */
+const stp=(n,t,h)=>`<div class="stp"><div class="sh"><i>${n}</i><b>${t}</b></div>${h}</div>`;
+
+/* 수업 실습 데이터 (2025.1, 17개 시도) */
+const CLD=[['강원',34,299191],['경기',41,2957470],['경남',29,682086],['경북',37,499023],['광주',30,308216],['대구',35,490277],['대전',36,317843],['부산',33,691806],['서울',42,2001224],['세종',39,94892],['울산',34,256520],['인천',39,615920],['전남',27,366349],['전북',35,353688],['제주',32,147325],['충남',37,452292],['충북',41,350803]];
+const nz=(v,a)=>{const m=Math.min(...a),M=Math.max(...a);return (v-m)/(M-m)};
+const PM=CLD.map(r=>r[1]),PT=CLD.map(r=>r[2]);
+const f2=v=>String(Math.round(v*100)/100);
+/* 꺾은선 차트: 두 정규화 값 */
+function lineChart(){const W=350,H=200,L=30,R=6,T=14,B=40,n=CLD.length,dx=(W-L-R)/(n-1),Y=v=>T+(1-v)*(H-T-B);let s='';
+ [0,0.5,1].forEach(v=>{s+=`<line x1="${L}" y1="${Y(v)}" x2="${W-R}" y2="${Y(v)}" class="xg"/><text x="${L-5}" y="${Y(v)}" text-anchor="end" dominant-baseline="central" class="s">${v}</text>`});
+ const pl=(a,k)=>`<polyline points="${a.map((v,i)=>`${L+i*dx},${Y(v)}`).join(' ')}" class="${k}"/>`+a.map((v,i)=>`<circle cx="${L+i*dx}" cy="${Y(v)}" r="2.6" class="${k}d"/>`).join('');
+ s+=pl(PM.map(v=>nz(v,PM)),'se1')+pl(PT.map(v=>nz(v,PT)),'se2');
+ CLD.forEach((r,i)=>{s+=`<text x="${L+i*dx}" y="${H-B+14}" text-anchor="middle" class="s" style="font-size:9.5px">${r[0]}</text>`});
+ s+=`<rect x="${L}" y="${H-14}" width="10" height="4" class="se1f"/><text x="${L+14}" y="${H-12}" dominant-baseline="central" class="s">미세 먼지(정규화)</text><rect x="${L+130}" y="${H-14}" width="10" height="4" class="se2f"/><text x="${L+144}" y="${H-12}" dominant-baseline="central" class="s">환자 수(정규화)</text>`;
+ return svgW(W,H,s,'지역별 정규화 값 꺾은선 차트')}
+/* 화면 그림: 창 하나에 줄 여러 개 */
+function win(title,lines,cap){const W=350,LH=26;let s=`<rect x="1" y="1" width="${W-2}" height="${36+lines.length*LH+8}" rx="10" class="bx"/><rect x="1" y="1" width="${W-2}" height="28" rx="10" class="xh"/><circle cx="16" cy="15" r="4" class="se2f"/><circle cx="29" cy="15" r="4" class="xk"/><text x="44" y="15" dominant-baseline="central" class="tb" style="font-size:12px">${title}</text>`;
+ lines.forEach((l,i)=>{const y=40+i*LH;s+=l[1]?`<rect x="12" y="${y}" width="${W-24}" height="${LH-4}" rx="6" class="${l[1]}"/>`:'';s+=`<text x="22" y="${y+(LH-4)/2}" dominant-baseline="central" class="${l[2]||''}" style="font-size:11.5px">${l[0]}</text>`});
+ return svgW(W,36+lines.length*LH+12,s,cap||title)}
+/* 픽셀 그림: 0=흰, 1=검 */
+function pix(rows,cap){const C=22,W=rows[0].length*C+2,H=rows.length*C+2;let s='';rows.forEach((r,i)=>[...r].forEach((v,j)=>{s+=`<rect x="${1+j*C}" y="${1+i*C}" width="${C}" height="${C}" class="${v==='1'?'px1':'px0'}"/>`}));return svgW(W,H,s,cap||'픽셀 그림')}
+const rleRow=r=>{let o='',c=1;for(let i=1;i<=r.length;i++){if(r[i]===r[i-1])c++;else{o+=(r[i-1]==='1'?'B':'W')+c;c=1}}return o};
+
+/* ---------- 섹션 맨 위 3줄 요약 ---------- */
+const SUM3={
+'1-1':['디지털 = 0과 1, 가장 작은 단위는 비트(bit)','1Byte = 8bit, 그 위로 KB·MB·GB·TB·PB 한 칸에 1,024배','디지털화: 표본화 → 양자화 → 부호화'],
+'1-2':['주기억(RAM) = 지금 작업 중인 것, 전원 끄면 사라짐','보조 기억(하드·SSD·USB) = 오래 저장','저장 공간이 모자라고 전송이 느려서 → 압축이 필요'],
+'1-3':['압축 = 인코딩(작게), 복원 = 디코딩(되돌리기)','손실(JPEG·MP3·MPEG4)은 원본과 다름, 비손실(ZIP·PNG·GIF)은 똑같음','압축하면 저장 공간 절약, 전송 빨라짐, 전자 폐기물 감소'],
+'1-4':['압축의 원리 = 중복성 제거','공간적(이미지 안 같은 색) / 시간적(동영상 프레임 사이 같은 배경)','압축률 = 압축 전 ÷ 압축 후, 1보다 크면 줄어든 것'],
+'1-5':['모든 문자는 코드표의 번호로 저장','아스키: 7비트, A = 65 = 1000001','유니코드: 전 세계 공용 표준, 글자 깨짐 = 코드가 다름'],
+'1-6':['연속된 같은 글자를 "글자 + 횟수"로 (AAAB → A3B1)','떨어져 있으면 따로, 반복이 없으면 2배로 늘어남','코드: 앞 글자와 비교 → 다르면 붙이고 count = 1 → 마지막 따로 처리'],
+'1-7':['빈도가 높은 글자일수록 짧은 코드','가장 작은 두 개씩 합쳐 이진 트리 만들기','작년 2학기 기출 기준: 빈도가 큰 쪽 가지 = 0'],
+'2-1':['http = 그대로 전송(엽서)','https = 암호화해서 전송(봉인된 편지)','개인 정보는 https에서만 입력'],
+'2-2':['모든 암호는 경우의 수를 다 넣으면 깰 수 있음','그래서 푸는 시간을 엄청 길게 만들어 지킴','양자 컴퓨터는 위협, 에니그마는 튜링이 봄브로 해독'],
+'2-3':['평문 · 암호문 · 키 · 알고리즘 4가지','키 = 암호화·복호화에 쓰는 약속된 규칙 정보','섀넌: 혼돈은 키를, 확산은 평문을 숨김'],
+'2-4':['암호화: 평문 → 암호문','복호화: 암호문 → 평문','제일 중요한 건 키 관리'],
+'2-5':['기밀성(보기 막기) · 무결성(바꾸기 막기) · 인증 및 식별','비인가 접근 방지, 보안 통신 보장, 보안 공격으로부터 보호, 규정 준수','<보기>는 끝말 뒤집기(보장 ↔ 차단) 함정 조심'],
+'2-6':['치환형 = 글자를 바꿈(카이사르), 전치형 = 자리를 바꿈(스키테일)','카이사르: 키 = 미는 칸 수, (번호 + 칸) % 26','전치형: 키 자릿수로 끊고, 키 순서대로 열 뽑기, 빈칸은 :'],
+'2-7':['암호화·복호화에 같은 키 1개 (대칭키)','빠르지만 키를 전달·관리하기 어려움','예: DES, AES'],
+'2-8':['공개키 + 개인키 두 개 (비대칭키)','받는 사람의 공개키로 잠그고, 받는 사람의 개인키로 엶','키 전달 필요 없지만 느림, 예: RSA, ECC'],
+'2-9':['해시 = 고정 길이 값, 되돌릴 수 없음(단방향)','같은 입력 → 같은 해시값, 비밀번호 저장·위조 확인에 사용','블록체인 = 앞 블록 해시를 담아 위·변조 방지'],
+'3-0':['빅데이터 = 너무 크고 빠르고 다양해서 기존 방식으론 다루기 어려운 데이터','5V: Volume · Velocity · Variety · Veracity · Value','Visibility(가시성)는 특징 아님 (작년 기출 함정)'],
+'3-1':['문제 정의 → 데이터 수집 → 전처리와 분석 → 문제 해결','"정·수·전·해"','순서 바꾼 선지가 단골 함정'],
+'3-2':['독립 변수 = 원인(영향을 줌), 종속 변수 = 결과(영향을 받음)','"A는 B에 어떤 영향을?" → A 독립, B 종속','가설: 독립 변수가 ~하면 종속 변수가 ~할 것이다'],
+'3-3':['직접 수집(센서·설문) / 공개 데이터 포털(KOSIS 등)','공개 데이터는 신뢰성 있는 출처','좋은 데이터: 목적에 맞고, 편향 없고, 정확하고, 충분한 양'],
+'3-4':['결측값 = 빈 값, 이상치 = 크게 벗어난 값','스케일링 = 크기 조정, 정규화 = [0, 1]로','정규화된 값 = (기존값 − 최솟값) ÷ (최댓값 − 최솟값)'],
+'3-5':['시각화(차트) + 통계 분석(상관 분석)','상관계수 −1 ~ 1: 부호는 방향, 크기는 세기','상관관계 ≠ 인과관계'],
+'3-6':['분석 결과로 문제 요인 해석','해결 방안 제시','약하면 다른 요인도 추가로 분석']};
+LESSONS.forEach(L=>L.secs.forEach(s=>{const a=SUM3[s.id];if(a)s.h=`<div class="s3"><b>3줄 요약</b><ol>${a.map(t=>`<li>${t}</li>`).join('')}</ol></div>`+s.h}));
+
+/* ---------- 3회차 실습: 엑셀로 빅데이터 분석 따라하기 ---------- */
+(function(){const L=LESSONS.find(l=>l.id===3);if(!L)return;
+const head=['시도','미세 먼지','환자 수','미세 먼지 정규화','환자 수 정규화'];
+const top5=CLD.slice(0,5);
+L.secs.push({id:'3-7',t:'실습: 엑셀로 빅데이터 분석 따라하기',h:`
+<p>수업에서 한 실습을 처음부터 끝까지 그대로 따라가 볼게요. 화면 그림 보면서 손으로 한 번 해 보면 시험 문제가 "아, 그 단계" 하고 바로 보여요.</p>
+${stp(1,'문제 정의: 무엇을 알아볼까?',`
+${win('분석 계획서',[['문제: 미세 먼지 대기 오염도는 호흡기 질환에 영향을 줄까?','bx'],['독립 변수: 미세 먼지 대기 오염도 (원인)','bp','tb'],['종속 변수: 호흡기 질환 환자 수 (결과)','bw','tb'],['가설: 미세 먼지가 높으면 환자 수가 많을 것이다','bx']],'문제 정의 계획서')}
+<p>"A는 B에 어떤 영향?" 꼴로 문제를 세우면 변수가 바로 나와요. 가설은 원인 → 결과 순서로 써요.</p>`)}
+${stp(2,'데이터 수집: 공개 포털에서 내려받기',`
+${win('국가 통계 포털 KOSIS',[['검색창: 미세 먼지','bx'],['미세 먼지(PM10) 월별 도시별 대기 오염도','bp','tb'],['조회 설정: 기간 2025.1 · 17개 시도','bx'],['다운로드 → 파일 형식 CSV','bw','tb']],'KOSIS에서 데이터 내려받기')}
+<p>CSV는 쉼표로 칸을 나눈 표 파일이라 엑셀로 바로 열려요. 환자 수 데이터도 공개 포털에서 같은 방법으로 받아서 한 표로 합쳐요. <b>신뢰성 있는 기관 데이터</b>를 쓰는 게 포인트예요.</p>`)}
+${stp(3,'엑셀에 정리하기',`
+${xl([52,64,84,78,70],[head,...top5.map(r=>[r[0],r[1],r[2].toLocaleString(),'',''])],{cap:'엑셀에 데이터 정리'})}
+<p>A열 시도, B열 미세 먼지, C열 환자 수. 1행은 제목, 데이터는 <b>2행부터 18행까지</b>(17개 시도)예요. 그래서 수식 범위가 B2:B18이 되는 거예요.</p>`)}
+${stp(4,'전처리 ①: 결측값·이상치 확인',`
+${xl([52,64,84],[['시도','미세 먼지','환자 수'],['○○','35',''],['△△','350','412,000'],['□□','33','298,000']],{hl:['1,2','2,1'],cap:'결측값과 이상치 찾기'})}
+<p>칸이 비어 있으면 <b>결측값</b>(빈칸 → 제거·대체·보완), 다른 값보다 터무니없이 크면 <b>이상치</b>(350은 다른 값 30~40과 너무 달라요 → 제거·변환). 위 그림은 연습용 예시예요. 수업 데이터 17개 시도에는 빈칸이 없었어요.</p>`)}
+${stp(5,'전처리 ②: 정규화 수식 넣기',`
+${xl([52,64,84,92],[head.slice(0,4),...top5.map((r,i)=>[r[0],r[1],r[2].toLocaleString(),i===0?f2(nz(r[1],PM)):''])],{fx:'=(B2-MIN($B$2:$B$18))/(MAX($B$2:$B$18)-MIN($B$2:$B$18))',sel:[1,3],cap:'D2에 정규화 수식 입력'})}
+<ol class="xst"><li>D2 칸을 누르고 <b>=(B2-MIN(B2:B18))/(MAX(B2:B18)-MIN(B2:B18))</b>를 입력해요.</li><li>범위 B2:B18을 커서로 잡고 <b>F4</b>를 누르면 <b>$B$2:$B$18</b>로 바뀌어요(절대 참조, 고정).</li><li>Enter → 강원 34 → (34 − 27) ÷ (42 − 27) = 7 ÷ 15 ≈ <b>0.47</b></li></ol>`)}
+${stp(6,'자동 채우기로 아래까지',`
+${xl([52,64,84,92],[head.slice(0,4),...top5.map(r=>[r[0],r[1],r[2].toLocaleString(),f2(nz(r[1],PM))])],{hl:['1,3','2,3','3,3','4,3','5,3'],fill:[5,3],cap:'자동 채우기 결과'})}
+<p>D2 칸 오른쪽 아래 작은 점(채우기 핸들)을 아래로 끌어요. <b>B2만 B3, B4…로 바뀌고</b> $가 붙은 범위는 그대로라서 모든 칸이 같은 최솟값·최댓값으로 계산돼요.</p>
+<div class="warn"><b>F4를 안 누르면?</b> 범위도 같이 밀려서 B3:B19, B4:B20…이 돼요. 최솟값·최댓값이 칸마다 달라져서 정규화가 엉망이 돼요. 시험에 "F4를 누르는 이유"로 나올 수 있어요.</div>
+<p>환자 수도 E2에 =(C2-MIN($C$2:$C$18))/(MAX($C$2:$C$18)-MIN($C$2:$C$18))를 넣고 똑같이 채워요. 서울 환자 수 → 0.67, 경기는 최댓값이라 1, 세종은 최솟값이라 0.</p>`)}
+${stp(7,'시각화: 꺾은선 차트 그리기',`
+${lineChart()}
+<p>시도 이름과 정규화한 두 열을 같이 선택 → [삽입] → 꺾은선 차트. 두 선이 비슷하게 오르내리면 관계가 있다는 뜻이에요. 서울·경기는 둘 다 높고, 세종은 미세 먼지는 높은데 환자 수는 낮아서(인구가 적으니까) 선이 엇갈려요.</p>
+<div class="tip"><b>왜 정규화한 값으로 그려?</b> 미세 먼지(30~40)와 환자 수(수십만~수백만)를 그대로 그리면 미세 먼지 선이 바닥에 깔려서 안 보여요. 둘 다 0~1로 맞춰야 한 차트에서 비교돼요.</div>`)}
+${stp(8,'상관 분석: 상관계수 구하기',`
+${path(['파일','옵션','추가 기능','분석 도구 체크'])}
+${path(['데이터','데이터 분석','상관 분석'])}
+${win('상관 분석',[['입력 범위: $B$1:$C$18','bx'],['데이터 방향: 열','bx'],['☑ 첫째 행 이름표 사용','bp','tb'],['출력 범위 → 확인','bw','tb']],'상관 분석 창')}
+${xl([70,72,72],[['','미세 먼지','환자 수'],['미세 먼지','1',''],['환자 수','0.4762','1']],{hl:['2,1'],cap:'상관 분석 결과'})}
+<p>결과 표에서 두 변수가 만나는 칸 = <b>0.476…</b> 양수이고 0.4 ~ 0.7 사이 → <b>양의 상관관계가 있음</b>. (교과서 데이터는 0.2996 → 약한 양의 상관관계)</p>`)}
+${stp(9,'문제 해결: 해석하고 방안 내기',`
+${win('결론',[['해석: 미세 먼지가 높을수록 환자 수도 많은 경향','bp','tb'],['단, 인구 수 같은 다른 요인도 영향 (상관 ≠ 인과)','bw'],['방안: 미세 먼지 심한 날 마스크 안내, 실내 공기 정화','bx']],'문제 해결 결론')}
+<p>상관계수만 보고 "미세 먼지 때문에 환자가 생긴다"고 단정하면 안 돼요. 경기는 인구가 많아서 환자 수가 많은 것도 있어요. 그래서 다른 변수(인구, 흡연, 계절)를 더 분석해 볼 수 있다고 정리해요.</p>`)}
+<div class="sumh">실습 단계와 4단계 연결</div>
+<div class="tw"><table><tr><th>실습</th><th>분석 4단계</th></tr><tr><td>1 계획서</td><td>문제 정의</td></tr><tr><td>2 KOSIS·CSV</td><td>데이터 수집</td></tr><tr><td>3~8 정리·결측값·정규화·차트·상관 분석</td><td>데이터 전처리와 분석</td></tr><tr><td>9 해석·방안</td><td>문제 해결</td></tr></table></div>`});
+L.sum.push('실습: 계획서 → KOSIS CSV → 엑셀 정리 → 정규화(F4 고정 + 자동 채우기) → 꺾은선 차트 → 상관 분석(0.476) → 해석·방안');
+})();
+
+/* ---------- 1회차 실습: 손으로 압축해 보기 ---------- */
+(function(){const L=LESSONS.find(l=>l.id===1);if(!L)return;
+const IMG=['00011000','00111100','01111110','11111111','11111111','01111110','00111100','00011000'];
+const codes=IMG.map(rleRow),bits=codes.join('').length;
+L.secs.push({id:'1-8',t:'실습: 손으로 압축해 보기',h:`
+<p>배운 압축 두 가지를 직접 해 봐요. 그림 하나, 글자 하나로 끝까지 가요.</p>
+${stp(1,'흑백 그림을 반복 길이 압축하기',`
+${pix(IMG,'8 × 8 흑백 그림')}
+<p>흰 칸 = W, 검은 칸 = B. 한 줄씩 왼쪽부터 같은 색이 몇 칸 이어지는지 세요.</p>
+<div class="tw"><table><tr><th>줄</th><th>칸</th><th>압축</th></tr>${IMG.map((r,i)=>`<tr><td>${i+1}</td><td style="font-family:monospace">${r.replace(/0/g,'W').replace(/1/g,'B')}</td><td><b>${codes[i]}</b></td></tr>`).join('')}</table></div>
+<p>원래 64칸(글자 64개) → 압축하면 ${bits}글자. 압축률 = 64 ÷ ${bits} ≈ ${(64/bits).toFixed(2)}. 4·5번 줄처럼 한 색이 쭉 이어지는 줄은 B8 두 글자로 끝나요. 이게 <b>공간적 중복성</b>을 줄이는 거예요.</p>`)}
+${stp(2,'파이썬으로 돌려 보기 (교과서 52쪽)',`
+${win('Python',[['>>> data = "WWWBBBBW"','bx'],['>>> (반복 길이 압축 코드 실행)','bx'],['W3B4W1','bp','tb'],['압축률 1.3','bw','tb']],'파이썬 실행 화면')}
+<p>8 ÷ 6 = 1.333… → "%.1f"라서 1.3. 1-6 꼼꼼 정리의 표처럼 i를 하나씩 따라가면 결과를 손으로도 맞힐 수 있어요.</p>`)}
+${stp(3,'내 이름으로 허프만 해 보기: BANANA',`
+<div class="tw"><table><tr><th>글자</th><th>A</th><th>N</th><th>B</th></tr><tr><td>빈도수</td><td>3</td><td>2</td><td>1</td></tr></table></div>
+${tree({v:'6',c:['A3',{v:'3',c:['N2','B1'],e:['0','1']}],e:['0','1']},'BANANA 허프만 트리')}
+<p>가장 작은 B1 + N2 = 3 → 3 + A3 = 6. 빈도가 큰 쪽 가지 = 0 규칙으로 A = 0, N = 10, B = 11. (A3과 3은 빈도가 같아서 어느 쪽에 둬도 전체 비트 수는 같아요.)</p>
+<p>B A N A N A → 11 0 10 0 10 0 = <b>110100100</b> (9비트). 원래 6글자 × 8비트 = 48비트 → 압축률 48 ÷ 9 ≈ 5.3.</p>
+<div class="tip"><b>해 볼 것</b> 내 이름 영문 철자로 똑같이 해 보세요. 빈도수 세기 → 작은 두 개 합치기 → 코드 읽기 → 비트 수 세기, 이 네 단계가 시험 7~8번 그대로예요.</div>`)}`});
+L.sum.push('실습: 흑백 그림 줄마다 W·B 개수 세기, BANANA 허프만 = A 0 · N 10 · B 11 (9비트)');
+})();
+
+/* ---------- 2회차 실습: 암호 직접 만들어 보기 ---------- */
+(function(){const L=LESSONS.find(l=>l.id===2);if(!L)return;
+const ab26='abcdefghijklmnopqrstuvwxyz';
+const sh=(t,k)=>[...t].map(c=>ab26.includes(c)?ab26[(ab26.indexOf(c)+k+26)%26]:c).join('');
+function ring(k){const W=350,cw=13.2;let s='';[...ab26].forEach((c,i)=>{const x=2+i*cw;s+=`<rect x="${x}" y="4" width="${cw-1}" height="22" rx="3" class="bx"/><text x="${x+cw/2-0.5}" y="15" text-anchor="middle" dominant-baseline="central" style="font-size:10px">${c}</text><rect x="${x}" y="46" width="${cw-1}" height="22" rx="3" class="bp"/><text x="${x+cw/2-0.5}" y="57" text-anchor="middle" dominant-baseline="central" class="lb" style="font-size:10px">${ab26[(i+k)%26]}</text>`;if(i<26)s+=`<line x1="${x+cw/2}" y1="27" x2="${x+cw/2}" y2="45" class="xg"/>`});
+ s+=`<text x="2" y="84" class="s">위: 평문 글자 · 아래: 암호문 글자 (키 = ${k}칸)</text>`;return svgW(W,92,s,`카이사르 ${k}칸 대응표`)}
+L.secs.push({id:'2-10',t:'실습: 암호 직접 만들어 보기',h:`
+<p>암호는 직접 만들어 보면 절대 안 헷갈려요. 네 가지를 해 봐요.</p>
+${stp(1,'카이사르 암호 만들기 (키 3)',`
+${ring(3)}
+<p>평문 <b>study</b> → 위 줄에서 s를 찾아 바로 아래 글자로: s → v, t → w, u → x, d → g, y → b. 결과 <b>${sh('study',3)}</b>. y처럼 끝에 가까운 글자는 처음(a, b, c)으로 돌아가요.</p>
+<p>복호화는 아래 줄에서 찾아 위로 올라가면 돼요: ${sh('study',3)} → study.</p>`)}
+${stp(2,'전치형 암호 만들기 (키 3142)',`
+<div class="tw"><table><tr><th>열</th><th>1</th><th>2</th><th>3</th><th>4</th><th>→ 3·1·4·2</th></tr><tr><td>1줄</td><td>s</td><td>e</td><td>c</td><td>r</td><td>c s r e</td></tr><tr><td>2줄</td><td>e</td><td>t</td><td>:</td><td>:</td><td>: e : t</td></tr></table></div>
+<p>평문 <b>secret</b>을 4글자씩 끊고(모자란 칸은 :), 줄마다 3번 → 1번 → 4번 → 2번 열 순서로 뽑아요. 결과 <b>csre:e:t</b>. 글자는 그대로, 자리만 바뀌었죠?</p>`)}
+${stp(3,'공개키로 친구에게 비밀 쪽지 보내기',`
+${ab('민서 → 지우에게 쪽지','지우의 공개키로 잠금','지우의 개인키로 엶',['지우의 공개키','누구나 받을 수 있음','bp'],['지우의 개인키','지우만 가짐','bw'])}
+<ol class="xst"><li>지우가 공개키·개인키 한 쌍을 만들고 공개키만 공개해요.</li><li>민서는 <b>지우의 공개키</b>로 쪽지를 잠가서 보내요.</li><li>중간에 누가 가로채도 개인키가 없으니 못 열어요.</li><li>지우가 <b>자기 개인키</b>로 열어요.</li></ol>
+<div class="warn"><b>잠그는 키 = 받는 사람 공개키</b> 보내는 사람(민서)의 키는 하나도 안 써요. 시험에서 "A의 공개키로 잠근다"가 나오면 틀린 선지예요.</div>`)}
+${stp(4,'해시로 비밀번호 확인하는 흐름',`
+${win('로그인',[['가입: 비밀번호 → 해시 함수 → 해시값만 서버에 저장','bx'],['로그인: 입력한 비밀번호 → 해시 함수 → 해시값','bx'],['서버: 저장된 해시값과 같은지 비교','bp','tb'],['같으면 로그인 성공 (원래 비밀번호는 서버도 모름)','bw']],'해시 로그인 흐름')}`)}`});
+L.sum.push('실습: 카이사르는 대응표로, 전치형은 표로, 공개키는 받는 사람 공개키로 잠그고 개인키로 엶');
+})();
 /* 예상 문제: id, 회차, 소제목, 유형, 문제, 선지, 정답(1~5), 해설, 보기 */
 const BK5=['ㄱ','ㄷ','ㄱ, ㄴ','ㄴ, ㄷ','ㄱ, ㄴ, ㄷ'];
 const QS=[];
@@ -1777,6 +2398,260 @@ w('e38',['2MB = 2,048KB → 2,048 ÷ 400 = 5.12.','1MB를 1,000KB로 하면 5가
 w('e39',['자리마다 26가지 → 26 × 26 × 26 × 26 = 456,976.'],['더하기','숫자 4자리','정답','1자리','26 × 25'],'경우의 수 = 곱하기.');
 w('e40',['5 + 5 = 10, 5 + 5 = 10, 10 + 10 = 20.','네 글자 모두 깊이 2 → 2비트씩 → 20 × 2 = 40비트.'],['모두 같음','정답','1비트로는 4개 구분 불가','40비트','만들 수 있음'],'빈도가 다 같으면 허프만도 고정 길이처럼.');
 
+
+/* ---------- 3회차: 빅데이터의 분석과 활용 ---------- */
+Object.assign(CONCEPT,{
+'3-1':'빅데이터 분석 4단계: 문제 정의 → 데이터 수집 → 데이터 전처리와 분석 → 문제 해결. "정·수·전·해".',
+'3-2':'독립 변수 = 영향을 주는 것(원인), 종속 변수 = 영향을 받는 것(결과). "A는 B에 어떤 영향을?"에서 A가 독립, B가 종속.',
+'3-3':'수집 방법은 직접 수집(센서·설문)과 공개 데이터 활용(포털). 공개 데이터는 신뢰성이 있어야 함.',
+'3-4':'결측값 = 빈 값, 이상치 = 패턴에서 크게 벗어난 값, 스케일링 = 크기를 특정 범위로, 정규화 = [0, 1]로. 정규화된 값 = (기존값 − 최솟값) ÷ (최댓값 − 최솟값).',
+'3-5':'상관계수는 −1 ~ 1. 부호는 방향(+ 같이 증가, − 반대), 숫자 크기는 세기. 0.2 ~ 0.4는 약함.',
+'3-6':'문제 해결 = 분석 결과로 문제 요인을 해석하고 해결 방안을 제시하는 단계.'});
+
+E('하','f01','3-1','순서','빅데이터 분석을 통한 문제 해결 과정을 순서대로 바르게 나열한 것은?',['문제 정의 → 데이터 수집 → 데이터 전처리와 분석 → 문제 해결','데이터 수집 → 문제 정의 → 데이터 전처리와 분석 → 문제 해결','문제 정의 → 데이터 전처리와 분석 → 데이터 수집 → 문제 해결','데이터 수집 → 데이터 전처리와 분석 → 문제 정의 → 문제 해결','문제 정의 → 데이터 수집 → 문제 해결 → 데이터 전처리와 분석'],1,
+'무엇을 알고 싶은지 먼저 정해야 어떤 데이터를 모을지 알 수 있어요. 모은 다음 다듬고 분석해서, 마지막에 해결 방안을 내요.');
+E('중','f02','3-1','개념','빅데이터 분석 과정의 각 단계에 대한 설명으로 옳지 않은 것은?',['문제 정의 단계에서는 해결하려는 문제를 구체화하고 분석 방향을 설정한다.','데이터 수집 단계에서는 센서나 설문 조사로 데이터를 직접 모을 수 있다.','데이터 전처리 단계에서는 데이터를 분석에 적합한 형태로 가공한다.','데이터 분석 단계에서는 시각화나 통계적 방법으로 데이터 사이의 관계를 파악한다.','문제 해결 단계에서는 분석할 독립 변수와 종속 변수를 처음으로 설정한다.'],5,
+'변수 설정은 맨 처음 문제 정의 단계에서 해요. 문제 해결 단계는 분석 결과를 해석하고 방안을 제시하는 단계예요.');
+E('중','f03','3-1','개념','다음 설명에 해당하는 빅데이터 분석 단계는?',['문제 정의','데이터 수집','데이터 전처리','데이터 분석','문제 해결'],5,
+'분석 결과로 원인을 해석하고 방안을 내놓는 마지막 단계가 문제 해결이에요.','분석 결과를 바탕으로 문제 요인을 해석하고, 문제를 해결할 수 있는 방안을 제시하는 단계');
+E('하','f04','3-2','개념','다른 변수에 영향을 주는 원인이 되는 변수는?',['독립 변수','종속 변수','결측값','이상치','상관계수'],1,
+'영향을 주는 쪽, 즉 원인이 독립 변수예요. 영향을 받는 결과 쪽이 종속 변수예요.');
+E('하','f05','3-2','개념','종속 변수에 대한 설명으로 옳은 것은?',['다른 변수에 영향을 주는 원인이다.','독립 변수의 변화에 따라 영향을 받는 결과이다.','데이터가 비어 있는 상태를 말한다.','데이터의 범위를 0과 1 사이로 바꾼 값이다.','두 변수 사이의 관계를 −1부터 1 사이의 수로 나타낸 값이다.'],2,
+'종속 변수는 독립 변수에 "종속"되어 따라 바뀌는 결과예요. ③은 결측값, ④는 정규화, ⑤는 상관계수 설명이에요.');
+E('중','f06','3-2','적용','"미세 먼지 대기 오염도는 호흡기 질환에 어떤 영향을 미칠까?"라는 문제에서 독립 변수와 종속 변수를 바르게 짝지은 것은?',['독립 변수: 미세 먼지 대기 오염도, 종속 변수: 호흡기 질환 환자 수','독립 변수: 호흡기 질환 환자 수, 종속 변수: 미세 먼지 대기 오염도','독립 변수: 측정 장소, 종속 변수: 미세 먼지 등급','독립 변수: 미세 먼지 등급, 종속 변수: 측정 장소','독립 변수와 종속 변수 모두 미세 먼지 대기 오염도'],1,
+'영향을 주는 쪽은 미세 먼지, 영향을 받는 쪽은 호흡기 질환 환자 수예요. 교과서 70쪽 예제 그대로예요.');
+E('중','f07','3-2','적용','"하루 공부 시간이 시험 성적에 어떤 영향을 미칠까?"라는 문제에서 종속 변수로 옳은 것은?',['하루 공부 시간','시험 성적','시험 과목 수','학생의 이름','공부한 장소'],2,
+'공부 시간이 원인(독립), 시험 성적이 결과(종속)예요.');
+E('중','f08','3-2','적용','다음 문제에서 독립 변수로 가장 적절한 것은?',['아이스크림 판매량','하루 평균 기온','아이스크림 가격','판매 점포 수','아이스크림 맛의 종류'],2,
+'기온이 판매량에 영향을 주는 원인이에요. 판매량은 결과라서 종속 변수예요.','여름철 하루 평균 기온은 아이스크림 판매량에 어떤 영향을 미칠까?');
+E('중','f09','3-2','개념','"미세 먼지 대기 오염도는 호흡기 질환에 어떤 영향을 미칠까?"라는 문제를 해결하기 위한 가설로 가장 적절한 것은?',['미세 먼지 대기 오염도가 높으면 호흡기 질환 환자 수가 많을 것이다.','호흡기 질환 환자 수가 많으면 미세 먼지 대기 오염도가 높아질 것이다.','미세 먼지 대기 오염도와 측정 장소는 관계가 없을 것이다.','호흡기 질환 환자 수는 설문 조사로만 알 수 있을 것이다.','미세 먼지 대기 오염도는 정규화할 수 없을 것이다.'],1,
+'가설은 "독립 변수가 이러면 종속 변수가 이럴 것이다"처럼 원인 → 결과 방향으로 세워요. ②는 원인과 결과를 거꾸로 세웠어요.');
+E('상','f10','3-2','보기','독립 변수와 종속 변수를 바르게 짝지은 것만을 <보기>에서 있는 대로 고른 것은?',BK5,3,
+'ㄷ이 함정이에요. 수면 시간이 집중력에 영향을 주는 원인이니 독립 변수가 수면 시간, 종속 변수가 집중력이어야 해요.',
+'ㄱ. "운동 시간이 체지방률에 미치는 영향" - 독립 변수: 운동 시간, 종속 변수: 체지방률<br>ㄴ. "강수량에 따른 우산 판매량" - 독립 변수: 강수량, 종속 변수: 우산 판매량<br>ㄷ. "수면 시간이 집중력에 미치는 영향" - 독립 변수: 집중력, 종속 변수: 수면 시간');
+E('하','f11','3-3','개념','데이터를 직접 수집하는 방법으로 가장 적절한 것은?',['미세 먼지 측정 센서를 장소마다 설치하여 측정한다.','국가 통계 포털에서 CSV 파일을 내려받는다.','공공 데이터 포털에서 데이터를 검색한다.','캐글(Kaggle)에 올라온 데이터셋을 활용한다.','기상 자료 개방 포털에서 기온 자료를 받는다.'],1,
+'직접 수집은 센서·스마트 기기·설문 조사로 내가 직접 모으는 거예요. ②~⑤는 공개된 데이터를 활용하는 방법이에요.');
+E('중','f12','3-3','개념','공개된 데이터를 활용하여 데이터를 수집할 때 가장 중요하게 확인해야 할 것은?',['데이터의 신뢰성','데이터 파일의 이름','데이터를 올린 날짜의 요일','파일을 연 프로그램의 색상','데이터의 글자 크기'],1,
+'선생님이 강조한 "신뢰성 있는 데이터"예요. 출처가 믿을 만해야 분석 결과도 믿을 수 있어요.');
+E('중','f13','3-3','개념','공개된 데이터를 활용하는 방법의 장점으로 가장 적절한 것은?',['직접 수집할 때 드는 시간과 노력을 줄이고 많은 데이터를 얻을 수 있다.','데이터의 신뢰성을 확인할 필요가 전혀 없다.','데이터 전처리 과정을 반드시 생략할 수 있다.','원하는 장소의 데이터를 내가 직접 측정할 수 있다.','문제 정의 단계를 거치지 않아도 된다.'],1,
+'교과서: 직접 수집은 시간과 노력이 많이 들고 양이 부족할 수 있어서, 공개 데이터를 쓰면 더 쉽게 모을 수 있어요. 공개 데이터도 신뢰성 확인과 전처리는 필요해요.');
+E('중','f14','3-3','보기','분석 결과의 정확성을 높이기 위한 좋은 데이터 수집 조건으로 옳은 것만을 <보기>에서 있는 대로 고른 것은?',BK5,3,
+'ㄷ은 반대예요. 좋은 데이터는 한쪽으로 편향되지 않아야 해요. 교과서 날개: 목적에 맞는, 편향되지 않은, 정확한, 충분한 양의 데이터.',
+'ㄱ. 분석 목적에 맞는 데이터를 수집한다.<br>ㄴ. 충분한 양의 데이터를 수집한다.<br>ㄷ. 원하는 결과가 나오도록 한쪽으로 치우친 데이터를 수집한다.');
+E('하','f15','3-4','개념','다음 설명에 해당하는 데이터 전처리 용어는?',['결측값','이상치','스케일링','정규화','상관계수'],1,
+'비어 있는 값이 결측값이에요. 결(빠질 결) + 측(잴 측): 재야 할 값이 빠졌다.','데이터가 비어 있는 상태로, 제거, 대체, 보완 등이 필요하다.');
+E('하','f16','3-4','개념','다음 설명에 해당하는 데이터 전처리 용어는?',['결측값','이상치','스케일링','정규화','샘플링'],2,
+'일반적인 패턴에서 크게 벗어난 값이 이상치예요. 이상(異常)한 값!','데이터의 일반적인 패턴에서 크게 벗어난 값으로, 분석에 영향을 미칠 수 있어 제거하거나 변환이 필요하다.');
+E('하','f17','3-4','개념','데이터의 범위를 [0, 1] 사이로 변환하여 값의 크기에 따른 차이를 줄이는 작업은?',['결측값 처리','이상치 제거','정규화','필터링','샘플링'],3,'[0, 1]이 나오면 정규화예요.');
+E('중','f18','3-4','개념','스케일링에 대한 설명으로 옳은 것은?',['데이터가 비어 있는 값을 찾아 제거하는 작업이다.','데이터의 크기를 특정 범위로 조정하는 작업이다.','데이터를 시간 순서대로 정렬하는 작업이다.','두 변수 사이의 관계를 −1 ~ 1의 값으로 나타내는 작업이다.','데이터를 암호문으로 바꾸는 작업이다.'],2,
+'스케일(scale) = 크기·척도. 크기를 특정 범위로 맞추는 게 스케일링이고, 그중 [0, 1]로 맞추는 게 정규화예요.');
+E('중','f19','3-4','적용','(가)~(다)에 해당하는 전처리 용어를 바르게 짝지은 것은?',['(가) 결측값, (나) 이상치, (다) 정규화','(가) 이상치, (나) 결측값, (다) 정규화','(가) 결측값, (나) 정규화, (다) 이상치','(가) 정규화, (나) 이상치, (다) 결측값','(가) 이상치, (나) 정규화, (다) 결측값'],1,
+'빈칸 = 결측값, 터무니없는 값 = 이상치, 0~1로 바꾸기 = 정규화.','(가) 설문 조사에서 몇몇 학생이 나이 칸을 비워 두었다.<br>(나) 학생 키 데이터 중 하나가 1,700cm로 입력되어 있었다.<br>(다) 단위가 다른 두 데이터를 0과 1 사이의 값으로 바꾸었다.');
+E('중','f20','3-4','개념','데이터를 정규화하는 이유로 가장 적절한 것은?',['단위와 크기가 다른 두 데이터를 같은 기준으로 비교하기 위해','데이터의 용량을 줄여 저장 공간을 아끼기 위해','데이터를 암호화하여 다른 사람이 보지 못하게 하기 위해','비어 있는 데이터를 찾아 채워 넣기 위해','데이터를 시간 순서대로 정렬하기 위해'],1,
+'미세 먼지(㎍/㎥, 30~40)와 환자 수(명, 수십만~수백만)는 단위도 크기도 달라 그대로 비교할 수 없어요. 그래서 둘 다 0~1로 맞춰요.');
+E('중','f21','3-4','개념','최소-최대 정규화의 공식으로 옳은 것은?',['(기존값 − 최솟값) ÷ (최댓값 − 최솟값)','(최댓값 − 기존값) ÷ (최댓값 − 최솟값)','(기존값 − 최솟값) ÷ 최댓값','기존값 ÷ (최댓값 − 최솟값)','(기존값 − 평균) ÷ 표준편차'],1,
+'분자는 "최솟값에서 얼마나 떨어졌나", 분모는 "전체 범위". ⑤는 표준화(Z-점수) 공식이에요.');
+E('중','f22','3-4','계산','미세 먼지 대기 오염도 데이터의 최솟값이 28, 최댓값이 40일 때, 서울(38)의 정규화된 값에 가장 가까운 것은?',['0.25','0.5','0.83','0.95','1.2'],3,
+'(38 − 28) ÷ (40 − 28) = 10 ÷ 12 ≈ 0.83. 교과서 76쪽 결과(0.8333…)와 같아요.');
+E('중','f23','3-4','계산','어떤 반의 수학 점수 최솟값이 50점, 최댓값이 100점일 때, 80점을 최소-최대 정규화한 값은?',['0.3','0.5','0.6','0.8','1.6'],3,'(80 − 50) ÷ (100 − 50) = 30 ÷ 50 = 0.6.');
+E('상','f24','3-4','계산','최솟값이 28, 최댓값이 40인 데이터를 정규화했더니 0.25가 나왔다. 원래 값은?',['30','31','32','34','37'],2,
+'0.25 = (x − 28) ÷ 12 → x − 28 = 3 → x = 31. 교과서 표의 울산 값이에요.');
+E('상','f25','3-4','보기','최소-최대 정규화에 대한 설명으로 옳은 것만을 <보기>에서 있는 대로 고른 것은?',BK5,3,
+'ㄷ이 함정이에요. 정규화하면 범위는 바뀌지만 값들의 크기 순서는 그대로예요. 원래 더 컸던 값은 정규화해도 더 커요.',
+'ㄱ. 데이터의 최솟값은 정규화하면 0이 된다.<br>ㄴ. 데이터의 최댓값은 정규화하면 1이 된다.<br>ㄷ. 정규화하면 값들의 크기 순서가 바뀔 수 있다.');
+E('상','f26','3-4','적용','스프레드시트의 D2 셀에 다음 수식을 입력한 뒤 자동 채우기로 D18까지 채우려 한다. 수식에서 $를 붙인 이유로 가장 적절한 것은?',['자동 채우기를 해도 최솟값·최댓값을 구하는 범위가 바뀌지 않게 고정하기 위해','수식의 계산 결과를 화폐 단위로 표시하기 위해','B2 셀의 값을 0으로 만들기 위해','셀에 입력된 값을 암호화하기 위해','결측값을 자동으로 채우기 위해'],1,
+'F4를 누르면 $가 붙어 위치가 고정돼요(절대 참조). 그래서 아래로 채워도 B2는 B3, B4…로 바뀌지만 $B$2:$B$18 범위는 그대로예요.',
+'<pre class="code">=(B2-MIN($B$2:$B$18))/(MAX($B$2:$B$18)-MIN($B$2:$B$18))</pre>');
+E('하','f27','3-4','개념','스프레드시트에서 셀 주소를 입력한 뒤 F4 키를 눌렀을 때 일어나는 일로 옳은 것은?',['셀 주소에 $ 표시가 붙어 위치가 고정된다.','셀의 값이 0과 1 사이로 정규화된다.','셀의 글자가 굵게 바뀐다.','셀에 상관계수가 계산된다.','셀이 삭제된다.'],1,'수업 필기 그대로예요. F4 → $ → 위치 고정.');
+E('하','f28','3-5','개념','상관계수가 가질 수 있는 값의 범위로 옳은 것은?',['0 ~ 1','−1 ~ 1','0 ~ 100','−100 ~ 100','1 ~ 10'],2,'상관계수는 −1부터 1까지예요. 0 ~ 1은 정규화된 값의 범위라 헷갈리기 쉬워요.');
+E('중','f29','3-5','적용','미세 먼지 대기 오염도(정규화)와 호흡기 질환 환자 수(정규화)의 상관계수가 0.2996으로 나왔다. 이에 대한 해석으로 가장 적절한 것은?',['두 변수 사이에 약한 양(+)의 상관관계가 있다.','두 변수 사이에 강한 양(+)의 상관관계가 있다.','두 변수 사이에 약한 음(−)의 상관관계가 있다.','두 변수 사이에 강한 음(−)의 상관관계가 있다.','두 변수 사이에 완벽한 상관관계가 있다.'],1,
+'양수 → 양(+)의 관계, 0.2 ~ 0.4 → 약함. 교과서 79쪽 결과 그대로예요.');
+E('중','f30','3-5','적용','음(−)의 상관관계를 보이는 예로 가장 적절한 것은?',['여름철 기온이 올라갈수록 보일러 사용 횟수가 줄어든다.','공부 시간이 늘어날수록 시험 성적이 오른다.','키가 클수록 몸무게가 많이 나간다.','기온이 올라갈수록 아이스크림 판매량이 늘어난다.','운동 시간이 늘어날수록 소모 열량이 늘어난다.'],1,
+'한쪽이 커질 때 다른 쪽이 작아지면 음(−)의 상관관계예요. 나머지는 함께 커지는 양(+)의 관계예요.');
+E('중','f31','3-5','적용','상관계수가 다음과 같을 때, 두 변수 사이의 관계가 가장 강한 것은?',['0.2','−0.9','0.5','−0.4','0.7'],2,
+'세기는 부호를 떼고 숫자 크기로 봐요. 0.9가 가장 크니 −0.9가 가장 강해요(강한 음의 상관관계).');
+E('중','f32','3-5','적용','두 변수의 상관계수가 0.85일 때, 교과서의 상관계수 해석 기준으로 옳은 것은?',['강한 양(+)의 상관관계','약한 양(+)의 상관관계','매우 약한 양(+)의 상관관계','강한 음(−)의 상관관계','상관관계가 전혀 없음'],1,'0.7 ~ 0.9는 "강함", 양수니까 강한 양(+)의 상관관계예요.');
+E('상','f33','3-5','보기','상관계수에 대한 설명으로 옳은 것만을 <보기>에서 있는 대로 고른 것은?',BK5,3,
+'ㄷ이 함정이에요. 상관관계가 강해도 반드시 인과관계(원인 → 결과)라고 단정할 수는 없어요. 다른 요인이 있을 수 있어요.',
+'ㄱ. 상관계수가 −0.8인 두 변수는 상관계수가 0.3인 두 변수보다 관계가 강하다.<br>ㄴ. 상관계수가 0에 가까울수록 두 변수 사이의 관계는 약하다.<br>ㄷ. 상관계수가 1에 가까우면 한 변수가 다른 변수의 원인임이 반드시 증명된다.');
+E('중','f34','3-5','개념','두 변수 사이의 상관관계를 표현하기에 가장 적절한 시각화 방법은?',['산점도','파이 차트','트리맵','도넛 차트','지도 매핑'],1,
+'관계 시각화의 대표가 산점도예요. 점이 오른쪽 위로 모이면 양, 오른쪽 아래로 모이면 음의 관계예요. 파이·도넛·트리맵은 분포, 지도는 공간 시각화예요.');
+E('중','f35','3-6','적용','"미세 먼지 대기 오염도와 호흡기 질환 환자 수 사이에 양(+)의 상관관계가 있다"는 분석 결과를 바탕으로 한 문제 해결 방안으로 가장 적절한 것은?',['미세 먼지가 심한 날 마스크 착용과 실외 활동 자제를 안내한다.','미세 먼지 측정기를 모두 없앤다.','호흡기 질환 환자 수 데이터를 삭제한다.','미세 먼지 데이터를 정규화하지 않는다.','분석 결과를 해석하지 않고 그대로 보관만 한다.'],1,
+'문제 해결 단계는 결과를 해석하고 실제로 쓸 수 있는 방안을 내는 단계예요.');
+
+/* 해설 */
+w('f01',['"정·수·전·해"로 외워요: 문제 정의 → 데이터 수집 → 전처리와 분석 → 문제 해결.','무엇을 알고 싶은지(정의) 정해야 무슨 데이터를 모을지(수집) 알 수 있어요.','모은 데이터는 다듬고 분석(전처리·분석)한 다음에야 해결 방안을 낼 수 있어요.'],
+['정답','수집 전에 정의가 먼저','수집 없이 전처리 불가','정의가 맨 앞이어야 함','해결은 맨 마지막'],'정의 → 수집 → 전처리·분석 → 해결.');
+w('f02',['"옳지 않은 것"! 각 단계가 하는 일을 떠올려요.','변수(독립·종속)는 문제 정의 단계에서 정해요.','문제 해결은 결과 해석 + 방안 제시 단계예요.'],
+['맞는 설명','맞는 설명','맞는 설명','맞는 설명','정답. 변수 설정은 문제 정의 단계'],'변수 설정 = 문제 정의 단계.');
+w('f03',['키워드: "해석", "방안을 제시" → 마지막 단계.'],['방향 설정 단계','데이터 모으는 단계','데이터 다듬는 단계','관계 파악 단계','정답'],'해석 + 방안 = 문제 해결.');
+w('f04',['원인 = 영향을 주는 쪽 = 독립 변수.','결과 = 영향을 받는 쪽 = 종속 변수.'],['정답','영향을 받는 쪽','빈 값','튀는 값','관계의 세기'],'주는 쪽이 독립.');
+w('f05',['종속 = 따라붙는다는 뜻. 독립 변수를 따라 바뀌는 결과예요.'],['독립 변수 설명','정답','결측값','정규화','상관계수'],'받는 쪽이 종속.');
+w('f06',['문장을 "A는 B에 어떤 영향을?"으로 보면 A = 미세 먼지, B = 호흡기 질환.','A가 독립(원인), B가 종속(결과).'],
+['정답','원인과 결과를 뒤바꿈','문제와 상관없는 변수','문제와 상관없는 변수','두 변수는 서로 달라야 함'],'"A는 B에" → A 독립, B 종속.');
+w('f07',['공부 시간 → 성적. 영향을 받는 건 성적.'],['독립 변수','정답','문제와 무관','문제와 무관','문제와 무관'],'결과가 종속.');
+w('f08',['"기온은 판매량에 어떤 영향?" → 기온이 원인.'],['종속 변수','정답','문제에 없는 변수','문제에 없는 변수','문제에 없는 변수'],'원인이 독립.');
+w('f09',['가설 = "독립 변수가 이러면 종속 변수가 이럴 것이다".','미세 먼지(원인)가 높으면 → 환자 수(결과)가 많을 것.'],
+['정답','원인과 결과가 거꾸로','문제와 다른 변수','수집 방법 이야기','엉뚱한 내용'],'가설은 원인 → 결과 방향으로.');
+w('f10',['각 문장에서 "영향을 주는 쪽"을 찾아 독립 변수와 맞는지 봐요.','ㄱ 운동 시간 → 체지방률 O, ㄴ 강수량 → 우산 판매량 O.','ㄷ 수면 시간 → 집중력인데 거꾸로 적었어요 X.'],
+['ㄴ도 맞음','ㄷ은 틀림','정답','ㄷ이 섞임','ㄷ이 섞임'],'보기 문제는 하나씩 O/X.');
+w('f11',['직접 = 내가 센서·설문으로 모음. 공개 = 포털에서 받음.'],['정답','공개 데이터','공개 데이터','공개 데이터','공개 데이터'],'센서·설문 = 직접 수집.');
+w('f12',['선생님 필기: "데이터가 신뢰성이 있어야 함".'],['정답','중요하지 않음','중요하지 않음','중요하지 않음','중요하지 않음'],'공개 데이터 = 신뢰성 확인.');
+w('f13',['직접 모으면 시간·노력이 많이 들고 양이 모자랄 수 있어요.','공개 데이터는 그걸 줄여 줘요. 그래도 신뢰성 확인·전처리는 필요해요.'],
+['정답','신뢰성 확인은 필수','전처리는 여전히 필요','직접 수집의 특징','문제 정의는 생략 불가'],'공개 데이터 = 시간·노력 절약.');
+w('f14',['ㄱ 목적에 맞게 O, ㄴ 충분한 양 O.','ㄷ 편향되면 결과가 왜곡돼요 X.'],['ㄴ도 맞음','ㄷ은 틀림','정답','ㄷ이 섞임','ㄷ이 섞임'],'좋은 데이터 = 목적·편향 없음·정확·충분.');
+w('f15',['"비어 있는 상태" → 결측값.'],['정답','튀는 값','크기 조정','0~1 변환','관계 수치'],'빈칸 = 결측값.');
+w('f16',['"패턴에서 크게 벗어난 값" → 이상치.'],['빈 값','정답','크기 조정','0~1 변환','일부만 뽑기'],'튀는 값 = 이상치.');
+w('f17',['[0, 1] = 정규화.'],['빈 값 처리','튀는 값 처리','정답','조건에 안 맞는 값 거르기','일부만 뽑기'],'0과 1 사이 = 정규화.');
+w('f18',['스케일링 = 크기를 특정 범위로 조정.','정규화는 스케일링 중에서 [0, 1]로 맞추는 방법이에요.'],['결측값 처리','정답','정렬','상관계수','암호화'],'스케일링 ⊃ 정규화.');
+w('f19',['(가) 비워 둠 → 결측값.','(나) 1,700cm는 말이 안 되는 값 → 이상치.','(다) 0과 1 사이 → 정규화.'],['정답','(가)(나) 바뀜','(나)(다) 바뀜','다 섞임','다 섞임'],'빈칸·튀는 값·0~1.');
+w('f20',['미세 먼지는 30~40, 환자 수는 수십만. 숫자 크기가 너무 달라요.','둘 다 0~1로 맞추면 같은 기준으로 비교할 수 있어요.'],['정답','압축의 목적','암호화의 목적','결측값 처리','정렬'],'정규화 = 단위가 달라도 비교하려고.');
+w('f21',['분자: 기존값 − 최솟값 (최솟값에서 얼마나 위?)','분모: 최댓값 − 최솟값 (전체 폭)'],['정답','분자가 거꾸로','분모가 틀림','분자가 틀림','표준화 공식'],'(기존 − 최소) ÷ (최대 − 최소).');
+w('f22',['분자: 38 − 28 = 10. 분모: 40 − 28 = 12.','10 ÷ 12 = 0.833…'],['울산(31) 값','34일 때 값','정답','엉뚱함','1보다 클 수 없음'],'정규화 값은 항상 0 ~ 1.');
+w('f23',['분자: 80 − 50 = 30. 분모: 100 − 50 = 50.','30 ÷ 50 = 0.6.'],['틀림','75점일 때 값','정답','80 ÷ 100으로 계산','1보다 클 수 없음'],'최솟값을 빼는 걸 잊지 말기.');
+w('f24',['공식을 거꾸로: 0.25 = (x − 28) ÷ 12.','양변에 12를 곱하면 3 = x − 28 → x = 31.'],['0.17','정답','0.33','0.5','0.75'],'거꾸로 풀기: 정규화 값 × 범위 + 최솟값.');
+w('f25',['ㄱ 최솟값 → (최소 − 최소) ÷ … = 0 O.','ㄴ 최댓값 → (최대 − 최소) ÷ (최대 − 최소) = 1 O.','ㄷ 같은 수를 빼고 같은 수로 나누니 순서는 그대로 X.'],['ㄴ도 맞음','ㄷ은 틀림','정답','ㄷ이 섞임','ㄷ이 섞임'],'정규화해도 크기 순서는 그대로.');
+w('f26',['$ = 위치 고정(절대 참조). F4로 붙여요.','자동 채우기하면 B2는 B3, B4로 바뀌지만, $B$2:$B$18은 그대로 있어야 같은 최솟값·최댓값으로 계산돼요.'],['정답','돈 표시 아님','엉뚱함','암호화와 무관','결측값과 무관'],'$ = 고정.');
+w('f27',['수업: "F4 누르면 달러 표시가 나면서 위치가 고정".'],['정답','정규화 아님','서식 아님','상관 분석은 따로','삭제 아님'],'F4 → $ → 고정.');
+w('f28',['상관계수 −1 ~ 1, 정규화 값 0 ~ 1. 둘을 헷갈리지 않기!'],['정규화 값 범위','정답','틀림','틀림','틀림'],'상관계수는 음수도 있다.');
+w('f29',['부호 +: 양의 관계.','크기 0.2996: 0.2 ~ 0.4 → 약함.'],['정답','0.7 이상이어야 강함','음수가 아님','음수가 아님','1이어야 완벽'],'방향은 부호, 세기는 숫자.');
+w('f30',['한쪽 ↑ 다른 쪽 ↓ = 음(−).','기온 ↑ → 보일러 ↓ (수업 예시).'],['정답','양(+)','양(+)','양(+)','양(+)'],'반대로 움직이면 음의 상관.');
+w('f31',['부호 떼고 비교: 0.2, 0.9, 0.5, 0.4, 0.7.','가장 큰 0.9 → −0.9.'],['매우 약함','정답','상관관계 있음','상관관계 있음','강함'],'세기 = 숫자 크기.');
+w('f32',['0.85 → 0.7 ~ 0.9 구간 = 강함.','양수 → 양(+).'],['정답','0.2 ~ 0.4일 때','0 ~ 0.2일 때','음수가 아님','0 근처일 때'],'구간표: 0.9↑ 매우 강함, 0.7↑ 강함, 0.4↑ 있음, 0.2↑ 약함.');
+w('f33',['ㄱ 0.8 > 0.3 → −0.8이 더 강함 O.','ㄴ 0에 가까우면 약함 O.','ㄷ 상관관계 ≠ 인과관계 X.'],['ㄴ도 맞음','ㄷ은 틀림','정답','ㄷ이 섞임','ㄷ이 섞임'],'상관관계가 곧 인과관계는 아니다.');
+w('f34',['관계 시각화 = 산점도, 버블 차트, 히스토그램.'],['정답','분포 시각화','분포 시각화','분포 시각화','공간 시각화'],'두 변수 관계 = 산점도.');
+w('f35',['결과 해석: 미세 먼지가 호흡기 질환에 영향을 줄 수 있다.','방안: 마스크 착용, 실외 활동 자제 안내.'],['정답','해결이 아님','데이터 삭제는 해결 아님','전처리 이야기','해석·방안이 없음'],'해석 + 방안 = 문제 해결.');
+
+/* 수업 실습 데이터 (2025.1) */
+const CLS='미세 먼지 대기 오염도: 최솟값 27(전남), 최댓값 42(서울)<br>호흡기 질환 환자 수: 최솟값 94,892(세종), 최댓값 2,957,470(경기)';
+E('하','g01','3-4','계산','수업 실습 데이터에서 서울(미세 먼지 42)의 미세 먼지 정규화 값은?',['0','0.42','0.5','0.93','1'],5,
+'서울이 최댓값이라 (42 − 27) ÷ (42 − 27) = 1이에요.',CLS);
+E('하','g02','3-4','계산','수업 실습 데이터에서 전남(미세 먼지 27)의 미세 먼지 정규화 값은?',['0','0.27','0.5','0.93','1'],1,
+'전남이 최솟값이라 (27 − 27) ÷ 15 = 0이에요.',CLS);
+E('중','g03','3-4','계산','수업 실습 데이터에서 부산(미세 먼지 33)의 미세 먼지 정규화 값은?',['0.2','0.33','0.4','0.6','0.79'],3,
+'(33 − 27) ÷ (42 − 27) = 6 ÷ 15 = 0.4.',CLS);
+E('중','g04','3-4','계산','수업 실습 데이터에서 강원(미세 먼지 34)의 미세 먼지 정규화 값에 가장 가까운 것은?',['0.34','0.47','0.53','0.81','2.14'],2,
+'(34 − 27) ÷ 15 = 7 ÷ 15 ≈ 0.47.',CLS);
+E('상','g05','3-4','계산','수업 실습 데이터에서 미세 먼지 정규화 값이 0.6인 지역의 원래 미세 먼지 값은?',['33','34','35','36','37'],4,
+'0.6 = (x − 27) ÷ 15 → x − 27 = 9 → x = 36(대전).',CLS);
+E('중','g06','3-4','적용','수업 실습 데이터에서 호흡기 질환 환자 수의 정규화 값이 1인 지역과 0인 지역을 바르게 짝지은 것은?',['1: 경기, 0: 세종','1: 서울, 0: 전남','1: 경기, 0: 전남','1: 서울, 0: 세종','1: 세종, 0: 경기'],1,
+'환자 수는 환자 수끼리 정규화해요. 최댓값 경기 → 1, 최솟값 세종 → 0. 서울·전남은 미세 먼지의 최댓값·최솟값이에요.',CLS);
+E('상','g07','3-4','계산','수업 실습 데이터에서 서울(환자 수 2,001,224)의 호흡기 질환 환자 수 정규화 값에 가장 가까운 것은?',['0.33','0.5','0.67','0.68','1'],3,
+'(2,001,224 − 94,892) ÷ (2,957,470 − 94,892) = 1,906,332 ÷ 2,862,578 ≈ 0.67. 최솟값을 빼지 않고 2,001,224 ÷ 2,957,470으로 계산하면 0.68이 나와서 함정이에요.',CLS);
+E('중','g08','3-5','적용','수업 실습에서 정규화한 미세 먼지 대기 오염도와 호흡기 질환 환자 수의 상관계수가 0.476으로 나왔다. 교과서의 해석 기준에 따른 해석으로 가장 적절한 것은?',['두 변수 사이에 양(+)의 상관관계가 있다.','두 변수 사이에 매우 강한 양(+)의 상관관계가 있다.','두 변수 사이에 음(−)의 상관관계가 있다.','두 변수 사이에 상관관계가 전혀 없다.','미세 먼지가 호흡기 질환의 유일한 원인임이 증명되었다.'],1,
+'양수 → 양(+), 0.4 ~ 0.7 → "상관관계가 있음". 상관계수만으로 원인이라고 단정할 수는 없어요.');
+E('상','g09','3-5','보기','수업 실습 결과(상관계수 0.476)와 교과서 결과(상관계수 0.2996)를 비교한 설명으로 옳은 것만을 <보기>에서 있는 대로 고른 것은?',BK5,3,
+'ㄷ이 함정이에요. 두 결과 모두 양수라서 둘 다 양(+)의 상관관계예요. 방향이 반대인 게 아니라 세기가 다른 거예요.',
+'ㄱ. 두 결과 모두 양(+)의 상관관계를 나타낸다.<br>ㄴ. 수업 실습 결과가 교과서 결과보다 두 변수의 관계가 더 강하게 나타났다.<br>ㄷ. 수업 실습 결과는 양(+), 교과서 결과는 음(−)의 상관관계이다.');
+E('상','g10','3-4','보기','수업 실습 데이터에 대한 설명으로 옳은 것만을 <보기>에서 있는 대로 고른 것은?',BK5,5,
+'셋 다 맞아요. 미세 먼지 범위는 42 − 27 = 15, 경기·충북은 41로 같아서 정규화 값도 (41 − 27) ÷ 15 ≈ 0.93으로 같아요.',
+CLS+'<br><br>ㄱ. 미세 먼지 정규화 공식의 분모는 15이다.<br>ㄴ. 미세 먼지 대기 오염도가 같은 경기(41)와 충북(41)은 미세 먼지 정규화 값도 같다.<br>ㄷ. 미세 먼지 정규화 값이 1인 지역과 환자 수 정규화 값이 1인 지역은 서로 다르다.');
+w('g01',['서울 42 = 최댓값.','최댓값은 정규화하면 항상 1.'],['최솟값일 때','42 ÷ 100','중간값','41일 때','정답'],'최댓값 → 1.');
+w('g02',['전남 27 = 최솟값.','분자가 27 − 27 = 0이라 0.'],['정답','27 ÷ 100','중간값','41일 때','최댓값일 때'],'최솟값 → 0.');
+w('g03',['분자: 33 − 27 = 6. 분모: 42 − 27 = 15.','6 ÷ 15 = 0.4.'],['30일 때','32일 때','정답','36일 때','33 ÷ 42로 계산'],'최솟값 빼고, 범위로 나누기.');
+w('g04',['분자: 34 − 27 = 7. 분모: 15.','7 ÷ 15 = 0.466… ≈ 0.47.'],['34 ÷ 100','정답','35일 때','34 ÷ 42','15 ÷ 7, 거꾸로'],'수업 데이터 강원 값 그대로.');
+w('g05',['거꾸로: 0.6 × 15 = 9.','9 + 27 = 36.'],['0.4','0.47','0.53','정답','0.67'],'정규화 값 × 범위 + 최솟값.');
+w('g06',['변수마다 자기 최솟값·최댓값으로 따로 정규화.','환자 수: 경기가 최대(1), 세종이 최소(0).'],['정답','미세 먼지 기준','섞임','섞임','거꾸로'],'변수마다 따로 정규화.');
+w('g07',['분자: 2,001,224 − 94,892 = 1,906,332.','분모: 2,957,470 − 94,892 = 2,862,578.','나누면 약 0.666 → 0.67.'],['틀림','틀림','정답','최솟값을 안 뺌','최댓값일 때'],'분자·분모 모두 최솟값 빼기.');
+w('g08',['부호 + → 양(+).','0.476 → 0.4 ~ 0.7 → "상관관계가 있음".'],['정답','0.9 이상일 때','음수가 아님','0 근처일 때','상관 ≠ 인과'],'수업 결과 0.476 = 양의 상관관계가 있음.');
+w('g09',['ㄱ 둘 다 양수 O.','ㄴ 0.476 > 0.2996 → 수업 결과가 더 강함 O.','ㄷ 둘 다 양수라 X.'],['ㄴ도 맞음','ㄷ은 틀림','정답','ㄷ이 섞임','ㄷ이 섞임'],'방향은 부호, 세기는 숫자.');
+w('g10',['ㄱ 42 − 27 = 15 O.','ㄴ 같은 값 → 같은 정규화 값 O.','ㄷ 미세 먼지 1은 서울, 환자 수 1은 경기 O.'],['ㄴ, ㄷ도 맞음','ㄱ, ㄴ도 맞음','ㄷ도 맞음','ㄱ도 맞음','정답'],'같은 값은 같은 정규화 값.');
+
+/* ---------- 작년 2학기 기말 기출 스타일 (김포고 2025 2학기 2차 1학년 정보) ---------- */
+function XE(d,...a){Q(...a);const q=QS[QS.length-1];q.x=1;q.d=d}
+const RLE=(s)=>`<pre class="code">data = '${s}'
+encoded = ''
+count = 1
+for i in range(1, len(data)):
+    if data[i] == data[i-1]:
+        count = count + 1
+    else:
+        encoded += data[i-1] + str(count)
+        count = 1
+    if i == len(data) - 1:
+        encoded += data[i] + str(count)
+
+print(encoded)  # (가)
+print("%.1f"%(len(data)/len(encoded))) # (나)</pre>`;
+
+XE('하','k01','1-3','기출형','디지털 데이터의 압축에 대한 설명으로 옳은 것은?',['데이터 압축 원리는 중복성 확대를 통해 이루어진다.','데이터를 더 작은 크기로 변환하는 처리를 디코딩이라고 한다.','인코딩은 압축된 데이터를 원래 형태로 되돌리는 과정이다.','데이터 압축은 에너지 사용과 전자 폐기물을 늘린다.','데이터 압축은 클라우드, 동영상 스트리밍 서비스 등을 통해 우리 생활을 편리하게 해 준다.'],5,
+'압축은 클라우드·스트리밍·초고속 통신망에 쓰여서 생활을 편리하게 해요. 나머지는 말을 하나씩 뒤집은 함정이에요.');
+XE('하','k02','1-3','기출형','디지털 데이터의 압축에 대한 설명으로 옳지 않은 것은?',['압축하면 같은 저장 공간에 더 많은 데이터를 저장할 수 있다.','압축하면 같은 시간에 더 많은 데이터를 전송할 수 있다.','데이터 압축은 반복되는 중복성을 줄이는 원리를 이용한다.','압축된 데이터를 원래대로 되돌리는 것을 복원(디코딩)이라고 한다.','데이터 압축은 전자 폐기물 증가, 환경 오염 등을 일으킨다.'],5,
+'압축은 저장 장치를 덜 쓰게 해서 에너지와 전자 폐기물을 줄여요. 늘린다는 건 반대예요.');
+XE('하','k03','1-1','순서','디지털 데이터의 용량을 큰 단위에서 작은 단위로 올바르게 나열한 것은?',['PB > TB > GB > MB > KB','TB > PB > GB > MB > KB','PB > GB > TB > MB > KB','KB > MB > GB > TB > PB','PB > TB > MB > GB > KB'],1,
+'작은 것부터 KB → MB → GB → TB → PB(킬·메·기·테·페). 큰 것부터면 그대로 뒤집어서 PB > TB > GB > MB > KB예요.');
+XE('중','k04','1-6','계산','다음은 반복 길이 압축을 하는 파이썬 코드이다. (가)의 실행 결과로 옳은 것은?',['A3B4C2','ABC','A3B4','3A4B2C','AAABBBBCC'],1,
+'같은 글자가 이어지면 count를 늘리고, 글자가 바뀌면 "앞 글자 + 개수"를 붙여요. A 3개, B 4개, C 2개 → A3B4C2.',RLE('AAABBBBCC'));
+XE('중','k05','1-6','계산','다음 코드의 (나)의 실행 결과로 옳은 것은?',['0.7','1.5','1.6','2.0','3.0'],2,
+'(가)는 A3B4C2(6글자). 압축률 = 원래 길이 ÷ 압축 후 길이 = 9 ÷ 6 = 1.5. %.1f라서 소수 첫째 자리까지 나와요.',RLE('AAABBBBCC'));
+XE('상','k06','1-6','계산','다음 코드의 (가)와 (나)의 실행 결과를 바르게 짝지은 것은?',['(가) W8B2, (나) 2.5','(가) W8B2, (나) 0.4','(가) WB, (나) 5.0','(가) 8W2B, (나) 2.5','(가) W8B2, (나) 4.0'],1,
+'W가 8개, B가 2개 → W8B2(4글자). 압축률 = 10 ÷ 4 = 2.5. 거꾸로 4 ÷ 10으로 나누면 0.4가 나와서 함정이에요.',RLE('WWWWWWWWBB'));
+XE('상','k07','1-6','적용','다음 코드를 실행했을 때에 대한 설명으로 옳은 것은?',['(가)는 ABCD가 출력된다.','(가)는 A1B1C1D1이 출력되고, 압축 후 데이터가 원래보다 길어진다.','(나)는 2.0이 출력된다.','같은 글자가 반복되지 않아도 반복 길이 압축을 하면 항상 크기가 줄어든다.','(나)는 압축률이므로 항상 1보다 크다.'],2,
+'반복이 하나도 없으면 글자마다 1이 붙어서 A1B1C1D1(8글자)이 돼요. 압축률은 4 ÷ 8 = 0.5로 오히려 늘어나요.',RLE('ABCD'));
+XE('중','k08','2-6','계산','다음은 전치형 암호 기법으로 키 ‘4213’을 적용하여 암호화하고자 한다. 암호화한 결과로 옳은 것은? (단, 빈칸은 :로 채운다.)',['oniftmra:oin','fnoiamtrno:i','fannmoot:iri','finoarmtnio:','information:'],1,
+'키가 4자리니까 4글자씩 끊어요: info / rmat / ion:. 줄마다 4번 → 2번 → 1번 → 3번 열 순서로 뽑아요: onif / tmra / :oin.','평문: information');
+XE('중','k09','2-6','계산','다음은 전치형 암호 기법으로 키 ‘3142’를 적용하여 암호화하고자 한다. 암호화한 결과로 옳은 것은?',['mcpoeurt','opcmtrue','otprcume','retupmoc','frpsxwhu'],1,
+'comp / uter로 끊고, 줄마다 3번 → 1번 → 4번 → 2번 열: m c p o / e u r t. frpsxwhu는 3칸씩 민 카이사르(치환형)라서 아예 다른 기법이에요.','평문: computer');
+XE('상','k10','2-6','계산','키 ‘4213’을 적용한 전치형 암호문을 복호화한 평문으로 옳은 것은? (단, :는 빈칸을 채운 글자이다.)',['information','nformationi','ofni tamr nio','oniftmrao in','formationin'],1,
+'4글자씩 끊기: onif / tmra / :oin. 암호문 1번째 글자는 원래 4번 자리, 2번째는 2번 자리, 3번째는 1번 자리, 4번째는 3번 자리로 돌려놔요. onif → info, tmra → rmat, :oin → ion: → information.','암호문: oniftmra:oin');
+XE('하','k11','2-9','기출형','다음 (가)에 들어갈 내용으로 옳은 것은?',['압축','공개키 암호','카이사르 암호','블록체인','전치형 암호'],4,
+'참여자들이 거래 정보를 함께 기록하고, 블록마다 앞 블록의 해시값을 넣어 위조·변조를 막는 기술 = 블록체인. 암호 화폐가 대표 예예요.',
+'암호 화폐(비트코인, 이더리움 등)를 비롯한 다양한 분야에서 활용되는 ( 가 ) 기술은 분산된 네트워크에서 참여자들이 거래 정보를 공동으로 기록하고 관리하는 기술로, 데이터의 신뢰성과 안전성을 보장할 수 있다.');
+
+w('k01',['압축 설명 문제는 "말 뒤집기" 함정을 찾으면 끝나요.','압축 = 중복을 줄임, 인코딩 = 줄이기, 디코딩 = 되돌리기, 효과 = 환경 보호.'],
+['중복성을 "확대"가 아니라 "제거·감소"해서 줄여요.','작게 만드는 건 인코딩(압축)이에요. 디코딩은 되돌리기.','원래대로 되돌리는 건 디코딩(복원)이에요. 인코딩과 바꿔 놓은 함정.','압축은 에너지와 전자 폐기물을 줄여요. 늘린다는 건 반대.','정답. 클라우드, 스트리밍, 초고속 통신망이 다 압축 덕분이에요.'],'인코딩 = 압축, 디코딩 = 복원, 압축은 환경 보호.');
+w('k02',['"옳지 않은 것"이라 틀린 문장 하나만 찾아요.','압축의 좋은 점 3가지: 저장 공간 절약, 전송 속도 향상, 에너지·전자 폐기물 감소.'],
+['맞아요. 같은 책장에 책을 더 꽂는 것과 같아요.','맞아요. 파일이 작아지면 같은 시간에 더 많이 보내요.','맞아요. 압축의 원리는 중복을 줄이는 것.','맞아요. 복원 = 디코딩.','정답(틀린 문장). 압축은 전자 폐기물을 "줄여요".'],'압축하면 환경 오염은 줄어요.');
+w('k03',['한 칸 올라갈 때마다 1,024배: KB → MB → GB → TB → PB.','"킬·메·기·테·페"로 외우고, 큰 것부터 묻으면 거꾸로 읽어요.'],
+['정답. 페·테·기·메·킬.','TB와 PB 자리가 바뀌었어요. PB가 TB보다 커요.','GB와 TB 자리가 바뀌었어요.','작은 단위에서 큰 단위 순서예요. 문제는 큰 것부터.','MB와 GB 자리가 바뀌었어요.'],'킬·메·기·테·페, 한 칸에 1,024배.');
+w('k04',['i = 1부터 앞 글자(data[i-1])와 비교해요. 같으면 count + 1.','글자가 바뀌는 순간 "앞 글자 + count"를 붙이고 count를 1로 되돌려요.','마지막 글자(i = len(data) − 1)에서는 남은 글자 + count를 붙여요.','AAA → A3, BBBB → B4, CC → C2 → A3B4C2.'],
+['정답. 글자 뒤에 개수를 붙여요.','개수를 빼먹은 결과예요. str(count)도 붙여요.','마지막 C2를 빠뜨렸어요. 마지막 if문이 남은 글자를 붙여 줘요.','순서가 반대예요. 코드는 data[i-1] + str(count), 글자가 먼저.','원래 데이터 그대로예요. 압축이 안 된 상태.'],'반복 길이 압축 = 글자 + 개수.');
+w('k05',['먼저 (가)를 구해요: A3B4C2 → 6글자.','len(data) = 9, len(encoded) = 6.','압축률 = 원래 길이 ÷ 압축 후 길이 = 9 ÷ 6 = 1.5.','"%.1f"는 소수 첫째 자리까지 보여 줘요 → 1.5.'],
+['6 ÷ 9를 계산한 거예요. 나누는 순서가 반대.','정답. 9 ÷ 6 = 1.5.','반올림을 잘못한 값이에요. 9 ÷ 6은 정확히 1.5.','encoded 길이를 잘못 센 값이에요. A3B4C2는 6글자.','9 ÷ 3, 글자 종류 수로 나눈 값이에요.'],'압축률 = 원래 ÷ 압축 후. 클수록 많이 줄어든 것.');
+w('k06',['W가 8번 이어지고 B가 2번 → W8B2.','len(data) = 10, len(encoded) = 4.','압축률 = 10 ÷ 4 = 2.5.'],
+['정답. W8B2, 2.5.','4 ÷ 10으로 거꾸로 나눴어요.','개수를 빼고 글자만 붙였어요.','숫자와 글자 순서가 반대예요.','나누는 수를 잘못 잡은 값이에요. W8B2는 4글자라 10 ÷ 4 = 2.5.'],'작년 기출 4~5번과 같은 코드, 데이터만 바뀌어요.');
+w('k07',['ABCD는 반복이 하나도 없어요.','글자가 바뀔 때마다 "글자 + 1"이 붙어서 A1B1C1D1(8글자).','압축률 = 4 ÷ 8 = 0.5. 1보다 작으면 오히려 커진 거예요.'],
+['개수 1도 붙어요. 그대로 나오지 않아요.','정답. 반복이 없으면 오히려 길어져요.','4 ÷ 8 = 0.5예요. 2.0은 거꾸로 나눈 값.','반복이 없으면 오히려 커져요. 그래서 반복 길이 압축은 반복이 많은 데이터에 써요.','반복이 없으면 1보다 작을 수도 있어요(0.5).'],'반복이 없으면 반복 길이 압축은 손해.');
+w('k08',['키 자릿수(4)만큼 끊어요: info / rmat / ion: (모자란 칸은 :).','줄마다 키에 적힌 순서대로 열을 뽑아요: 4번, 2번, 1번, 3번.','info → o n i f, rmat → t m r a, ion: → : o i n.'],
+['정답. onif tmra :oin.','글자를 키 번호 "자리로 보낸" 결과예요. 키 순서대로 "뽑아야" 해요.','세로(열) 단위로 한꺼번에 읽은 결과예요. 교과서 방식은 줄마다 바꿔요.','키를 거꾸로(3124) 쓴 결과예요.','자리를 하나도 안 바꾼 평문이에요.'],'전치형 = 키 길이로 끊고, 키 순서대로 열 뽑기.');
+w('k09',['4글자씩: comp / uter.','키 3142 → 3번, 1번, 4번, 2번 열 순서.','comp → m c p o, uter → e u r t → mcpoeurt.'],
+['정답.','키를 "보낼 자리"로 잘못 쓴 결과예요.','세로로 한꺼번에 읽은 결과예요.','글자를 통째로 거꾸로 쓴 거예요. 키와 상관없어요.','카이사르 암호(3칸 밀기)예요. 글자가 바뀌니까 치환형.'],'전치형은 글자는 그대로, 자리만 바뀌어요.');
+w('k10',['복호화는 암호화를 거꾸로: 4글자씩 끊기 → onif / tmra / :oin.','암호문 1번째 글자는 원래 4번 자리, 2번째는 2번 자리, 3번째는 1번 자리, 4번째는 3번 자리.','onif → i n f o, tmra → r m a t, :oin → i o n : → information (:는 채운 칸).'],
+['정답.','한 칸씩 밀린 결과예요. 키를 잘못 적용했어요.','줄마다 거꾸로만 읽었어요.','암호문 순서를 조금만 바꾼 거예요. 키대로 되돌리지 않았어요.','앞부분을 잘라 뒤로 붙인 결과예요.'],'복호화 = 같은 키로 자리 되돌리기.');
+w('k11',['키워드: 암호 화폐, 분산된 네트워크, 공동 기록 → 블록체인.','블록마다 앞 블록의 해시값이 들어 있어서 하나만 고쳐도 다 티가 나요.'],
+['압축은 데이터 크기를 줄이는 기술이에요.','공개키 암호는 키 두 개로 암호화·복호화하는 방식이에요.','카이사르 암호는 글자를 밀어서 바꾸는 치환형 암호예요.','정답. 비트코인 = 블록체인.','전치형 암호는 글자의 자리를 바꾸는 암호예요.'],'암호 화폐·분산·공동 기록 = 블록체인.');
+[['k03',4],['k04',3],['k06',5],['k08',2],['k09',4],['k10',5]].forEach(([id,t])=>{const q=QS.find(x=>x.id===id),a=q.a-1,T=t-1;[q.o[a],q.o[T]]=[q.o[T],q.o[a]];const r=W[id].r;[r[a],r[T]]=[r[T],r[a]];q.a=t});
+
+
+/* ---------- 3-0 빅데이터의 특징 (작년 2학기 기출 11번) ---------- */
+CONCEPT['3-0']='빅데이터 5V: Volume(규모), Velocity(속도), Variety(다양성), Veracity(정확성), Value(가치). Visibility(가시성)는 아님.';
+XE('하','v01','3-0','기출형','빅데이터의 특징에 해당하지 않는 것은?',['Volume(규모)','Value(가치)','Velocity(속도)','Variety(다양성)','Visibility(가시성)'],5,
+'빅데이터 5V는 Volume, Velocity, Variety, Veracity, Value예요. Visibility(가시성)는 V로 시작하지만 특징이 아니에요.');
+XE('하','v02','3-0','기출형','빅데이터의 특징에 해당하지 않는 것은?',['Volume(규모)','Veracity(정확성)','Velocity(속도)','Variety(다양성)','Vision(시각)'],5,
+'5V에 Vision은 없어요. Veracity(정확성)는 진짜 특징이니까 낯설어도 지우면 안 돼요.');
+E('중','v03','3-0','개념','다음 설명에 해당하는 빅데이터의 특징은?',['Volume(규모)','Velocity(속도)','Variety(다양성)','Veracity(정확성)','Value(가치)'],3,
+'형태가 여러 가지라는 건 다양성(Variety)이에요.','숫자로 된 표뿐만 아니라 글, 사진, 동영상, 소리, 센서 값 등 여러 가지 형태의 데이터가 함께 존재한다.');
+E('중','v04','3-0','개념','다음 설명에 해당하는 빅데이터의 특징은?',['Volume(규모)','Velocity(속도)','Variety(다양성)','Veracity(정확성)','Value(가치)'],2,
+'빠르게 생성되고 실시간으로 처리 = 속도(Velocity).','실시간 교통 정보나 실시간 검색어처럼 데이터가 매우 빠르게 만들어지고 처리된다.');
+E('중','v05','3-0','개념','빅데이터의 특징과 그 뜻을 바르게 짝지은 것은?',['Volume - 데이터의 형태가 다양하다.','Velocity - 데이터의 양이 매우 많다.','Variety - 데이터를 믿을 수 있어야 한다.','Veracity - 데이터가 정확하고 신뢰할 수 있어야 한다.','Value - 데이터가 매우 빠르게 생성된다.'],4,
+'Veracity = 정확성. 나머지는 뜻을 서로 엇갈리게 붙였어요.');
+E('상','v06','3-0','보기','빅데이터의 특징에 해당하는 것만을 <보기>에서 있는 대로 고른 것은?',['ㄱ, ㄴ','ㄱ, ㄷ','ㄱ, ㄴ, ㄷ','ㄱ, ㄴ, ㄹ','ㄴ, ㄷ, ㄹ'],4,
+'ㄱ Volume, ㄴ Velocity, ㄹ Value는 특징. ㄷ Visibility(가시성)는 작년 기출에서 오답이었던 함정이에요.',
+'ㄱ. Volume(규모)<br>ㄴ. Velocity(속도)<br>ㄷ. Visibility(가시성)<br>ㄹ. Value(가치)');
+
+w('v01',['5V를 먼저 떠올려요: Volume, Velocity, Variety, Veracity, Value.','선지에서 이 5개가 아닌 걸 찾으면 끝.'],
+['규모(Volume)는 5V 중 하나예요.','가치(Value)도 5V예요. 분석해서 쓸모를 만드는 것.','속도(Velocity)도 5V예요.','다양성(Variety)도 5V예요.','정답. 가시성(Visibility)은 빅데이터 특징이 아니에요.'],'V로 시작한다고 다 특징은 아니에요.');
+w('v02',['5V: Volume, Velocity, Variety, Veracity, Value.','Veracity는 낯설어서 오답처럼 보이지만 진짜 특징이에요.'],
+['규모, 특징 맞아요.','정확성, 특징 맞아요. 헷갈리기 쉬운 함정.','속도, 특징 맞아요.','다양성, 특징 맞아요.','정답. Vision은 5V에 없어요.'],'Veracity = 정확성도 특징!');
+w('v03',['키워드: "여러 가지 형태".','형태가 다양 = Variety.'],
+['규모는 양이 많다는 뜻이에요.','속도는 빠르게 생성된다는 뜻이에요.','정답. 형태가 다양 = 다양성.','정확성은 믿을 수 있는 데이터라는 뜻이에요.','가치는 쓸모를 만들어 낸다는 뜻이에요.'],'형태 = Variety.');
+w('v04',['키워드: "빠르게", "실시간".','빠름 = Velocity(속도).'],
+['양이 많다는 내용은 없어요.','정답. 빠르게 생성·처리 = 속도.','형태 이야기는 없어요.','정확성 이야기는 없어요.','가치 이야기는 없어요.'],'실시간 = Velocity.');
+w('v05',['특징마다 뜻을 하나씩 확인해요.','Volume 양, Velocity 속도, Variety 형태, Veracity 정확성, Value 가치.'],
+['형태가 다양한 건 Variety예요.','양이 많은 건 Volume이에요.','믿을 수 있어야 하는 건 Veracity예요.','정답. Veracity = 정확성·신뢰성.','빠르게 생성되는 건 Velocity예요.'],'뜻을 바꿔 붙인 함정을 조심해요.');
+w('v06',['ㄱ Volume O, ㄴ Velocity O, ㄷ Visibility X, ㄹ Value O.','맞는 것: ㄱ, ㄴ, ㄹ.'],
+['ㄹ Value도 특징이에요.','ㄷ은 특징이 아니고, ㄴ·ㄹ이 빠졌어요.','ㄷ Visibility는 특징이 아니에요.','정답.','ㄱ Volume도 특징이고, ㄷ은 아니에요.'],'Visibility는 작년 기출 오답 선지.');
+
 QS.forEach(q=>{const x=W[q.id];if(x){q.ws=x.s;q.r=x.r;q.k=x.k}});
 /* 정답 위치 고르게: 선지 번호를 언급하지 않는 개념 문제만 선지를 돌려서 배치 */
 (function(){const cnt=[0,0,0,0,0,0];QS.forEach(q=>{q.fix=q.tg==='보기'||q.tg==='계산'||q.tg==='순서'||/[①②③④⑤]/.test(q.e)||q.o.some(o=>/^\(가\)|^ㄱ/.test(o));if(q.fix)cnt[q.a]++});
@@ -1784,7 +2659,7 @@ QS.forEach(q=>{const x=W[q.id];if(x){q.ws=x.s;q.r=x.r;q.k=x.k}});
 const app=document.getElementById('app'),tabbar=document.getElementById('tabbar');
 const KEY='bitnote:v1';
 let S;try{S=JSON.parse(localStorage.getItem(KEY))||{}}catch(e){S={}}
-S.wrong=S.wrong||[];S.log=S.log||{};S.seen=S.seen||{};S.theme=S.theme||'auto';S.fs=S.fs||'m';S.sel=S.sel||[1,2];S.cnt=S.cnt||20;S.ord=S.ord||'mix';
+S.wrong=S.wrong||[];S.known=S.known||[1,2];S.log=S.log||{};S.seen=S.seen||{};S.theme=S.theme||'auto';S.fs=S.fs||'m';S.sel=S.sel||[1,2];S.cnt=S.cnt||20;S.ord=S.ord||'mix';
 function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
 const esc=t=>String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 const NUM=['①','②','③','④','⑤'];
@@ -1792,6 +2667,7 @@ const ICON={home:'<path d="M4 11l8-7 8 7v8.5a1.5 1.5 0 0 1-1.5 1.5H15v-6H9v6H5.5
 quiz:'<path d="M4.5 19.5l1-4.5L16 4.5a2.1 2.1 0 0 1 3 3L8.5 18z"/><path d="M14 7l3 3"/>',wrong:'<path d="M5 4.5h14v15l-7-4-7 4z"/>',gear:'<circle cx="12" cy="12" r="3"/><path d="M12 2.5v3M12 18.5v3M4.4 4.4l2.1 2.1M17.5 17.5l2.1 2.1M2.5 12h3M18.5 12h3M4.4 19.6l2.1-2.1M17.5 6.5l2.1-2.1"/>',
 back:'<path d="M15 5l-7 7 7 7"/>',check:'<path d="M5 12.5l4.5 4.5L19 7.5"/>',book:'<path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z"/><path d="M4 20.5A2.5 2.5 0 0 1 6.5 18H20v3H6.5"/>',chev:'<path d="M9 5l7 7-7 7"/>',pen:'<path d="M12 20h8"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/>'};
 const ic=(n,s=22)=>`<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICON[n]}</svg>`;
+LESSONS.forEach(l=>{if(!S.known.includes(l.id)){S.known.push(l.id);if(!S.sel.includes(l.id))S.sel.push(l.id)}});
 const ALLSEC=LESSONS.flatMap(l=>l.secs.map(s=>({...s,L:l})));
 const secOf=id=>ALLSEC.find(s=>s.id===id);
 let V={v:'home',arg:null},P=null;
@@ -1799,7 +2675,7 @@ let V={v:'home',arg:null},P=null;
 function applyTheme(){const r=document.documentElement;if(S.theme==='auto')r.removeAttribute('data-theme');else r.setAttribute('data-theme',S.theme);if(S.fs==='m')r.removeAttribute('data-fs');else r.setAttribute('data-fs',S.fs)}
 function fade(){app.classList.remove('fade');void app.offsetWidth;app.classList.add('fade')}
 function go(v,arg,anc){document.getElementById('pf')?.remove();if(v==='sec'){const x=secOf(arg);v='lesson';anc=arg;arg=x?x.L.id:1}V={v,arg,anc};P=null;document.body.classList.remove('playing');render();fade();if(anc){setTimeout(()=>{const e=document.getElementById('p'+anc);if(e)window.scrollTo(0,e.getBoundingClientRect().top+scrollY-70)},60)}else window.scrollTo(0,0)}
-function header(){const n=Object.keys(S.log).length;document.getElementById('solved').textContent=n}
+function header(){const n=Object.keys(S.log).length;const e=document.getElementById('solved');if(e)e.textContent=n}
 function tabs(){const T=[['home','홈','home'],['notes','노트','note'],['setup','문제','quiz'],['wrong','오답','wrong']];
  const cur=V.v==='lesson'?'notes':V.v==='past'?'home':V.v;tabbar.innerHTML=`<div class="in">${T.map(([k,n,i])=>`<button class="${cur===k?'on':''}" onclick="go('${k}')">${ic(i)}<span>${n}</span></button>`).join('')}</div>`}
 function render(){header();tabs();({home:vHome,past:vPast,notes:vNotes,lesson:vLesson,setup:vSetup,wrong:vWrong,set:vSet,result:vResult}[V.v]||vHome)()}
@@ -1930,7 +2806,6 @@ function xpl(q){const step=q.ws||[];return `<div class="xd">
  <div class="xblk tipb"><div class="xh">선생님 한마디</div><p>${esc(q.e)}</p></div>
  ${q.k?`<div class="xone"><b>딱 한 줄</b>${esc(q.k)}</div>`:''}</div>`}
 
-
 /* ===== 로그인·동기화 (VOCAP과 같은 Firebase 프로젝트, 구글 로그인) ===== */
 const FB_CONFIG={apiKey:"AIzaSyBX63hV8FnrkrtAuh9644yw4BSV2GTUPv4",authDomain:"vocap-e3e9e.firebaseapp.com",projectId:"vocap-e3e9e",storageBucket:"vocap-e3e9e.firebasestorage.app",messagingSenderId:"322645613396",appId:"1:322645613396:web:9b73e58558018c972fc6c1"};
 const SY={user:null,busy:false,err:null,timer:null,last:null};
@@ -1989,6 +2864,153 @@ initSync();
 if('serviceWorker' in navigator&&canLogin()){navigator.serviceWorker.register('sw.js',{scope:'./'}).then(r=>r.update()).catch(()=>{})}
 /* 헤더 계정 버튼 */
 (function(){const b=document.querySelector('.hb');if(b){b.insertAdjacentHTML('beforebegin',`<button class="hb av2" id="acct" onclick="go('set')" aria-label="계정">${acctMini()}</button>`)}})();
+
+
+/* ===== finale 화면 구성 그대로 (D-day·퀘스트·더보기 서랍·섞어 풀기·리포트·설정·도움) ===== */
+const FI={
+home:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M4 10.5 12 4l8 6.5V20H4z"/></svg>',
+book:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M5 4h11a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3z"/><path d="M5 17a3 3 0 0 1 3-3h11"/></svg>',
+test:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V3h6v1M9 12l2 2 4-4"/></svg>',
+mark:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M7 4h10v17l-5-4-5 4z"/></svg>',
+menu:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>',
+doc:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M4 7a2 2 0 0 1 2-2h4l2 2h6a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"/></svg>',
+target:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="1" fill="currentColor"/></svg>',
+plus:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>',
+rep:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3l3 3-3 3M4 11V9a3 3 0 0 1 3-3h13M7 21l-3-3 3-3M20 13v2a3 3 0 0 1-3 3H4"/></svg>',
+cal:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 10h16M9 3v4M15 3v4"/></svg>',
+gear:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1 7 17M17 7l2.1-2.1"/></svg>',
+chart:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 20h16M7 16v-4M12 16V8M17 16v-6"/></svg>',
+x:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>',
+chk:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>',
+dot:'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/></svg>',
+mix:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>',
+user:'<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="10" r="3"/><path d="M6.5 18.5c1.3-2 3.2-3 5.5-3s4.2 1 5.5 3"/></svg>',
+sun:'<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M5.3 18.7l1.4-1.4M17.3 6.7l1.4-1.4"/></svg>',
+calb:'<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><rect x="4" y="5" width="16" height="15" rx="2.5"/><path d="M4 10h16M9 3v4M15 3v4"/></svg>',
+trash:'<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/></svg>',
+dl:'<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>',
+out:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 4H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h4M15 8l4 4-4 4M19 12H9"/></svg>',
+pen:'<svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M4 20h7M14.5 4.5l5 5L10 19H5v-5z"/></svg>'};
+
+/* 시험 날짜 · 포인트 · 퀘스트 */
+S.exam=S.exam||'2026-12-09';
+S.st=S.st||{pts:0,days:{},cur:{}};
+const today=()=>{const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')};
+function examD(){const [y,m,d]=S.exam.split('-').map(Number);return new Date(y,m-1,d)}
+function dday(){const t=new Date();t.setHours(0,0,0,0);const n=Math.round((examD()-t)/864e5);return n>0?'기말 D-'+n:n===0?'기말 D-DAY':'기말 끝!'}
+const QUESTS=[{k:'correct',name:'문제 20개 맞히기',n:20,p:30,ic:'target'},{k:'sets',name:'세트 하나 끝까지 풀기',n:1,p:30,ic:'plus'},{k:'fixed',name:'오답 5개 다시 맞히기',n:5,p:15,ic:'rep'}];
+function cur(){const st=S.st;if(!st.cur||st.cur.date!==today())st.cur={date:today(),correct:0,sets:0,fixed:0,claimed:[]};return st.cur}
+function bump(k){const st=S.st,c=cur();c[k]=(c[k]||0)+1;if(k==='correct')st.pts+=2;
+ QUESTS.forEach(q=>{if(!c.claimed.includes(q.k)&&c[q.k]>=q.n){c.claimed.push(q.k);st.pts+=q.p;st.days[c.date]=true;setTimeout(()=>toast(`퀘스트 완료! ${q.name} +${q.p}P`),400)}});save()}
+
+/* 상단: D-day 알약 */
+header=function(){const e=document.getElementById('dday');if(e)e.textContent=dday()}
+
+/* 하단 탭 5개 */
+tabs=function(){const T=[['home','홈',FI.home],['notes','노트',FI.book],['setup','모의고사',FI.test],['wrong','오답 노트',FI.mark]];
+ const cur=V.v==='lesson'?'notes':V.v;const more=['set','setv','quest','report'].includes(V.v);
+ tabbar.innerHTML=`<div class="in">${T.map(([k,n,i])=>`<button class="${cur===k?'on':''}" onclick="go('${k}')">${i}<span>${n}</span></button>`).join('')}<button class="${more?'on':''}" onclick="openDrawer()">${FI.menu}<span>더보기</span></button></div>`}
+
+const VIEWS={home:()=>vHome(),notes:()=>vNotes(),lesson:()=>vLesson(),setup:()=>vSetup(),wrong:()=>vWrong(),set:()=>vSet(),setv:()=>vSetv(),quest:()=>vQuest(),report:()=>vReport(),result:()=>vResult()};
+render=function(){header();tabs();(VIEWS[V.v]||vHome)();fab()};
+const _goF=go;go=function(v,arg,anc){closeDrawer(true);_goF(v,arg,anc)};
+
+/* 떠 있는 '섞어 풀기' 버튼 (홈·노트) */
+function fab(){let f=document.getElementById('fab');const show=['home','notes'].includes(V.v);
+ if(show&&!f){f=document.createElement('button');f.id='fab';f.className='fab';f.innerHTML=FI.mix+'섞어 풀기';f.onclick=quickMix;document.body.appendChild(f)}if(f)f.style.display=show?'':'none'}
+function quickMix(){const p=QS.filter(q=>S.sel.includes(q.l));play(shuffle(p.length?p:QS).slice(0,10),'섞어 풀기 10문항')}
+const _playF=play;play=function(){const f=document.getElementById('fab');if(f)f.style.display='none';closeDrawer(true);_playF.apply(this,arguments)};
+
+/* 풀이 기록 → 퀘스트 */
+const _checkF=check;check=function(){const q=P.list[P.i],ok=P.sel===q.a;_checkF();if(ok){bump('correct');if(P.retry)bump('fixed')}};
+const _nextF=next;next=function(){if(P.i+1>=P.list.length&&P.list.length>1)bump('sets');_nextF()};
+
+/* 홈 */
+function weekDots(){const d0=new Date();const sun=new Date(d0);sun.setDate(d0.getDate()-d0.getDay());return ['일','월','화','수','목','금','토'].map((n,i)=>{const d=new Date(sun);d.setDate(sun.getDate()+i);const k=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');const dn=S.st.days[k],td=k===today();return`<div class="${dn?'dn':''} ${td?'td':''}"><i>${dn?FI.chk:td?FI.dot:''}</i>${n}</div>`}).join('')}
+function lpct(l){const qs=QS.filter(q=>q.l===l.id);return qs.length?Math.round(qs.filter(q=>S.log[q.id]&&S.log[q.id].last).length/qs.length*100):0}
+function urowL(l){const n=QS.filter(q=>q.l===l.id).length,pc=lpct(l);return`<button class="fcard" onclick="go('lesson',${l.id})"><span class="mid"><small class="tg">${l.id}회차</small><b>${esc(l.title)}</b><small>${l.date} 수업 · 문제 ${n}개 · ${pc}% 맞힘</small></span><span class="ch">›</span></button>`}
+vHome=function(){const w=S.wrong.length,c=cur(),qd=QUESTS.filter(q=>c.claimed.includes(q.k)).length;
+ const by={};S.wrong.forEach(id=>{const q=QS.find(x=>x.id===id);if(q){const t=secOf(q.s).t;by[t]=(by[t]||0)+1}});const top=Object.entries(by).sort((a,b)=>b[1]-a[1])[0];
+ app.innerHTML=`<h1 class="t">오늘 공부</h1><p class="st">정보 수업 ${LESSONS.map(l=>l.id).join('·')}회차, 기말 범위만</p>
+ <button class="hero" style="display:block;width:100%;text-align:left;color:#fff" onclick="${w?'playWrong()':"go('setup')"}"><small>다시 풀 오답</small><div class="big">${w}개</div><p>${w?'누르면 바로 다시 풀어요':'오늘은 다 했어요'}</p></button>
+ <button class="qcard" onclick="go('quest')"><div class="tp"><span>오늘 퀘스트</span><b>${qd} / ${QUESTS.length}</b></div><div class="dz">${weekDots()}</div></button>
+ <div class="sec">기록</div>
+ <div class="rec"><span>오늘 맞힌 문제</span><b>${c.correct||0}개</b></div>
+ <div class="rec"><span>쌓인 오답</span><b>${w}개</b></div>
+ <div class="rec" style="border:0"><span>많이 틀린 단원</span><b>${top?esc(top[0]):'-'}</b></div>
+ <div class="sec">수업 노트</div>
+ <div class="fgrid">${LESSONS.map(urowL).join('')}</div><div style="height:40px"></div>`};
+
+/* 노트 목록: 회차 칩 */
+vNotes=function(){const f=S.nf||0,list=LESSONS.filter(l=>!f||l.id===f);
+ app.innerHTML=`<h1 class="t">수업 노트</h1><p class="st">수업 ${LESSONS.length}회차 · 예상 문제 ${QS.length}개</p>
+ <div class="chips"><button class="chip ${!f?'on':''}" onclick="S.nf=0;render();fade()">전체</button>${LESSONS.map(l=>`<button class="chip ${f===l.id?'on':''}" onclick="S.nf=${l.id};render();fade()">${l.id}회차</button>`).join('')}</div>
+ <div class="fgrid">${list.map(urowL).join('')}</div><div style="height:40px"></div>`};
+
+/* 모의고사 제목 */
+const _vSetupF=vSetup;vSetup=function(){_vSetupF();const h=app.querySelector('h1.t'),s=app.querySelector('p.st');if(h)h.textContent='실전 모의고사';const o=[...app.querySelectorAll('.card.w .lab')].find(x=>x.textContent==='순서');if(o){const g=o.nextElementSibling;g.className='pair2'};app.querySelectorAll('#app>.urow').forEach(x=>x.remove());const sc=[...app.querySelectorAll('.sec')].find(x=>x.textContent==='회차별로 풀기');if(sc)sc.insertAdjacentHTML('afterend',`<div class="fgrid">${LESSONS.map(L=>{const qs=QS.filter(q=>q.l===L.id),d=qs.filter(q=>S.log[q.id]&&S.log[q.id].last).length;return`<button class="fcard" onclick="playL(${L.id})"><span class="mid"><small class="tg">${L.id}회차</small><b>${esc(L.title)}</b><small>${qs.length}문제 · ${d}개 맞힘</small></span><span class="ch">›</span></button>`}).join('')}</div>`);if(s)s.textContent='범위와 종류를 고르면 문제를 골라서 내 줘요.'};
+
+/* 오답 노트 빈 화면 */
+const _vWrongF=vWrong;vWrong=function(){if(S.wrong.length)return _vWrongF();
+ app.innerHTML=`<h1 class="t">오답 노트</h1><p class="st">틀린 문제가 자동으로 모여요.</p><div class="empty2"><div class="ico">${FI.pen}</div><b>아직 오답이 없어요</b><p>문제를 풀다 틀리면 여기에 자동으로 모여요. 다시 맞히면 빠져요.</p><div class="row"><button class="gbtn sm" onclick="go('setup')">문제 풀러 가기</button><button class="obtn sm" onclick="go('notes')">노트 공부하기</button></div></div>`};
+
+/* 더보기 서랍 */
+function profHTML(){const st=S.st,lv=Math.floor(st.pts/100)+1,u=typeof SY!=='undefined'&&SY.user;
+ const av=u&&u.photoURL?`<img class="av" src="${esc(u.photoURL)}" alt="">`:`<div class="av ico2">${FI.user}</div>`;
+ return`<div class="prof">${av}<div><b>${esc(u?(u.displayName||'민서'):'민서')}</b><small>Lv.${lv} · 내 계정</small></div><button class="pill" onclick="go('quest')">${FI.target.replace('width="22" height="22"','width="16" height="16"')}${st.pts}P</button></div>`}
+function openDrawer(){closeDrawer(true);const sc=document.createElement('div');sc.className='scrim';sc.id='scrim';sc.onclick=()=>closeDrawer();const d=document.createElement('aside');d.className='drawer';d.id='drawer';
+ d.innerHTML=`<div class="hd"><b>더보기</b><button class="ib" style="border:0" onclick="closeDrawer()" aria-label="닫기">${FI.x}</button></div>
+ <label class="srch"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg><input id="dq" placeholder="단원·메뉴 검색" oninput="dSearch(this.value)"></label><div id="dres"></div>
+ ${profHTML()}
+ <div class="dsec">공부</div><button class="ditem" onclick="go('wrong')">${FI.mark}오답 노트</button><button class="ditem" onclick="go('setup')">${FI.cal}시험 준비 (모의고사)</button><button class="ditem" onclick="go('notes')">${FI.book}수업 노트</button>
+ <div class="dsec">기록</div><button class="ditem" onclick="go('quest')">${FI.target}퀘스트</button><button class="ditem" onclick="go('report')">${FI.chart}학습 리포트</button>
+ <div class="dsec">설정</div><button class="ditem" onclick="go('set')">${FI.gear}설정·도움</button>${typeof SY!=='undefined'&&SY.user?`<div class="dline"></div><button class="ditem" onclick="closeDrawer(true);logout()">${FI.out}로그아웃</button>`:''}`;
+ document.body.append(sc,d);requestAnimationFrame(()=>{sc.classList.add('on');d.classList.add('on')})}
+function closeDrawer(now){const sc=document.getElementById('scrim'),d=document.getElementById('drawer');if(!d)return;if(now){sc&&sc.remove();d.remove();return}sc.classList.remove('on');d.classList.remove('on');setTimeout(()=>{sc.remove();d.remove()},280)}
+function dSearch(v){const r=document.getElementById('dres');v=v.trim().toLowerCase();if(!v){r.innerHTML='';return}
+ const hit=ALLSEC.filter(s=>(s.id+' '+s.t+' '+s.L.title).toLowerCase().includes(v)).slice(0,6);
+ r.innerHTML=hit.length?hit.map(s=>`<button class="ditem" onclick="go('sec','${s.id}')">${FI.doc}<span>${esc(s.t)} <small style="color:var(--sub)">${s.id}</small></span></button>`).join(''):'<p class="st" style="margin:4px 8px 10px">찾는 단원이 없어요.</p>'}
+
+/* 퀘스트 */
+function vQuest(){const c=cur(),d0=new Date(),sun=new Date(d0);sun.setDate(d0.getDate()-d0.getDay());
+ const days=['일','월','화','수','목','금','토'].map((n,i)=>{const d=new Date(sun);d.setDate(sun.getDate()+i);const k=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');const done=S.st.days[k],td=k===today();return`<div class="day ${done?'done':''} ${td?'today':''}"><i>${done?FI.chk:td?FI.target.replace('width="22" height="22"','width="20" height="20"'):''}</i>${n}</div>`}).join('');
+ app.innerHTML=`<h1 class="t">퀘스트</h1><p class="st">매일 하나만 끝내도 도장이 찍혀요.</p><div class="days">${days}</div>
+ <div class="sec" style="margin-top:0">오늘 할 것</div>
+ ${QUESTS.map(q=>{const v=Math.min(c[q.k]||0,q.n),ok=c.claimed.includes(q.k);return`<div class="qrow ${ok?'ok':''}"><span class="ic">${ok?FI.chk:FI[q.ic]}</span><div><b>${q.name}</b><small>${v} / ${q.n}</small><div class="qbar"><i style="width:${v/q.n*100}%"></i></div></div><span class="pt">${ok?'완료':'+'+q.p}</span></div>`}).join('')}
+ <div class="card" style="margin-top:20px;display:flex;justify-content:space-between;align-items:center"><div><b>내 포인트</b><div class="st" style="margin:0;font-size:.9rem">문제를 맞힐 때마다 +2, 퀘스트를 끝내면 보너스</div></div><b style="color:var(--pri);font-size:1.5rem">${S.st.pts}P</b></div>
+ <p class="st" style="text-align:center;font-size:.85rem">퀘스트는 매일 자정에 바뀌어요.</p>`}
+
+/* 학습 리포트: 단원별 정답률 */
+function vReport(){const ids=Object.keys(S.log),tot=ids.length,cor=ids.filter(i=>S.log[i].last).length,need=Math.max(0,15-tot);
+ let h=`<h1 class="t">학습 리포트</h1><p class="st">내 풀이를 분석해서 약한 단원을 알려 줘요.</p>`;
+ if(need){app.innerHTML=h+`<div class="rhd"><span>문제를 풀면 리포트가 자동으로 만들어져요.</span><button class="rpill" onclick="quickMix()">첫 리포트까지 ${need}문항</button></div><div class="rcard">문제를 ${need}개 더 풀면 첫 리포트를 만들 수 있어요. 풀이가 쌓여야 분석할 게 생겨요.</div>`;return}
+ const by={};ids.forEach(id=>{const q=QS.find(x=>x.id===id);if(!q)return;const b=by[q.s]||(by[q.s]=[0,0]);b[1]++;if(S.log[id].last)b[0]++});
+ const rows=Object.entries(by).map(([s,[c,n]])=>[s,c,n,Math.round(c/n*100)]).sort((a,b)=>a[3]-b[3]),weak=rows.filter(r=>r[2]>=2&&r[3]<100).slice(0,2);
+ h+=`<div class="hero" style="color:#fff"><small>전체 정답률</small><div class="big">${Math.round(cor/tot*100)}%</div><p>${tot}문항 중 ${cor}문항 맞힘</p></div>`;
+ if(weak.length)h+=`<div class="sec">약한 단원</div>${weak.map(r=>`<button class="pc2" style="display:block;width:100%;text-align:left" onclick="go('sec','${r[0]}')"><div class="h"><i>!</i><span>${r[0]} ${esc(secOf(r[0]).t)} · ${r[3]}%</span></div><ul class="ln"><li>${esc(CONCEPT[r[0]]||'')}</li><li>누르면 이 단원 노트로 가요</li></ul></button>`).join('')}<button class="gbtn" onclick="play(shuffle(QS.filter(q=>${JSON.stringify(weak.map(r=>r[0])).replace(/"/g,"'")}.includes(q.s))),'약한 단원 풀기')">약한 단원만 풀기</button>`;
+ h+=`<div class="sec">단원별 정답률</div>${rows.map(r=>`<div class="rrow"><span>${r[0]}</span><div class="rb"><i style="width:${r[3]}%"></i></div><b>${r[3]}%</b><small>${r[1]}/${r[2]}</small></div>`).join('')}`;
+ app.innerHTML=h}
+
+/* 설정·도움 */
+const FAQ=[['기출형·심화는 뭐예요?','기출형은 작년 우리 학교 시험과 같은 방식, 심화는 그보다 한 단계 더 꼬은 문제예요.'],['오답은 언제 빠져요?','오답 노트에서 다시 풀어 맞히면 자동으로 빠져요.'],['폰이랑 기록을 맞추려면?','설정 → 계정에서 구글로 로그인하면 기록·오답·포인트가 자동으로 동기화돼요.']];
+vSet=function(){app.innerHTML=`<h1 class="t">설정·도움</h1><p class="st">화면과 기록을 관리해요.</p>
+ <div class="sec" style="margin-top:6px">자주 묻는 것</div>
+ ${FAQ.map(f=>`<button class="faq" onclick="this.classList.toggle('open')"><div><b>${f[0]}</b><span>${f[1]}</span></div><i>›</i></button>`).join('')}
+ <div class="sec">설정</div>
+ <div class="grid2 k">${[['account','계정',FI.user],['screen','화면',FI.sun],['exam','시험 날짜',FI.calb],['data','기록 관리',FI.trash]].map(([k,n,i])=>`<button class="stile" onclick="S.sub='${k}';go('setv')">${i}<b>${n}</b></button>`).join('')}</div>
+ <div class="sec">기록</div>
+ <button class="faq" onclick="go('report')"><div><b>학습 리포트</b><span>단원별로 얼마나 맞혔는지</span></div><i>›</i></button>
+ <button class="faq" onclick="go('quest')"><div><b>퀘스트</b><span>오늘 할 것과 이번 주 도장</span></div><i>›</i></button>
+ <button class="gbtn" style="margin-top:22px" onclick="quickMix()">섞어 풀기 10문항</button>
+ <div class="foot">bitnote · 정보 수업 ${LESSONS.length}회차 · 예상 문제 ${QS.length}개</div>`};
+function vSetv(){const k=S.sub,back=`<button class="crumb" onclick="go('set')">‹ 설정·도움</button>`;let h='';
+ if(k==='account')h=`${back}<h1 class="t">계정</h1><p class="st">로그인하면 폰·패드 기록이 맞춰져요.</p>${typeof acctCard==='function'?acctCard():''}<div class="lab">앱</div>${typeof installCard==='function'?installCard():''}`;
+ if(k==='screen')h=`${back}<h1 class="t">화면</h1><p class="st">글자 크기와 테마를 바꿔요.</p><div class="card w"><div class="pv"><b>미리보기</b><span>이 카드처럼 글자 크기가 적용돼요.</span></div><div class="lab">글자 크기</div><div class="seg p">${[['m','보통'],['l','크게'],['xl','더 크게']].map(([a,n])=>`<button class="${S.fs===a?'on':''}" onclick="S.fs='${a}';save();applyTheme();render()">${n}</button>`).join('')}</div><div class="lab">테마</div><div class="seg p" style="margin:0">${[['light','라이트'],['dark','다크'],['auto','기기 설정']].map(([a,n])=>`<button class="${S.theme===a?'on':''}" onclick="S.theme='${a}';save();applyTheme();render()">${n}</button>`).join('')}</div></div>`;
+ if(k==='exam')h=`${back}<h1 class="t">시험 날짜</h1><p class="st">상단의 D-day가 이 날짜로 계산돼요.</p><div class="card w"><div class="lab" style="margin-top:0">정보 기말고사</div><input type="date" class="inp" value="${S.exam}" onchange="if(this.value){S.exam=this.value;save();render()}"><p class="st" style="margin:12px 0 0">지금: <b style="color:var(--pri)">${dday()}</b></p></div>`;
+ if(k==='data')h=`${back}<h1 class="t">기록 관리</h1><p class="st">지운 기록은 되살릴 수 없어요.</p><div class="card w"><div class="drow"><div><b>오답 노트</b><span>${S.wrong.length}문제 저장됨</span></div><button class="obtn sm" onclick="if(confirm('오답 노트를 비울까요?')){S.wrong=[];save();render()}">비우기</button></div><div class="drow" style="border:0"><div><b>풀이 기록·포인트</b><span>${S.st.pts}P · 푼 문제 ${Object.keys(S.log).length}개</span></div><button class="obtn sm" onclick="if(confirm('풀이 기록과 포인트를 지울까요?')){S.log={};S.wrong=[];S.seen={};S.lastL=null;S.st={pts:0,days:{},cur:{}};save();toast('기록을 지웠어요');render()}">초기화</button></div></div>`;
+ app.innerHTML=h}
+if(typeof refreshAcct==='function'){refreshAcct=function(){if(V.v==='setv'&&S.sub==='account')render();const p=document.querySelector('#drawer .prof');if(p)p.outerHTML=profHTML()}}
+render();
 
 </script>
 </body>
